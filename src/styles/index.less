@@ -31,38 +31,64 @@ label {
 }
 th {
   font-weight: normal;
-  font-size: 18px;
+  font-size: 16px;
 }
 td {
   color: #656565;
-  font-size: 16px;
+  font-size: 14px;
 }
-.center {
-  text-align: center;
-  &.my-table {
-    background-color: #eee;
-    padding-bottom: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    thead {
-      background-color: #eee;
-      border-top-left-radius: 5px;
-    }
-    tbody {
-      background-color: #fff;
-      td {
-        border: none;
-      }
-    }
+.my-table {
+  margin-bottom: 20px;
+  &.el-table--striped .el-table__body tr.el-table__row--striped td {
+    background: #FAFAFA;
   }
-  .table {
-    border: 2px solid #eee;
-    th {
+  &.el-table th, .el-table tr {
+    background-color: #fff;
+  }
+  &.el-table--enable-row-hover .el-table__body tr:hover>td {
+    background-color: #f5f7fa;
+  }
+  .cell {
+    text-align: center;
+  }
+  .icon-item {
+    display: inline-block;
+    vertical-align: middle;
+    .edit-icon,
+    .set-icon,
+    .delete-icon,
+    .repeal-icon,
+    .issue-icon{
+      display: inline-block;
       text-align: center;
-      height: 50px;
-      line-height: 50px;
+      vertical-align: middle;
+      cursor: pointer;
     }
-
+    .edit-icon {
+      width: 23px;
+      height: 24px;
+      background-image: url("../assets/table/edit.png");
+    }
+    .set-icon {
+      width: 25px;
+      height: 24px;
+      background-image: url("../assets/table/set.png");
+    }
+    .delete-icon {
+      width: 24px;
+      height: 26px;
+      background-image: url("../assets/table/delete.png");
+    }
+    .repeal-icon {
+      width: 20px;
+      height: 22px;
+      background-image: url("../assets/table/repeal.png");
+    }
+    .issue-icon {
+      width: 21px;
+      height: 22px;
+      background-image: url("../assets/table/send.png");
+    }
   }
 }
 .table-striped>tbody>tr:nth-of-type(odd) {
@@ -85,12 +111,12 @@ td {
   }
 }
 .default-form {
-  font-size: 18px;
+  //font-size: 14px;
   label {
     font-weight: normal;
   }
   input,select {
-    font-size: 18px !important;
+    //font-size: 18px !important;
     box-shadow: 1px 1px 2px #999 inset
   }
   .form-group {
@@ -128,14 +154,6 @@ td {
         height: 18px;
         background-image: url("../assets/home/add-number.png");
       }
-    }
-  }
-  .my-table {
-    margin-top: 20px;
-    .td-btns {
-      white-space: nowrap;
-      display: flex;
-      justify-content: space-around;
     }
   }
   .page-title {
@@ -257,53 +275,7 @@ td {
     }
   }
 }
-.my-table {
-  margin-top: 20px;
-  .td-btns {
-    white-space: nowrap;
-    display: flex;
-    justify-content: space-around;
-    .icon-item {
-      display: inline-block;
-      vertical-align: middle;
-      .edit-icon,
-      .set-icon,
-      .delete-icon,
-      .repeal-icon,
-      .issue-icon{
-        display: inline-block;
-        text-align: center;
-        vertical-align: middle;
-        cursor: pointer;
-      }
-      .edit-icon {
-        width: 23px;
-        height: 24px;
-        background-image: url("../assets/table/edit.png");
-      }
-      .set-icon {
-        width: 25px;
-        height: 24px;
-        background-image: url("../assets/table/set.png");
-      }
-      .delete-icon {
-        width: 24px;
-        height: 26px;
-        background-image: url("../assets/table/delete.png");
-      }
-      .repeal-icon {
-        width: 20px;
-        height: 22px;
-        background-image: url("../assets/table/repeal.png");
-      }
-      .issue-icon {
-        width: 21px;
-        height: 22px;
-        background-image: url("../assets/table/send.png");
-      }
-    }
-  }
-}
+
 
 .el-transfer-panel__body.is-with-footer {
   .el-transfer-panel__list {

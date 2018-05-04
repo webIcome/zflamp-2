@@ -1,7 +1,7 @@
 <template>
   <div @click.stop="">
-    <div v-if="showText" class="show-text"><span @click="showModal">{{showText}}</span></div>
-    <el-dialog title="查看地理位置" :visible.sync="visible" center :width="'600px'" append-to-body>
+    <div :title="showText" v-if="showText" class="show-text"><span @click="showModal">{{showText}}</span></div>
+    <el-dialog :visible.sync="visible" center :width="'600px'" append-to-body>
       <div class="lat">纬度：{{device.latitude}}</div>
       ；
       <div class="lng">经度：{{device.longitude}}</div>；
@@ -81,6 +81,8 @@
     position: relative;
     cursor: pointer;
     color: #1789e1;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &:hover {
       color: #2b71b8;
     }
