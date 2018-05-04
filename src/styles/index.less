@@ -1,0 +1,319 @@
+@width: 100%;
+@fontFamily: 'Microsoft YaHei';
+@defaultBtnColor: #1789e1;
+@defaultBtnActiveColor: #2b71b8;
+@lineHeight: 2px;
+@lineColor: #efefef;
+@navWidth: 320px;
+@navBackgroundColor: #071627;
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+a {
+  &:hover,
+  &:focus{
+    text-decoration: none;
+  }
+}
+label {
+  font-weight: normal;
+  color: #000;
+}
+th {
+  font-weight: normal;
+  font-size: 18px;
+}
+td {
+  color: #656565;
+  font-size: 16px;
+}
+.center {
+  text-align: center;
+  &.my-table {
+    background-color: #eee;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    thead {
+      background-color: #eee;
+      border-top-left-radius: 5px;
+    }
+    tbody {
+      background-color: #fff;
+      td {
+        border: none;
+      }
+    }
+  }
+  .table {
+    border: 2px solid #eee;
+    th {
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+    }
+
+  }
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+.default-btn {
+  display: inline-block;
+  padding: 7.5px 24px;
+  border-radius: 4px;
+  background-color: @defaultBtnColor;
+  color: #fff;
+  cursor: pointer;
+  .default-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  &:hover {
+    background-color: @defaultBtnActiveColor;
+  }
+}
+.default-form {
+  font-size: 18px;
+  label {
+    font-weight: normal;
+  }
+  input,select {
+    font-size: 18px !important;
+    box-shadow: 1px 1px 2px #999 inset
+  }
+  .form-group {
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.content-right {
+  box-shadow: 0 0 20px #ccc;
+  padding: 40px;
+  .search {
+    width: 100%;
+    .default-btn {
+      .quick-search-icon {
+        width: 19px;
+        height: 21px;
+        background-image: url("../assets/home/quick-search.png");
+      }
+    }
+  }
+  .pull-right {
+    .default-btn {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+      text-align: center;
+      .search-icon {
+        width: 18px;
+        height: 18px;
+        background-image: url("../assets/home/search.png");
+      }
+      .add-icon {
+        width: 18px;
+        height: 18px;
+        background-image: url("../assets/home/add-number.png");
+      }
+    }
+  }
+  .my-table {
+    margin-top: 20px;
+    .td-btns {
+      white-space: nowrap;
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+  .page-title {
+    color: #333;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .input-two {
+    display: inline-block;
+    width: 43%;
+    margin: 0 5px;
+    &.datepicker {
+      width: 42%;
+    }
+  }
+  .search-btn {
+    margin-top: 80px;
+    text-align: center;
+    .default-btn {
+      margin: 0 15%;
+      width: 150px;
+    }
+  }
+}
+
+.el-dialog {
+  .el-dialog__header {
+    padding-top: 50px;
+    .el-dialog__title {
+      color: @defaultBtnColor;
+      font-size: 24px;
+    }
+    .el-dialog__headerbtn {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background-image: url("../assets/dialog/close.png");
+      filter: alpha(opacity=30);
+      opacity: .3;
+      &:hover {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+        filter: alpha(opacity=50);
+        opacity: .5;
+      }
+    }
+    .el-icon-close {
+      display: none;
+    }
+  }
+
+  .dialog-footer {
+    .el-button {
+      display: inline-block;
+      width: 200px;
+      height: 48px;
+      background-image: url("../assets/dialog/btn.png");
+      font-size: 18px;
+      color: #fff;
+      cursor: pointer;
+      border: none;
+      &[disabled] {
+        cursor: not-allowed;
+        filter: alpha(opacity=65);
+        box-shadow: none;
+        opacity: .65;
+      }
+      &:hover {
+        background-image: url("../assets/dialog/btn-active.png");
+      }
+    }
+  }
+  .dialog-warning {
+    display: inline-block;
+    width: 56px;
+    height: 47px;
+    margin-bottom: 40px;
+    background-image: url("../assets/dialog/warning.png");
+  }
+  p{
+    font-size: 16px;
+    white-space: normal;
+    &.title {
+      font-size: 20px;
+      margin-bottom: 40px;
+      color: #000;
+      text-align: center;
+    }
+  }
+}
+//element
+.el-form-default {
+  padding: 0 25px;
+  .el-select,
+  .el-input{
+    width: 100%;
+    &.el-date-editor {
+      width: 100%;
+    }
+    input {
+      font-size: 18px !important;
+      box-shadow: 1px 1px 2px #999 inset
+    }
+  }
+  .el-form-item__label {
+    font-size: 18px;
+  }
+  .el-form-item__content,
+  .el-radio__label{
+    font-size: 18px;
+  }
+  .el-slider__input {
+    input {
+      height: 32px !important;
+      line-height: 32px !important;
+      box-shadow: none;
+    }
+  }
+}
+.my-table {
+  margin-top: 20px;
+  .td-btns {
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-around;
+    .icon-item {
+      display: inline-block;
+      vertical-align: middle;
+      .edit-icon,
+      .set-icon,
+      .delete-icon,
+      .repeal-icon,
+      .issue-icon{
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+      }
+      .edit-icon {
+        width: 23px;
+        height: 24px;
+        background-image: url("../assets/table/edit.png");
+      }
+      .set-icon {
+        width: 25px;
+        height: 24px;
+        background-image: url("../assets/table/set.png");
+      }
+      .delete-icon {
+        width: 24px;
+        height: 26px;
+        background-image: url("../assets/table/delete.png");
+      }
+      .repeal-icon {
+        width: 20px;
+        height: 22px;
+        background-image: url("../assets/table/repeal.png");
+      }
+      .issue-icon {
+        width: 21px;
+        height: 22px;
+        background-image: url("../assets/table/send.png");
+      }
+    }
+  }
+}
+
+.el-transfer-panel__body.is-with-footer {
+  .el-transfer-panel__list {
+    height: 194px;
+    padding-top: 0;
+  }
+}
+
+.item-checkbox{
+  .el-checkbox__label {
+    display: none;
+  }
+}
