@@ -71,10 +71,10 @@ const CommonConstant = {
         {value: 1, text: '启动'},
     ],
     taskPeriodType: [
-        {value: 'single', text: '单次'},
+        // {value: 'single', text: '单次'},
         {value: 'day', text: '每天循环'},
-        {value: 'week', text: '每周循环'},
-        {value: 'interval', text: '按间隔循环'},
+        // {value: 'week', text: '每周循环'},
+        // {value: 'interval', text: '按间隔循环'},
     ],
     week: [
         {value: '1', text: '周一'},

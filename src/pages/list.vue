@@ -4,14 +4,14 @@
       <header-component></header-component>
       <div class="section">
         <div class="aside">
-          <div class="title"></div>
+          <!--<div class="title"></div>-->
           <div class="aside-nav">
             <div class="panel-group" id="nav" aria-multiselectable="true">
               <template v-for="nav in navs">
                 <div class="panel panel-default" v-if="!nav.url">
                   <div class="panel-heading">
-                    <h4 class="panel-title">
-                      <a :class="nav.ename" @click="collapse(nav)">
+                    <h4 class="panel-title" :class="{active: nav.isActive}">
+                      <a :class="nav.ename"  @click="collapse(nav)">
                         <div class="nav-icon"></div>
                         {{nav.modulename}}
                         <span class="nav-selected" v-show="nav.isActive"></span>
@@ -86,30 +86,40 @@
                 navs: [],
                 localNavs: [
                     {
-                        modulename: '设备管理',
-                        ename: 'device',
+                        modulename: '系統分析',
+                        ename: 'analyze',
+                        modulecode: '',
+                        url: '/list/analyze',
+                        children: []
+                    },
+                    {
+                        modulename: '路灯',
+                        ename: 'light',
                         modulecode: 'LAMPSBGL',
                         children: [
+                            {modulename: '任务管理', modulecode: '3', url: 'task'},
                             {modulename: '灯控器', modulecode: '1', url: 'light'},
                             {modulename: '回路控制器', modulecode: '2', url: 'loop'},
-                            {modulename: '基站', modulecode: '3', url: 'station'},
-                            {modulename: '灯具', modulecode: '4', url: 'lamps'},
+                            {modulename: '灯具&电源', modulecode: '4', url: 'lamps'},
                         ]
                     },
                     {
-                        modulename: '任务管理',
-                        ename: 'strategy',
+                        modulename: '市政终端',
+                        ename: 'municipal',
                         modulecode: 'LAMPCLGL',
-                        url: '/task',
-                        children: []
+                        children: [
+                            {modulename: '井盖', modulecode: '3', url: 'well'},
+                        ]
                     },
                     {
-                        modulename: '能耗分析',
-                        ename: 'energy',
+                        modulename: '系统管理',
+                        ename: 'system',
                         modulecode: 'LAMPNHFX',
-                        url: '/energy',
-
-                        children: []
+                        children: [
+                            {modulename: '项目管理', url: 'organize', modulecode: 'INETLIGHTZZGL'},
+                            {modulename: '用户管理', url: 'user', modulecode: 'INETLIGHTYHGL'},
+                            {modulename: '操作日志', url: 'log', modulecode: 'INETLIGHTCZRZ'},
+                        ]
                     },
                 ]
             }
@@ -131,7 +141,7 @@
                             item.isActive == true;
                         }
                         function exec(nav) {
-                            if (nav && nav.url == currentHash) {
+                            if (nav && '/list/' +nav.url == currentHash) {
                                 return true;
                             } else if (nav.children && nav.children.length) {
                                 return nav.children.some(child => {
@@ -176,7 +186,7 @@
             getMenus(){
                 let currentHash = window.location.hash.substring(window.location.hash.indexOf('/'));
                 HomeService.getMenus(1).then(list => {
-                    this.navs = list.map(item => {
+                    /*this.navs = list.map(item => {
                         let children = [];
                         this.localNavs.forEach((nav, index) => {
                             if (item.modulecode == nav.modulecode) {
@@ -189,7 +199,8 @@
                         });
                         item.children = children;
                         return item;
-                    });
+                    });*/
+                    this.navs = this.localNavs;
                     this.isActiveHide();
                     this.initMenus(currentHash);
                 })
@@ -198,13 +209,15 @@
     }
 </script>
 <style scoped lang="less">
-  @navWidth: 320px;
-  @navBackgroundColor: #071627;
+  @navWidth: 250px;
+  @navBackgroundColor: #25273E;
   .content-view-bg {
     position: relative;
     &:before {
       position: absolute;
       content: '';
+      padding-top: 100px;
+      z-index: -1;
       height: 100%;
       width: @navWidth;
       background-color: @navBackgroundColor;
@@ -216,6 +229,7 @@
       position: absolute;
       content: '';
       height: 100%;
+      margin-top: 100px;
       width: @navWidth;
       background-color: @navBackgroundColor;
     }
@@ -225,22 +239,21 @@
     position: relative;
     .aside {
       position: absolute;
-      top: -80px;
       left: 0;
       z-index: 999;
       width: @navWidth;
       background-color: @navBackgroundColor;
-      .title {
+    /*  .title {
         width: 200px;
         height: 72px;
         margin: 44px 0 44px 60px;
         background: url("../assets/home/logo.png");
-      }
+      }*/
       .isActive {
         display: block;
       }
       .aside-nav {
-        font-size: 20px;
+        font-size: 14px;
         .panel {
           border-radius: 0;
           margin: 0;
@@ -250,23 +263,29 @@
             .panel-title {
               margin-top: 0;
               margin-bottom: 0;
-              font-size: 16px;
+              font-size: 18px;
+              &.active {
+                a {
+                  background-color: #317BD3;
+                  color: #fff;
+                }
+              }
             }
             padding: 0;
             background-color: transparent;
             a {
               cursor: pointer;
               position: relative;
-              display: inline-block;
-              padding-left: 118px;
+              display: flex;
+              align-items: center;
               width: 100%;
-              height: 100px;
+              height: 60px;
               line-height: 100px;
-              color: #fff;
-              font-size: 20px;
+              color: #8FABD2;
+              font-size: 14px;
               &.router-link-active {
-                color: #66bbff;
-                background-color: #15283f;
+                color: #fff;
+                background-color: #3C689D;
                 &.energy {
                   .nav-icon {
                     width: 26px;
@@ -298,63 +317,58 @@
                 color: #66bbff;
                 background-color: #15283f;
               }
-              &.device,
-              &.control,
-              &.strategy,
-              &.energy {
+              &.analyze,
+              &.light,
+              &.municipal,
+              &.system {
                 .nav-icon {
-                  position: absolute;
-                  left: 70px;
-                  top: 50%;
-                  margin-top: -12px;
                   display: inline-block;
+                  margin-right: 17px;
+                  margin-left: 32px;
+                  background-size: contain;
                 }
               }
-              &.device {
+              &.analyze {
                 .nav-icon {
                   width: 24px;
                   height: 23px;
-                  background-image: url("../assets/home/device.png");
+                  background-image: url("../assets/list/analyze.png");
                 }
                 &:hover {
                   .nav-icon {
-                    background-image: url("../assets/home/device-active.png");
                   }
                 }
               }
-              &.control {
+              &.light {
                 .nav-icon {
                   width: 24px;
                   height: 24px;
-                  background-image: url("../assets/home/control.png");
+                  background-image: url("../assets/list/light.png");
                 }
                 &:hover {
                   .nav-icon {
-                    background-image: url("../assets/home/control-active.png");
                   }
                 }
               }
-              &.strategy {
+              &.municipal {
                 .nav-icon {
                   width: 24px;
                   height: 24px;
-                  background-image: url("../assets/home/strategy.png");
+                  background-image: url("../assets/list/municipal.png");
                 }
                 &:hover {
                   .nav-icon {
-                    background-image: url("../assets/home/strategy-active.png");
                   }
                 }
               }
-              &.energy {
+              &.system {
                 .nav-icon {
                   width: 26px;
                   height: 26px;
-                  background-image: url("../assets/home/energy.png");
+                  background-image: url("../assets/list/system.png");
                 }
                 &:hover {
                   .nav-icon {
-                    background-image: url("../assets/home/energy-active.png");
                   }
                 }
               }
@@ -364,18 +378,16 @@
             .panel-body {
               display: inline-block;
               width: 100%;
-              font-size: 20px;
+              font-size: 14px;
               border: none;
-              height: 60px;
-              line-height: 60px;
-              padding: 0 0 0 118px;
+              padding-left: 83px;
               cursor: pointer;
-              color: #fff;
+              color: #8FABD2;
               text-align: left;
               &:hover,
               &.router-link-active {
-                color: #66bbff;
-                background-color: #15283f;
+                color: #fff;
+                background-color: #3C689D;
               }
             }
           }
@@ -388,44 +400,11 @@
           vertical-align: text-top;
         }
       }
-      #navTwo {
-        margin-bottom: 0;
-        a {
-          height: 60px;
-          line-height: 60px;
-          .nav-two-selected-hide {
-            position: absolute;
-            right: 30px;
-            top: 50%;
-            width: 18px;
-            height: 10px;
-            margin-top: -5px;
-            background-image: url("../assets/home/show-two-nav.png");
-            transform: rotate(-90deg);
-          }
-          .nav-two-selected {
-            position: absolute;
-            right: 30px;
-            top: 50%;
-            margin-top: -3px;
-            display: inline-block;
-            width: 18px;
-            height: 10px;
-            background-image: url("../assets/home/show-two-nav.png");
-          }
-        }
-        .panel-collapse {
-          .panel-body {
-            padding: 0 0 0 158px;
-          }
-        }
-      }
 
     }
 
     .content {
       margin-left: @navWidth;
-      padding: 40px;
     }
   }
 </style>

@@ -80,11 +80,11 @@
   .show-text {
     position: relative;
     cursor: pointer;
-    color: #1789e1;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /*color: #1789e1;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
     &:hover {
-      color: #2b71b8;
+      /*color: #2b71b8;*/
     }
   }
 </style>

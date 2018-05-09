@@ -1,5 +1,5 @@
 <template>
-  <div class="form-horizontal">
+  <div class="form-horizontal detail">
     <div class="form-group">
       <label class="col-md-2 control-label">设备名称：</label>
       <div class="col-md-2 form-control-static">{{device.devicename}}</div>
@@ -150,7 +150,5 @@
 </script>
 
 <style scoped lang="less">
-  .form-horizontal{
-    font-size: 12px;
-  }
+
 </style>

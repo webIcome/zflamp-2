@@ -1,17 +1,21 @@
 <template>
   <div class="header clearfix">
+    <div class="pull-left">
+      <div class="logo"></div>
+      <div @click="goToHome" class="go-home"><i class="home-icon"></i>返回主页</div>
+      <div class="operation-center"><i class="icon"></i>进入营运中心</div>
+    </div>
     <div class="personal">
-      <span class="personal-describe">您好，{{user.username}}</span>
+      <!--<span class="personal-describe"><img :src="user.url" width="40" height="40" class="img-circle"> </span>-->
       <el-dropdown trigger="click" @command="handelPersonal">
-        <span class="el-dropdown-link"><i class="personal-center-icon"></i>个人中心
+        <span class="el-dropdown-link">{{user.username}}<i class="personal-center-icon"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="cp">修改密码</el-dropdown-item>
-          <el-dropdown-item style="color: #ff5151;" command="logout">退出登录</el-dropdown-item>
+          <!--<el-dropdown-item style="color: #ff5151;" command="logout">退出登录</el-dropdown-item>-->
         </el-dropdown-menu>
       </el-dropdown>
-      <div @click="goToHome" v-if="!isHome" class="go-home"><i class="home-icon"></i>返回主页
-      </div>
+      <div @click="logout" class="logout"></div>
     </div>
     <el-dialog title="修改密码" :visible.sync="dialogVisible" center :width="'600px'" @close="clearValidate('controlDevice')">
       <el-form label-width="140px" :model="password" ref="controlDevice" :rules="Rules" class="el-form-default">
@@ -127,59 +131,95 @@
 </script>
 
 <style scoped lang="less">
+  @color: #8FABD2;
   .header {
-    height: 80px;
-    background-color: #071627;
-    font-size: 16px;
+    height: 100px;
+    line-height: 100px;
+    background-color: #152F52;
+    color: @color;
+    font-size: 18px;
+    .pull-left {
+      width: 40%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .logo {
+        width: 193px;
+        height: 64px;
+        background: url("./imgs/logo-new.png") no-repeat center;
+        background-size: contain;
+      }
+      .go-home {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        .home-icon {
+          margin-right: 17px;
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url("./imgs/home.png") no-repeat;
+          background-size: contain;
+        }
+      }
+      .operation-center {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        .icon {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          margin-right: 15px;
+          background: url("./imgs/operation-center.png") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
     .personal {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
       float:right;
-      margin-top: 30px;
-      margin-right: 80px;
+      width: 265px;
+      height: 100%;
       .personal-describe {
-        margin-right: 20px;
         color: #fff;
         letter-spacing: 2px;
       }
       .el-dropdown {
         height: 23px;
         line-height: 23px;
-        margin-right: 20px;
         text-align: center;
         color: #51b0f8;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 18px;
+        .el-dropdown-link {
+          display: flex;
+          align-items: center;
+          color: #fff;
+          .personal-center-icon {
+            margin-left: 6px;
+            width: 12px;
+            height: 6px;
+            background-image: url("./imgs/personal-center-icon.png");
+            background-size: contain;
+          }
+        }
         &:hover {
           color: #a8ecfe;
           .personal-center-icon {
-            background-image: url("./imgs/personal-center-icon-active.png");
           }
-        }
-        .personal-center-icon {
-          margin-right: 8px;
-          display: inline-block;
-          width: 14px;
-          height: 16px;
-          vertical-align: text-bottom;
-          background-image: url("./imgs/personal-center-icon.png");
         }
       }
-      .go-home {
-        display: inline-block;
-        color: #51b0f8;
+      .logout {
         cursor: pointer;
+        width: 25px;
+        height: 25px;
+        background: url("./imgs/logout.png") no-repeat;
+        background-size: contain;
         &:hover {
-          color: #a8ecfe;
-          .home-icon {
-            background-image: url("./imgs/home-icon-active.png");
-          }
-        }
-        .home-icon {
-          margin-right: 8px;
-          display: inline-block;
-          width: 18px;
-          height: 16px;
-          vertical-align: text-bottom;
-          background-image: url("./imgs/home-icon.png");
+          
         }
       }
     }

@@ -11,14 +11,14 @@ axios.defaults.baseURL = Config.LAMP_URL_API;
 
 axios.interceptors.request.use(function (config) {
     config.headers = getHeaders(Storage.state);
-    loading = Loading.service({fullscreen: true, body: true});
+    // loading = Loading.service({fullscreen: true, body: true});
     return config
 }, function (error) {
     return Promise.reject(error)
 });
 
 axios.interceptors.response.use(function (res) {
-    loading.close();
+    // loading.close();
     showMessage(res);
     return res
 }, function (error) {

@@ -31,8 +31,8 @@ export default {
             return res;
         })
     },
-    controlLight(id, body) {
-        return HttpClient.post('groupControl/lightController/' + id, body).then(res => {
+    controlLight(body) {
+        return HttpClient.post('groupControl/lightController', body).then(res => {
             showSuccess(res);
             return res;
         })

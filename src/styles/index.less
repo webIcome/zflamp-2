@@ -2,12 +2,11 @@
 @fontFamily: 'Microsoft YaHei';
 @defaultBtnColor: #1789e1;
 @defaultBtnActiveColor: #2b71b8;
-@lineHeight: 2px;
-@lineColor: #efefef;
-@navWidth: 320px;
-@navBackgroundColor: #071627;
+@backgroundColor: #111;
 html, body {
   height: 100%;
+  background-color: @backgroundColor;
+  font-family: PingFangSC-Regular;
 }
 body {
   margin: 0;
@@ -29,24 +28,61 @@ label {
   font-weight: normal;
   color: #000;
 }
-th {
-  font-weight: normal;
-  font-size: 16px;
-}
-td {
-  color: #656565;
-  font-size: 14px;
+.detail {
+  font-size: 12px;
 }
 .my-table {
+  border: none;
+  &:before {
+    height: 0;
+  }
+  th {
+    background: @backgroundColor;
+    border-bottom: none!important;
+    color: #8FABD2;
+    font-size: 14px;
+  }
+  tr {
+    background-color: #25273E;
+    &.expanded{
+      td {
+        border: none;
+      }
+    }
+    td{
+      border-bottom: 10px solid @backgroundColor;
+      margin-top: 10px;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    border: none!important;
+  }
   margin-bottom: 20px;
   &.el-table--striped .el-table__body tr.el-table__row--striped td {
-    background: #FAFAFA;
+    //background: #FAFAFA;
   }
-  &.el-table th, .el-table tr {
-    background-color: #fff;
+  &.el-table tr {
+    background-color: #25273E;
   }
   &.el-table--enable-row-hover .el-table__body tr:hover>td {
-    background-color: #f5f7fa;
+    background-color: #25273E;
+  }
+  .el-table__expanded-cell {
+    background-color: #2E314C;
+    &:hover {
+      background-color: #2E314C !important;
+    }
+    color: #fff!important;
+    label {
+      color: #fff!important;
+    }
+  }
+  .el-table__empty-block {
+    background-color: #25273E;
+    .el-table__empty-text {
+      color: #fff;
+    }
   }
   .cell {
     text-align: center;
@@ -61,73 +97,158 @@ td {
     .issue-icon{
       display: inline-block;
       text-align: center;
-      vertical-align: middle;
       cursor: pointer;
     }
-    .edit-icon {
-      width: 23px;
-      height: 24px;
-      background-image: url("../assets/table/edit.png");
+  }
+  .light-on,
+  .light-off {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+  }
+  .light-on {
+    background: url("../assets/control/light-on.png") no-repeat;
+    background-size: contain;
+  }
+  .light-off {
+    background: url("../assets/control/light-off.png") no-repeat;
+    background-size: contain;
+  }
+  .running-fail,
+  .running-success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .running-icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 6px;
     }
-    .set-icon {
-      width: 25px;
-      height: 24px;
-      background-image: url("../assets/table/set.png");
+  }
+  .running-fail {
+    color: #F95555;
+    .running-icon {
+      background-color: #F95555;
     }
-    .delete-icon {
-      width: 24px;
-      height: 26px;
-      background-image: url("../assets/table/delete.png");
-    }
-    .repeal-icon {
-      width: 20px;
-      height: 22px;
-      background-image: url("../assets/table/repeal.png");
-    }
-    .issue-icon {
-      width: 21px;
-      height: 22px;
-      background-image: url("../assets/table/send.png");
+  }
+  .running-success {
+    color: #49ED40;
+    .running-icon {
+      background-color: #49ED40;
     }
   }
 }
-.table-striped>tbody>tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
+.search-header {
+  padding: 20px 9px 14px;
+  background-color: #25273E;
+  font-size: 14px;
+  color: #fff;
+  .default-form {
+    font-size: 14px;
+    label {
+      font-weight: normal;
+    }
+    input {
+      height: 30px;
+      line-height: 30px;
+      width: 180px;
+      padding: 0 9px;
+    }
+    .el-select {
+      input {
+        width: 200px;
+      }
+    }
+    .form-group {
+      margin-right: 25px;
+    }
+  }
 }
 .default-btn {
-  display: inline-block;
-  padding: 7.5px 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  padding: 7px 19px;
   border-radius: 4px;
-  background-color: @defaultBtnColor;
+  color: #80B5F9;
+  cursor: pointer;
+  border: 1px solid #80B5F9;
+  .default-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  &:hover {
+    background-color: #317BD3;
+  }
+
+}
+.add-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  padding: 7px 19px;
+  border-radius: 4px;
   color: #fff;
+  background-color: #FF854A;
   cursor: pointer;
   .default-icon {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
+    margin-right: 6px;
+    &.add-icon {
+      width: 10px;
+      height: 10px;
+      background: url("../assets/control/add-icon.png") no-repeat;
+      background-size: contain;
+    }
   }
   &:hover {
-    background-color: @defaultBtnActiveColor;
+    //background-color: #FF856f;
   }
 }
-.default-form {
-  //font-size: 14px;
-  label {
-    font-weight: normal;
+.control-items {
+  display: inline-flex;
+  justify-content: space-around;
+  align-items: center;
+  .control {
+    margin-right: 30px;
   }
-  input,select {
-    //font-size: 18px !important;
-    box-shadow: 1px 1px 2px #999 inset
+  .control-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #317BD3;
+    background-color: #fff;
+    cursor: pointer;
+    .control-text {
+      display: flex;
+      align-items: center;
+    }
+    .control-icon {
+      display: inline-block;
+      width: 23px;
+      height: 23px;
+      margin-left: 8px;
+    }
   }
-  .form-group {
-    margin-right: 20px;
-    margin-bottom: 20px;
+  input {
+    height: 30px;
+    line-height: 30px;
+    width: 180px;
+    padding: 0 9px;
   }
 }
-
 .content-right {
-  box-shadow: 0 0 20px #ccc;
-  padding: 40px;
+  padding: 20px;
   .search {
     width: 100%;
     .default-btn {
@@ -185,7 +306,7 @@ td {
     padding-top: 50px;
     .el-dialog__title {
       color: @defaultBtnColor;
-      font-size: 24px;
+      font-size: 20px;
     }
     .el-dialog__headerbtn {
       display: inline-block;
@@ -213,7 +334,7 @@ td {
       width: 200px;
       height: 48px;
       background-image: url("../assets/dialog/btn.png");
-      font-size: 18px;
+      font-size: 16px;
       color: #fff;
       cursor: pointer;
       border: none;
@@ -236,7 +357,7 @@ td {
     background-image: url("../assets/dialog/warning.png");
   }
   p{
-    font-size: 16px;
+    font-size: 14px;
     white-space: normal;
     &.title {
       font-size: 20px;
@@ -248,31 +369,11 @@ td {
 }
 //element
 .el-form-default {
-  padding: 0 25px;
-  .el-select,
-  .el-input{
-    width: 100%;
-    &.el-date-editor {
-      width: 100%;
-    }
-    input {
-      font-size: 18px !important;
-      box-shadow: 1px 1px 2px #999 inset
-    }
-  }
-  .el-form-item__label {
-    font-size: 18px;
-  }
-  .el-form-item__content,
-  .el-radio__label{
-    font-size: 18px;
-  }
-  .el-slider__input {
-    input {
-      height: 32px !important;
-      line-height: 32px !important;
-      box-shadow: none;
-    }
+  input {
+    height: 30px;
+    line-height: 30px;
+    width: 180px;
+    padding: 0 9px;
   }
 }
 
