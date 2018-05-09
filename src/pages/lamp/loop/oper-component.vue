@@ -1,9 +1,9 @@
 <template>
   <div style="display: flex; align-items: center">
-    <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal"></span></div>
-    <div v-else class="default-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
-    <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">
-      <el-form label-width="170px" :model="data" :rules="Rules" :ref="ref" class="el-form-default">
+    <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal">编辑</span></div>
+    <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
+    <el-dialog :title="title" :visible.sync="visible" center :width="'500px'">
+      <el-form label-width="150px" :model="data" :rules="Rules" :ref="ref" class="el-form-default">
         <el-form-item label="设备名称：" prop="devicename">
           <el-input v-model.trim="data.devicename" placeholder="请输入名称"></el-input>
         </el-form-item>
@@ -11,20 +11,12 @@
           <el-input type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
         </el-form-item>
         <el-form-item label="归属厂商：" prop="vendor">
-          <el-select v-model="data.vendor" placeholder="选择归属厂商" clearable  style="width: 100%;">
+          <el-select v-model="data.vendor" placeholder="选择归属厂商" clearable style="width: 100%;">
             <el-option v-for="type in vendor" :value="type.value" :key="type.value" :label="type.text"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="归属企业：" prop="companyid">
+        <el-form-item label="归属项目：" prop="companyid">
           <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
-        </el-form-item>
-        <el-form-item label="归属组：">
-          <select-group-component v-model="data.groupid"
-                                  :companyid="data.companyid"
-                                  :groupname="data.groupname"
-                                  @name="data.groupname = arguments[0]"
-                                  :run="visible"
-                                  :moduletype="moduleType.loop"></select-group-component>
         </el-form-item>
         <el-form-item label="设备类型：" prop="loopcontrollerType">
           <el-select v-model="data.loopcontrollerType" placeholder="选择设备类型" clearable style="width: 100%;">
@@ -33,7 +25,18 @@
           </el-select>
         </el-form-item>
         <el-form-item label="回路数：" prop="loopnum">
-          <el-input type="number" v-model.trim.number="data.loopnum" placeholder="请输入回路数"/>
+          <el-select v-model="data.loopnum" placeholder="选择回路数" clearable style="width: 100%;">
+            <el-option v-for="type in loopnum" :value="type.value" :key="type.value"
+                       :label="type.text"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="归属组：">
+          <select-group-component v-model="data.groupid"
+                                  :companyid="data.companyid"
+                                  :groupname="data.groupname"
+                                  @name="data.groupname = arguments[0]"
+                                  :run="visible"
+                                  :moduletype="moduleType.loop"></select-group-component>
         </el-form-item>
         <el-form-item label="地理位置：" prop="position">
           <select-position v-model="data.position"></select-position>
@@ -82,7 +85,8 @@
                 ref: 'edit',
                 vendor: CommonConstant.vendor,
                 moduleType: {},
-                loopControllerType: CommonConstant.loopControllerType
+                loopControllerType: CommonConstant.loopControllerType,
+                loopnum: CommonConstant.loopnum
             }
         },
         props: {

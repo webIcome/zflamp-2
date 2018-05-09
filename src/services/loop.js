@@ -41,7 +41,13 @@ export default {
             showSuccess(res);
             return res;
         })
-    }
+    },
+    controlLoops(body) {
+        return HttpClient.post('singleControl/batchLoopController', body).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
 }
 
 function showSuccess(res, msg) {

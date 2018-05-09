@@ -1,17 +1,10 @@
 <template>
   <div class="control-items">
     <div class="control control-on">
-      <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">开灯</el-button>
-    </div>
-    <div class="control control-off">
-      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">关灯</el-button>
-    </div>
-    <div class="control control-brightness">
-      <span>调节亮度</span>
-      <el-slider :disabled="!ids.length" @change="generate(3)" v-model="brightness" :step="5"></el-slider>
+      <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">开关线路</el-button>
     </div>
     <div class="control control-status">
-      <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">获取状态<span class="control-icon"></span></el-button>
+      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">获取状态<span class="control-icon"></span></el-button>
     </div>
     <template v-if="isSingle">
       <div class="control control-set">
@@ -23,15 +16,36 @@
         <control-dialog-component :ids="ids" :items="searchItems" :isGroup="isGroup"></control-dialog-component>
       </div>
     </template>
-
     <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
-      <div class="text-center">
-        <div class="dialog-warning"></div>
-      </div>
-      <p v-if="operData.controltype == 1" class="title">您确认要开灯吗？</p>
-      <p v-else-if="operData.controltype == 2" class="title">您确认要关灯吗？</p>
-      <p v-else-if="operData.controltype == 3" class="title">您确认要将亮度调到{{brightness}}%亮度吗？</p>
-      <p v-else-if="operData.controltype == 4" class="title">您确认要获取状态吗？</p>
+      <template v-if="operData.controltype == 2">
+        <div class="text-center">
+          <div class="dialog-warning"></div>
+        </div>
+        <p class="title">您确认要获取所有线路状态吗？</p>
+      </template>
+      <template v-else-if="operData.controltype == 1">
+        <el-form label-width="170px" :model="operData" :rules="Rules"  ref="controlDevice" class="el-form-default" :validate-on-rule-change="false">
+          <el-form-item v-show="operData.controltype == 1" label="控制回路：" prop="loop">
+            <template v-for="(item,index) in selectedLoops" >
+              <div style="margin-bottom: 10px">
+                <el-select v-if="!isGroup" style="margin-right: 10px"  v-model="item.number" clearable placeholder="请选择某一线路">
+                  <el-option v-for="item in loopnum" :value="item" :label="item + ' 线路'" :key="item"></el-option>
+                </el-select>
+                <el-input v-else type="number" style="width: 100px; margin-right: 10px" v-model="item.number"></el-input>
+                <div style="display: inline-block;" v-if="operData.controltype==1">
+                  <el-radio v-model="item.switchtype" :label='1'>开</el-radio>
+                  <el-radio v-model="item.switchtype" :label='2'>关</el-radio>
+                </div>
+                <i title="删除回路" class="el-icon-remove-outline" style="vertical-align: middle;margin-left: 20px;cursor: pointer" @click="deleteLoop(index)"></i>
+              </div>
+            </template>
+            <div style="margin-top: 20px">
+              <el-button type="primary" @click="addLoop">添加回路</el-button>
+            </div>
+          </el-form-item>
+        </el-form>
+      </template>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -41,7 +55,7 @@
 </template>
 
 <script>
-    import LightService from "../../../services/light";
+    import LoopService from "../../../services/loop";
     import GroupService from "../../../services/group"
     import CommonContent from "../../../constants/common";
     import controlDialogComponent from "./control-dialog-component.vue"
@@ -55,7 +69,15 @@
                 moduleType: {},
                 brightness: 0,
                 visible: false,
-                operData: {}
+                operData: {},
+                loopnum: 4,
+                Rules: {
+                    controltype: [
+                        {required: true, message: '请选择指令'},
+                        {required: true, message: '添加回路'}
+                    ]
+                },
+                selectedLoops: [],
             }
         },
         props: {
@@ -75,13 +97,7 @@
         computed: {
             setItems: function () {
                 let items = [
-                    {value: 8, text: '故障阈值设置'},
-                    {value: 10, text: '故障使能设置'},
-                    {value: 12, text: '电参数上报周期设置'},
-                    {value: 15, text: '传感器使能设置'},
-                    {value: 16, text: '感应亮度设置'},
-                    {value: 13, text: '电能累计清零'},
-                    {value: 14, text: '亮灯时长累计清零'},
+                    {value: 6, text: '设置心跳包周期'},
                 ]
                 if (!this.isGroup) {
                     items.push({value: 5, text: '下发任务'});
@@ -90,13 +106,11 @@
             },
             searchItems: function () {
                 let items = [
-                    {value: 9, text: '故障阈值查询'},
-                    {value: 11, text: '故障使能查询'},
-
-                ];
+                    {value: 3, text: '读取电流'},
+                    {value: 4, text: '抄表'},
+                ]
                 if (!this.isGroup) {
-                    items.push({value: 5, text: '下发任务'});
-                    items.push({value: 7, text: '查询定时任务'})
+                    items.push({value: 8, text: '查询定时任务'});
                 }
                 return items;
             }
@@ -112,9 +126,6 @@
             },
             generate(controltype) {
                 this.resetData();
-                if (controltype == 3) {
-                    this.operData.brightness = this.brightness;
-                }
                 this.operData.controltype = controltype;
                 this.showModal();
             },
@@ -128,19 +139,36 @@
                     })
                 } else {
                     data.deviceids = this.ids.join(',');
-                    LightService.controlLights(data).then(res => {
+                    LoopService.controlLoops(data).then(res => {
                         this.hideModal();
                         this.initPaging()
                     });
                 }
             },
             transformData: function (data) {
-                if (data.controltype == 16) {
-                    if (this.noinducedbrightness == 0) {
-                        data.noinducedbrightness = 255
-                    }
+                if (data.controltype == 1) {
+                    data.switchtype = this.selectedLoops.map(item => {
+                        return item.switchtype
+                    }).join();
+                    data.loop = this.operData.loop;
                 }
                 return data
+            },
+            addLoop: function () {
+                if (this.selectedLoops.length == 4) {
+                    this.showMessage();
+                    return;
+                }
+                this.selectedLoops.push({switchtype: 1, number: this.selectedLoops.length + 1});
+                this.operData.loop = this.selectedLoops.map(item => {
+                    return item.number;
+                }).join();
+            },
+            deleteLoop: function (index) {
+                this.selectedLoops.splice(index, 1);
+                this.operData.loop = this.selectedLoops.map(item => {
+                    return item.number;
+                }).join();
             },
             showModal() {
                 this.visible = true;
@@ -160,23 +188,6 @@
 </script>
 
 <style scoped lang="less">
-  .control-on {
-    .control-icon {
-      /*background: url("../../../assets/control/light-on.png") no-repeat;*/
-      /*background-size: contain;*/
-    }
-  }
-
-  .control-brightness {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    .el-slider {
-      flex: 1;
-      margin-left: 20px;
-    }
-  }
 
   .control-status {
     .control-icon {

@@ -1,49 +1,50 @@
 <template>
   <div>
-    <form class="form-inline default-form">
-      <div class="form-group">
-        <label class="sr-only">设备名称：</label>
-        <el-input type="text" v-model="searchParams.devicename" placeholder="输入设备名称" clearable></el-input>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">设备ID：</label>
-        <el-input type="text" v-model="searchParams.sn" placeholder="输入设备ID" clearable/>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">归属企业：</label>
-        <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">选择开关状态：</label>
-        <el-select v-model="searchParams.switchstate" placeholder="选择开关状态" clearable >
-          <el-option v-for="status in switchState" :key="status.value" :value="status.value" :label="status.text"></el-option>
-        </el-select>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">传感器类型：</label>
-        <el-select v-model="searchParams.sensortype" placeholder="选择传感器类型" clearable >
-          <el-option v-for="status in sensorType" :key="status.value" :value="status.value" :label="status.text"></el-option>
-        </el-select>
-      </div>
-
-      <div @click="search" class="form-group default-btn">查询</div>
-      <div @click="clearSearchParams" class="form-group default-btn">清空</div>
-      <div class="pull-right">
+    <div class="search-header">
+      <form class="form-inline default-form">
+        <div class="form-group">
+          <label >设备名称</label>
+          <el-input type="text" v-model="searchParams.devicename" placeholder="输入设备名称" clearable></el-input>
+        </div>
+        <div class="form-group">
+          <label >基站ID</label>
+          <el-input type="text" v-model="searchParams.sn" placeholder="输入设备ID" clearable/>
+        </div>
+        <div class="form-group">
+          <label >归属项目</label>
+          <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
+        </div>
+        <div class="form-group">
+          <label >选择开关状态</label>
+          <el-select v-model="searchParams.runningstate" placeholder="选择开关状态" clearable >
+            <el-option v-for="status in apState" :key="status.value" :value="status.value" :label="status.text"></el-option>
+          </el-select>
+        </div>
+        <div @click="search" class="form-group default-btn">查询</div>
+        <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+      </form>
+      <div style="display: flex; align-items: center; margin-top: 22px;">
+        <control-light-component :isGroup="true" :ids="selectionIds"></control-light-component>
         <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </div>
-    </form>
+    </div>
     <el-table
         :data="list"
         tooltip-effect="dark"
         @selection-change="handleSelectionChange"
-        stripe
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
-      <el-table-column label="运行状态"><span slot-scope="scope">{{scope.row.runningstate | apStateNameConverter}}</span></el-table-column>
+      <el-table-column label="运行状态">
+        <template slot-scope="scope">
+          <span :class="{'running-success': scope.row.runningstate == 'online', 'running-fail': scope.row.runningstate == 'offline'}">
+            <span class="running-icon"></span>{{scope.row.runningstate  | apStateNameConverter}}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column label="地理位置" show-overflow-tooltip><template slot-scope="scope"><show-position :device='scope.row'></show-position></template></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -74,16 +75,18 @@
 </template>
 <script>
     import Config from "../../../config";
-    import Service from "../../../services/light";
+    import Service from "../../../services/area";
     import operComponent from './oper-component.vue'
     import detailComponent from './detail-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
+    import controlLightComponent from "../light/control-component.vue"
     export default {
         components: {
             operComponent,
             detailComponent,
             deleteComponent,
+            controlLightComponent
         },
         name: 'singlePage',
         data() {
@@ -94,8 +97,10 @@
                 },
                 list: [],
                 selectionList: [],
+                selectionIds: [],
                 companies: [],
                 tableRef: 'my-table',
+                apState: CommonConstant.apState
             }
         },
         created() {
@@ -135,6 +140,9 @@
             },
             handleSelectionChange(val) {
                 this.selectionList = val;
+                this.selectionIds = val.map(item => {
+                    return item.deviceid;
+                })
             }
         }
     }

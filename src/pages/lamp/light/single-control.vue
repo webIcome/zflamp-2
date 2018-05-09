@@ -3,27 +3,21 @@
     <div class="search-header">
       <form class="form-inline default-form">
         <div class="form-group">
-          <label class="sr-only">设备名称：</label>
+          <label>设备名称</label>
           <el-input type="text" v-model="searchParams.devicename" placeholder="输入设备名称" clearable></el-input>
         </div>
         <div class="form-group">
-          <label class="sr-only">设备ID：</label>
+          <label>设备ID</label>
           <el-input type="text" v-model="searchParams.sn" placeholder="输入设备ID" clearable/>
         </div>
         <div class="form-group">
-          <label class="sr-only">归属企业：</label>
+          <label>归属项目</label>
           <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
         </div>
         <div class="form-group">
-          <label class="sr-only">选择开关状态：</label>
+          <label>选择开关状态</label>
           <el-select v-model="searchParams.switchstate" placeholder="选择开关状态" clearable >
             <el-option v-for="status in switchState" :key="status.value" :value="status.value" :label="status.text"></el-option>
-          </el-select>
-        </div>
-        <div class="form-group">
-          <label class="sr-only">传感器类型：</label>
-          <el-select v-model="searchParams.sensortype" placeholder="选择传感器类型" clearable >
-            <el-option v-for="status in sensorType" :key="status.value" :value="status.value" :label="status.text"></el-option>
           </el-select>
         </div>
         <div @click="search" class="form-group default-btn">查询</div>
@@ -40,7 +34,6 @@
         tooltip-effect="dark"
         @selection-change="handleSelectionChange"
         class="my-table"
-        header-row-class-name="th"
         :ref="tableRef">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
@@ -55,7 +48,9 @@
       </el-table-column>
       <!--<el-table-column label="开关状态"><template slot-scope="scope">{{scope.row.switchstate | switchStateNameConverter}}</template></el-table-column>-->
       <el-table-column label="开关状态"><template slot-scope="scope">
-        <span :class="{'light-on': scope.row.switchstate == 1, 'light-off': scope.row.switchstate == 2}"></span></template></el-table-column>
+        <span :class="{'light-on': scope.row.switchstate == 1, 'light-off': scope.row.switchstate == 2}"></span>
+      </template>
+      </el-table-column>
       <el-table-column label="亮度"><template slot-scope="scope">{{scope.row.brightness == 255 ? '控制异常' : scope.row.brightness + '%'}}</template></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="current" label="电流A"></el-table-column>
@@ -158,14 +153,9 @@
             },
             handleSelectionChange(val) {
                 this.selectionList = val;
-                let max = 0;
                 this.selectionIds = val.map(item => {
-                    if (max <= item.timedtasktotal) {
-                        max = item.timedtasktotal
-                    }
                     return item.deviceid;
                 })
-                this.timedtasktotal = max;
             }
         }
     }

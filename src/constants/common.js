@@ -85,6 +85,9 @@ const CommonConstant = {
         {value: '6', text: '周六'},
         {value: '0', text: '周天'},
     ],
+    loopnum: [
+        {value: 4, text: 4},
+    ]
 };
 
 export default CommonConstant;

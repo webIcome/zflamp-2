@@ -1,6 +1,6 @@
 <template>
   <div class="icon-item">
-    <span @click="showModal" class="delete-icon"></span>
+    <span @click="showModal" class="delete-icon">删除</span>
     <el-dialog title="删除组" :visible.sync="visible" center :width="'600px'">
       <div class="text-center">
         <div class="dialog-warning"></div>

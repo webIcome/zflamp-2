@@ -24,7 +24,7 @@
 
             placeholder: {
                 type: String,
-                default: '选择归属企业'
+                default: '选择归属项目'
             },
             value: ''
         },
@@ -203,6 +203,7 @@
         vertical-align: middle;
         user-select: none;
         font-size: 14px;
+        color: #000;
       }
       .tree-select-close {
         width: 0;

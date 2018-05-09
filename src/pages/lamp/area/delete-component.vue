@@ -1,11 +1,11 @@
 <template>
-  <div class="icon-item" @click.stop="">
+  <div class="icon-item">
     <span @click="showModal" class="delete-icon">删除</span>
-    <el-dialog title="删除回路控制器" :visible.sync="visible" center :width="'600px'">
+    <el-dialog title="删除基站" :visible.sync="visible" center :width="'600px'">
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p class="title">您确认要删除此回路灯控器吗？</p>
+      <p class="title">您确认要删除此基站吗？</p>
       <p class="text-center">请慎重操作，您的操作一旦确认，将无法恢复，并被系统记录在日志当中！</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="deleteDevice">确认删除</el-button>
@@ -14,9 +14,9 @@
   </div>
 </template>
 <script>
-    import Service from '../../../services/loop'
+    import Service from '../../../services/area'
     export default {
-        name: 'deleteLightComponent',
+        name: 'deleteGroupComponent',
         data() {
             return {
                 visible: false

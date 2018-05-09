@@ -1,6 +1,6 @@
 <template>
   <div style="margin-left: 10px">
-    <el-select v-model='operData.controltype' placeholder="请选择" @visible-change="showModel" clearable>
+    <el-select :disabled="!ids.length" v-model='operData.controltype' placeholder="请选择" @visible-change="showModel" clearable>
       <el-option v-for="item in items"
                  :label="item.text"
                  :value="item.value"
@@ -9,16 +9,10 @@
     <el-dialog title="控制灯控器" :visible.sync="visible" center width="900px">
       <el-form label-width="220px" :model="operData" ref="controlDevice" :rules="Rules" class="el-form-default"
                :validate-on-rule-change="false">
-        <el-form-item v-if="operData.controltype == 5" label="任务：" prop="taskid">
+        <el-form-item v-if="operData.controltype == 5" prop="taskid">
           <select-tasks-component v-model="operData.taskid"
                                   :moduletype="moduleType.light"
-                                  :timedtasktotal="timedtasktotal"
                                   :ids="ids"></select-tasks-component>
-        </el-form-item>
-        <el-form-item v-if="operData.controltype == 6" label="取消定时任务：" prop="taskid">
-          <cancel-tasks-component v-model="operData.taskid"
-                                  :moduletype="moduleType.light"
-                                  :deviceid="device.deviceid"></cancel-tasks-component>
         </el-form-item>
         <template v-if="operData.controltype == 8">
           <el-row>
@@ -173,12 +167,12 @@
 </template>
 <script>
     import Service from "../../../services/light"
-    import selectTaskComponent from "../task/select-component.vue"
+    import selectTasksComponent from "../task/select-component.vue"
     import CommonContent from "../../../constants/common"
     export default {
         name: 'controlLightSetComponent',
         components: {
-            selectTaskComponent
+            selectTasksComponent
         },
         data() {
             return {
@@ -195,9 +189,6 @@
             items: {
                 default: []
             },
-            timedtasktotal: {
-                defalult: 0
-            }
         },
         computed: {
             Rules: function () {

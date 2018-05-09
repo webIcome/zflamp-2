@@ -149,12 +149,17 @@ label {
     font-size: 14px;
     label {
       font-weight: normal;
+      color: #fff;
+      margin-right: 10px;
     }
-    input {
+    .el-input {
       height: 30px;
       line-height: 30px;
       width: 180px;
-      padding: 0 9px;
+      input {
+        height: 100%;
+        padding: 0 9px;
+      }
     }
     .el-select {
       input {
@@ -171,7 +176,8 @@ label {
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  padding: 7px 19px;
+  padding: 6px 19px;
+  height: 34px;
   border-radius: 4px;
   color: #80B5F9;
   cursor: pointer;
@@ -219,32 +225,41 @@ label {
     margin-right: 30px;
   }
   .control-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 34px;
     padding: 0 10px;
     border-radius: 4px;
     font-size: 14px;
     color: #317BD3;
     background-color: #fff;
-    cursor: pointer;
-    .control-text {
+    &>span {
       display: flex;
+      justify-content: center;
       align-items: center;
+      .control-icon {
+        display: inline-block;
+        width: 23px;
+        height: 23px;
+        margin-left: 8px;
+      }
     }
-    .control-icon {
-      display: inline-block;
-      width: 23px;
-      height: 23px;
-      margin-left: 8px;
+    &.is-disabled {
+      color: #c0c4cc;
+      cursor: not-allowed;
+      border-color: #ebeef5;
     }
   }
-  input {
-    height: 30px;
-    line-height: 30px;
+  .el-input {
+    height: 30px !important;
     width: 180px;
-    padding: 0 9px;
+    input {
+      padding: 0 9px;
+      height: 100% !important;
+      line-height: 30px;
+    }
+    &[disabled = disabled] {
+      height: 30px !important;
+      line-height: 30px;
+    }
   }
 }
 .content-right {
@@ -369,11 +384,17 @@ label {
 }
 //element
 .el-form-default {
-  input {
-    height: 30px;
-    line-height: 30px;
-    width: 180px;
-    padding: 0 9px;
+  .el-input {
+    width: 100%;
+    input {
+      height: 30px !important;
+      line-height: 30px;
+      padding: 0 9px;
+    }
+    &[disabled = disabled] {
+      height: 30px !important;
+      line-height: 30px;
+    }
   }
 }
 

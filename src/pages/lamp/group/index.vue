@@ -1,48 +1,45 @@
 <template>
   <div>
-    <form class="form-inline default-form">
-      <div class="form-group">
-        <label class="sr-only">组名称：</label>
-        <el-input type="text" v-model="searchParams.groupname" placeholder="输入组名称" clearable/>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">设备ID：</label>
-        <el-input type="text" v-model="searchParams.sn" placeholder="输入设备ID" clearable/>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">归属企业：</label>
-        <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
-      </div>
-      <div @click="search" class="form-group default-btn">查询</div>
-      <div @click="clearSearchParams" class="form-group default-btn">清空</div>
-      <div class="pull-right">
+    <div class="search-header">
+      <form class="form-inline default-form">
+        <div class="form-group">
+          <label>组名称</label>
+          <el-input type="text" v-model="searchParams.groupname" placeholder="输入组名称" clearable/>
+        </div>
+        <div class="form-group">
+          <label>归属项目</label>
+          <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
+        </div>
+        <div @click="search" class="form-group default-btn">查询</div>
+        <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+      </form>
+      <div style="display: flex; align-items: center; margin-top: 22px;">
+        <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds"></control-light-component>
+        <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds"></control-loop-component>
         <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </div>
-    </form>
+    </div>
     <el-table
         :data="list"
         tooltip-effect="dark"
         @selection-change="handleSelectionChange"
-        stripe
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
-      <el-table-column prop="sn" label="设备ID"></el-table-column>
+      <el-table-column min-width="100" prop="groupname" label="组名称"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column prop="loopcontrol" label="回路状态"></el-table-column>
-      <el-table-column label="地理位置" show-overflow-tooltip><template slot-scope="scope"><show-position :device='scope.row'></show-position></template></el-table-column>
+      <el-table-column label="设备列表">
+        <template slot-scope="scope">
+
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-row type="flex" justify="space-around">
-            <oper-component ref="oper" :id="scope.row.deviceid" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.deviceid" @initCurrentPaging="pagingEvent"></delete-component>
+            <oper-component ref="oper" :id="scope.row.objectid" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
+            <delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
-        </template>
-      </el-table-column>
-      <el-table-column type="expand">
-        <template slot-scope="scope">
-          <detail-component :id="scope.row.deviceid"></detail-component>
         </template>
       </el-table-column>
     </el-table>
@@ -63,14 +60,16 @@
     import Config from "../../../config";
     import Service from "../../../services/group";
     import operComponent from './oper-component.vue'
-//    import detailComponent from './detail-component.vue'
+    import controlLightComponent from "../light/control-component.vue"
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
+    import controlLoopComponent from "../loop/control-component.vue"
     export default {
         components: {
             operComponent,
-//            detailComponent,
             deleteComponent,
+            controlLightComponent,
+            controlLoopComponent
         },
         name: 'lightPage',
         data() {
@@ -81,8 +80,10 @@
                 },
                 list: [],
                 selectionList: [],
+                selectionIds: [],
                 companies: [],
                 tableRef: 'my-table',
+                moduleType: {}
             }
         },
         props: {
@@ -93,6 +94,7 @@
         created() {
             this.initList();
             this.initCompanies();
+            this.initCommonData();
         },
         methods: {
             initList() {
@@ -101,6 +103,11 @@
             initCompanies() {
                 this.$globalCache.companies.then(companies => {
                     this.companies = companies;
+                })
+            },
+            initCommonData: function () {
+                CommonConstant.deviceType.forEach(item => {
+                    this.moduleType[item.name] = item.value;
                 })
             },
             findList(params) {
@@ -127,6 +134,9 @@
             },
             handleSelectionChange(val) {
                 this.selectionList = val;
+                this.selectionIds = val.map(item => {
+                    return item.deviceid;
+                })
             }
         }
     }

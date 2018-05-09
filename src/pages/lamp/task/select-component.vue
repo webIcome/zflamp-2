@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>设备拥有{{timedtasktotal}}个定时任务，还可以下发{{allowNumber}}个定时任务</div>
+    <div>已选择{{selectedList.length}}个定时任务，还可以下发{{allowNumber}}个定时任务</div>
     <el-transfer v-model="selectedList"
                  :titles="titles"
                  :data="list"
@@ -47,6 +47,7 @@
                 },
                 total: 0,
                 deviceType: {},
+                timedtasktotal: 0
 
             }
         },
@@ -65,27 +66,13 @@
             },
         },
         computed: {
-            deviceNumber: function () {
-                if (this.value) {
-                    return this.value.split(',').length
-                } else {
-                    return 0
-                }
-            },
-            showText: function () {
-                if (this.value) {
-                    return true
-                } else {
-                    return false;
-                }
-            },
             allowNumber: function () {
-                return 6 - this.timedtasktotal;
+                return 6 - this.selectedList.length;
             }
         },
         watch: {
             selectedList: function (newVal, oldVal) {
-                if (newVal.length > (6 - this.timedtasktotal)) {
+                if (newVal.length > 6) {
                     this.selectedList = oldVal;
                 }
             }

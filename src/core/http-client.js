@@ -23,7 +23,7 @@ axios.interceptors.response.use(function (res) {
     return res
 }, function (error) {
     console.log(error)
-    loading.close();
+    // loading.close();
     waringMessage('服务器网络问题，请联系管理员')
     return Promise.reject(error)
 });

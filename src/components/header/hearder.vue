@@ -15,7 +15,7 @@
           <!--<el-dropdown-item style="color: #ff5151;" command="logout">退出登录</el-dropdown-item>-->
         </el-dropdown-menu>
       </el-dropdown>
-      <div @click="logout" class="logout"></div>
+      <div @click="logout" title="退出登入" class="logout"></div>
     </div>
     <el-dialog title="修改密码" :visible.sync="dialogVisible" center :width="'600px'" @close="clearValidate('controlDevice')">
       <el-form label-width="140px" :model="password" ref="controlDevice" :rules="Rules" class="el-form-default">

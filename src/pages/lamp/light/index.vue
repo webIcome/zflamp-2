@@ -7,16 +7,19 @@
     </div>
     <single-control-page v-if="currentPage == pages.single"></single-control-page>
     <group-control-page v-else-if="currentPage == pages.group" :moduletype="moduleType.light"></group-control-page>
+    <area-control-page v-else-if="currentPage == pages.area" :moduletype="moduleType.light"></area-control-page>
   </div>
 </template>
 <script>
     import singleControlPage from './single-control.vue'
     import groupControlPage from '../group/index.vue'
     import CommonConstant from "../../../constants/common";
+    import areaControlPage from '../area/index.vue'
     export default {
         components: {
             singleControlPage,
-            groupControlPage
+            groupControlPage,
+            areaControlPage
         },
         name: 'lightPage',
         data() {

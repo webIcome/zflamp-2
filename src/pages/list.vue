@@ -229,7 +229,6 @@
       position: absolute;
       content: '';
       height: 100%;
-      margin-top: 100px;
       width: @navWidth;
       background-color: @navBackgroundColor;
     }

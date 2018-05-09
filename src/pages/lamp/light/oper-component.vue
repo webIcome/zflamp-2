@@ -2,53 +2,85 @@
   <div style="display: inline-flex; align-items: center">
     <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal">编辑</span></div>
     <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
-    <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">
-      <el-form label-width="170px" :model="data" :rules="Rules" :ref="ref" class="el-form-default">
-        <el-form-item label="设备名称：" prop="devicename">
-          <el-input v-model.trim="data.devicename" placeholder="请输入名称"></el-input>
-        </el-form-item>
-        <el-form-item label="设备ID：" prop="sn">
-          <el-input type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
-        </el-form-item>
-        <el-form-item label="归属企业：" prop="companyid">
-          <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
-        </el-form-item>
-        <el-form-item label="归属组：">
-          <select-group-component v-model="data.groupid"
-                                  :companyid="data.companyid"
-                                  :groupname="data.groupname"
-                                  @name="data.groupname = arguments[0]"
-                                  :run="visible"
-                                  :moduletype="moduleType.light"></select-group-component>
-        </el-form-item>
-        <el-form-item label="归属回路控制器：" prop="loopcontroller">
-          <select-loop-component v-model="data.loopcontroller" :companyid="data.companyid"></select-loop-component>
-        </el-form-item>
-        <el-form-item label="设备类型：" prop="lightControllerType">
-          <el-select v-model="data.lightControllerType" placeholder="选择设备类型" clearable style="width: 100%;">
-            <el-option v-for="type in lightControllerType" :value="type.value" :key="type.value"
-                       :label="type.text"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="传感器类型：" prop="sensortype">
-          <el-select v-model="data.sensortype" placeholder="选择传感器类型" clearable style="width: 100%;">
-            <el-option v-for="type in sensorType" :value="type.value" :key="type.value" :label="type.text"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="地理位置：" prop="position">
-          <select-position v-model="data.position"></select-position>
-        </el-form-item>
-        <el-form-item label="归属厂商：" prop="vendor">
-          <el-select v-model="data.vendor" placeholder="选择归属厂商" clearable style="width: 100%;">
-            <el-option v-for="type in vendor" :value="type.value" :key="type.value" :label="type.text"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="灯具类型：" prop="lampTypeID">
-          <select-lamps-component v-model="data.lampTypeID"
-                                  @name="data.lampType=arguments[0]"
-                                  :companyId=data.companyid
-                                  :modelnum="data.lampType"></select-lamps-component>
-        </el-form-item>
+    <el-dialog :title="title" :visible.sync="visible" center :width="'800px'">
+      <el-form label-width="150px" :model="data" :rules="Rules" :ref="ref" class="el-form-default">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="设备名称：" prop="devicename">
+              <el-input v-model.trim="data.devicename" placeholder="请输入名称"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="设备ID：" prop="sn">
+              <el-input type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="归属企业：" prop="companyid">
+              <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="归属厂商：" prop="vendor">
+              <el-select v-model="data.vendor" placeholder="选择归属厂商" clearable style="width: 100%;">
+                <el-option v-for="type in vendor" :value="type.value" :key="type.value" :label="type.text"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="传感器类型：" prop="sensortype">
+              <el-select v-model="data.sensortype" placeholder="选择传感器类型" clearable style="width: 100%;">
+                <el-option v-for="type in sensorType" :value="type.value" :key="type.value" :label="type.text"></el-option>
+              </el-select>
+            </el-form-item>
+
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="设备类型：" prop="lightControllerType">
+              <el-select v-model="data.lightControllerType" placeholder="选择设备类型" clearable style="width: 100%;">
+                <el-option v-for="type in lightControllerType" :value="type.value" :key="type.value"
+                           :label="type.text"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="归属回路控制器：" prop="loopcontroller">
+              <select-loop-component v-model="data.loopcontroller" :companyid="data.companyid"></select-loop-component>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="地理位置：" prop="position">
+              <select-position v-model="data.position"></select-position>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="归属组：">
+              <select-group-component v-model="data.groupid"
+                                      :companyid="data.companyid"
+                                      :groupname="data.groupname"
+                                      @name="data.groupname = arguments[0]"
+                                      :run="visible"
+                                      :moduletype="moduleType.light"></select-group-component>
+            </el-form-item>
+
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="灯具类型：" prop="lampTypeID">
+              <select-lamps-component v-model="data.lampTypeID"
+                                      @name="data.lampType=arguments[0]"
+                                      :companyId=data.companyid
+                                      :modelnum="data.lampType"></select-lamps-component>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="edit" type="primary" @click="editDevice">确 定</el-button>
