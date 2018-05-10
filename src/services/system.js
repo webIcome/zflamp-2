@@ -20,6 +20,34 @@ export default {
             }
         })
     },
+    getCompanyList(params) {
+        // return this.getPosts(params);
+        return HttpClient.get('consumption/getCompList', {params: params}).then(res => {
+            if (!res.data.data) {
+                return [];
+            } else {
+                return res.data.data.list;
+            }
+        })
+    },
+    getPosts: function (id) {
+        return HttpClient.get('post/getListByCompanyid', Object.assign({params: {companyid: id}}, option)).then(res => {
+            if (!res.data.data) {
+                return [];
+            } else {
+                return res.data.data.list;
+            }
+        });
+    },
+    findLogs(params) {
+        return HttpClient.get('operationLogs/getList', Object.assign({params: params}, option)).then(res => {
+            if (!res.data && !res.data.data) {
+                return {};
+            } else {
+                return res.data.data;
+            }
+        })
+    },
     findUsers(params) {
         return HttpClient.get('user/getList', Object.assign({params: params}, option)).then(res => {
             if (!res.data && !res.data.data) {

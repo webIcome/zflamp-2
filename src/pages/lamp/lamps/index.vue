@@ -1,30 +1,19 @@
 <template>
-  <div>
+  <div class="content-right">
     <div class="search-header">
       <form class="form-inline default-form">
         <div class="form-group">
-          <label >设备名称</label>
-          <el-input type="text" v-model="searchParams.devicename" placeholder="输入设备名称" clearable></el-input>
+          <label >灯具型号</label>
+          <el-input type="text" v-model="searchParams.modelnum" placeholder="输入灯具型号" clearable></el-input>
         </div>
         <div class="form-group">
-          <label >基站ID</label>
-          <el-input type="text" v-model="searchParams.sn" placeholder="输入设备ID" clearable/>
-        </div>
-        <div class="form-group">
-          <label >归属项目</label>
+          <label>归属项目</label>
           <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
-        </div>
-        <div class="form-group">
-          <label >选择开关状态</label>
-          <el-select v-model="searchParams.runningstate" placeholder="选择开关状态" clearable >
-            <el-option v-for="status in apState" :key="status.value" :value="status.value" :label="status.text"></el-option>
-          </el-select>
         </div>
         <div @click="search" class="form-group default-btn">查询</div>
         <div @click="clearSearchParams" class="form-group default-btn">清空</div>
       </form>
       <div style="display: flex; align-items: center; margin-top: 22px;">
-        <control-light-component :isGroup="true" :ids="selectionIds"></control-light-component>
         <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </div>
     </div>
@@ -34,29 +23,25 @@
         @selection-change="handleSelectionChange"
         class="my-table"
         :ref="tableRef">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
-      <el-table-column prop="sn" label="设备ID"></el-table-column>
+      <el-table-column min-width="100" prop="modelnum" label="灯具型号"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
-      <el-table-column label="运行状态">
-        <template slot-scope="scope">
-          <span :class="{'running-success': scope.row.runningstate == 'online', 'running-fail': scope.row.runningstate == 'offline'}">
-            <span class="running-icon"></span>{{scope.row.runningstate  | apStateNameConverter}}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="地理位置" show-overflow-tooltip><template slot-scope="scope"><show-position :device='scope.row'></show-position></template></el-table-column>
+      <el-table-column label="灯具类型"><template slot-scope="scope">{{scope.row.lamptype | lampTypeNameConverter}}</template></el-table-column>
+      <el-table-column prop="lifetime" label="灯具寿命/H"></el-table-column>
+      <el-table-column prop="power" label="灯具功率/W"></el-table-column>
+      <el-table-column prop="lampcurrent" label="灯具额定电流/A"></el-table-column>
+      <el-table-column prop="lampvol" label="灯具额定电压/V"></el-table-column>
+      <el-table-column prop="notes" label="备注" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex" justify="space-between">
-            <oper-component ref="oper" :id="scope.row.deviceid" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.deviceid" @initCurrentPaging="pagingEvent"></delete-component>
+            <oper-component ref="oper" :id="scope.row.objectid" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
+            <delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <detail-component :id="scope.row.deviceid"></detail-component>
+          <detail-component :id="scope.row.objectid"></detail-component>
         </template>
       </el-table-column>
     </el-table>
@@ -75,20 +60,18 @@
 </template>
 <script>
     import Config from "../../../config";
-    import Service from "../../../services/area";
+    import Service from "../../../services/lamps";
     import operComponent from './oper-component.vue'
     import detailComponent from './detail-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
-    import controlLightComponent from "../light/control-component.vue"
     export default {
         components: {
             operComponent,
             detailComponent,
             deleteComponent,
-            controlLightComponent
         },
-        name: 'singlePage',
+        name: 'taskPage',
         data() {
             return {
                 searchParams: {},
@@ -97,10 +80,12 @@
                 },
                 list: [],
                 selectionList: [],
-                selectionIds: [],
                 companies: [],
                 tableRef: 'my-table',
-                apState: CommonConstant.apState
+                taskCmd: CommonConstant.taskCmd,
+                taskStatus: CommonConstant.taskStatus,
+                periodType: CommonConstant.taskPeriodType,
+                deviceType: CommonConstant.deviceType.slice(0,2),
             }
         },
         created() {
@@ -140,9 +125,6 @@
             },
             handleSelectionChange(val) {
                 this.selectionList = val;
-                this.selectionIds = val.map(item => {
-                    return item.deviceid;
-                })
             }
         }
     }

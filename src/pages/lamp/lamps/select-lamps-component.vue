@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-input :disabled="!companyId" type="text" v-model="modelnum" placeholder="选择灯具" @focus="dialogSelect" @change="changeSelect" clearable></el-input>
+    <el-button :disabled="!companyId" v-if="!modelnum" type="primary" @click="showModal">选择</el-button>
+    <div v-else class="show-text" @click="showModal">{{modelnum}}11<span class="clear" @click.stop="clearSelect">&times;</span></div>
     <el-dialog title="选择灯具" :visible.sync="dialogVisible" center :width="'600px'"  append-to-body>
       <el-form :inline="true" label-width="170px" :model="searchParams">
         <el-form-item prop="switchstate">
@@ -11,11 +12,18 @@
       <div>
         <el-table ref="singleTable" :data="list" border class="table" @row-click="select" highlight-current-row>
           <el-table-column label="灯具型号" prop="modelnum" align="center"></el-table-column>
-          <el-table-column label="额定电流/A" prop="ratedcurrent" align="center"></el-table-column>
-          <el-table-column label="额定电压/V" prop="ratedvoltage" align="center"></el-table-column>
+          <el-table-column label="归属项目" prop="companyname" align="center"></el-table-column>
         </el-table>
-        <paging-component v-if="searchParams.pages" :pageNumber="searchParams.pageNum" :pages="searchParams.pages"
-                          @pagingEvent='pagingEvent'></paging-component>
+        <el-row type="flex" justify="end">
+          <el-pagination
+              background
+              :current-page="searchParams.pageNum"
+              layout="total, prev, pager, next, jumper"
+              :page-size="searchParams.pageSize"
+              @current-change="pagingEvent"
+              :total="searchParams.total">
+          </el-pagination>
+        </el-row>
       </div>
     </el-dialog>
   </div>
@@ -73,7 +81,7 @@
                     this.list = data.list;
                 })
             },
-            dialogSelect: function () {
+            showModal: function () {
                 this.findList(this.defaultPaging);
                 this.dialogVisible = true;
             },
@@ -82,10 +90,40 @@
                 this.$emit('input', val.objectid);
                 this.$emit('name', val.modelnum);
             },
-            changeSelect: function (val) {
+            clearSelect: function (val) {
                 this.$emit('input', '');
                 this.$emit('name', '');
             },
         }
     }
 </script>
+<style lang="less" scoped>
+  .show-text {
+    position: relative;
+    cursor: pointer;
+    color: #1789e1;
+    &:hover {
+      color: #2b71b8;
+    }
+  }
+  .clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    user-select: none;
+    margin-top: -13px;
+    cursor: pointer;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .2;
+    &:hover {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+      opacity: .5;
+    }
+  }
+</style>

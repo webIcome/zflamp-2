@@ -14,7 +14,7 @@
                                   :moduletype="moduleType.light"
                                   :ids="ids"></select-tasks-component>
         </el-form-item>
-        <template v-if="operData.controltype == 8">
+        <template v-else-if="operData.controltype == 8">
           <el-row>
             <el-col :span="12">
               <el-form-item label="电源额定电流：" prop="supplycurrent">
@@ -71,7 +71,7 @@
             </el-col>
           </el-row>
         </template>
-        <template v-if="operData.controltype == 10">
+        <template v-else-if="operData.controltype == 10">
           <el-row>
             <el-col :span="12">
               <el-form-item label="灯具故障检测开启标志：" prop="lampfault">
@@ -129,21 +129,21 @@
             </el-col>
           </el-row>
         </template>
-        <el-form-item v-show="operData.controltype == 12" label="电参数上报周期：" prop="elecuploadperiod">
+        <el-form-item v-else-if="operData.controltype == 12" label="电参数上报周期：" prop="elecuploadperiod">
           <el-input style="width: 200px" type="text" v-model.number="operData.elecuploadperiod"></el-input>
           H
 
 
         </el-form-item>
-        <el-form-item v-show="operData.controltype == 15" label="传感器使能：" prop="enablesensor">
+        <el-form-item v-else-if="operData.controltype == 15" label="传感器使能：" prop="enablesensor">
           <el-radio v-model="operData.enablesensor" :label='1'>有效</el-radio>
           <el-radio v-model="operData.enablesensor" :label='2'>无效</el-radio>
         </el-form-item>
-        <el-form-item v-show="operData.controltype == 15 && operData.enablesensor == 1" label="感应保持状态时间："
+        <el-form-item v-else-if="operData.controltype == 15 && operData.enablesensor == 1" label="感应保持状态时间："
                       prop="inducedkeeptime">
           <el-input type="text" v-model.trim.number="operData.inducedkeeptime"></el-input>
         </el-form-item>
-        <template v-if="operData.controltype == 16">
+        <template v-else-if="operData.controltype == 16">
           <el-form-item label="有感应亮度：" prop="inducedbrightness">
             <el-slider v-model="operData.inducedbrightness">
             </el-slider>
@@ -157,6 +157,16 @@
               <el-slider v-if="noinducedbrightness == 1" v-model="operData.noinducedbrightness"></el-slider>
             </div>
           </el-form-item>
+        </template>
+        <template v-else>
+          <div class="text-center">
+            <div class="dialog-warning"></div>
+          </div>
+          <p v-if="operData.controltype == 7" class="title">您确认要查询定时任务吗？</p>
+          <p v-else-if="operData.controltype == 9" class="title">您确认要故障阈值查询吗？</p>
+          <p v-else-if="operData.controltype == 11" class="title">您确认要故障使能查询吗？</p>
+          <p v-else-if="operData.controltype == 13" class="title">您确认要电能累计清零吗？</p>
+          <p v-else-if="operData.controltype == 14" class="title">您确认要亮灯时长累计清零吗？</p>
         </template>
       </el-form>
       <span slot="footer" class="dialog-footer">

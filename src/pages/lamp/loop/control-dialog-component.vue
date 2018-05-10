@@ -1,22 +1,34 @@
 <template>
   <div style="margin-left: 10px">
-    <el-select :disabled="!ids.length" v-model='operData.controltype' placeholder="请选择" @visible-change="showModel" clearable>
+    <el-select :disabled="!ids.length" v-model='operData.controltype' placeholder="请选择" @visible-change="showModel"
+               clearable>
       <el-option v-for="item in items"
                  :label="item.text"
                  :value="item.value"
                  :key="item.value"></el-option>
     </el-select>
-    <el-dialog title="控制回路控制器" :visible.sync="visible" center :width="'800px'" @close="clearValidate('controlDevice')">
-      <el-form label-width="170px" :model="operData" :rules="Rules"  ref="controlDevice" class="el-form-default" :validate-on-rule-change="false">
-        <el-form-item v-if="operData.controltype == 5" prop="taskid">
+    <el-dialog title="控制回路控制器" :visible.sync="visible" center :width="'550px'" @close="clearValidate('controlDevice')">
+      <el-form label-width="170px" :model="operData" :rules="Rules" ref="controlDevice" class="el-form-default"
+               :validate-on-rule-change="false">
+        <template v-if="operData.controltype == 5">
           <select-tasks-component v-model="operData.taskid"
                                   :moduletype="moduleType.light"
                                   :ids="ids"></select-tasks-component>
-        </el-form-item>
+        </template>
         <el-form-item v-show="operData.controltype == 6" label="输入心跳包周期" prop="heartperiod">
-          <el-input style="width: 200px" type="text" v-model.trim.number="operData.heartperiod"></el-input> 分钟
-            </el-form-item>
+          <el-input style="width: 200px" type="text" v-model.trim.number="operData.heartperiod"></el-input>
+          分钟
+
+        </el-form-item>
       </el-form>
+      <template v-if="!(operData.controltype == 5 | operData.controltype == 6)">
+        <div class="text-center">
+          <div class="dialog-warning"></div>
+        </div>
+        <p v-if="operData.controltype == 3" class="title">您确认要读取电流吗？</p>
+        <p v-else-if="operData.controltype == 4" class="title">您确认要抄表吗？</p>
+        <p v-else-if="operData.controltype == 8" class="title">您确认要查询定时任务吗？</p>
+      </template>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice('controlDevice')">确 定</el-button>
       </span>
@@ -63,20 +75,20 @@
                         {required: true, message: '请选择指令'}
                     ]
                 };
-                if (this.operData.controltype ==5) {
+                if (this.operData.controltype == 5) {
                     rules.taskid = [
                         {required: true, message: '请选择任务'}
                     ];
                 }
-                if (this.operData.controltype ==7) {
+                if (this.operData.controltype == 7) {
                     rules.cancelTaskid = [
                         {required: true, message: '请选择任务'}
                     ];
                 }
-                if (this.operData.controltype ==6) {
+                if (this.operData.controltype == 6) {
                     rules.heartperiod = [
                         {required: true, message: '请输入周期'},
-                        {type:'number',min: 0,max: 65535, message: '范围0~65535'}
+                        {type: 'number', min: 0, max: 65535, message: '范围0~65535'}
                     ];
                 }
                 return rules;

@@ -1,48 +1,42 @@
 <template>
   <div class="content-right">
-    <form class="form-inline default-form">
-      <div class="form-group">
-        <label class="sr-only">任务名称：</label>
-        <el-input type="text" v-model="searchParams.taskName" placeholder="输入任务名称" clearable></el-input>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">任务类型：</label>
-        <el-select v-model="searchParams.moduleType" placeholder="选择任务类型" clearable >
-          <el-option v-for="status in deviceType" :key="status.value" :value="status.value" :label="status.text"></el-option>
-        </el-select>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">操作命令：</label>
-        <el-select v-model="searchParams.taskCmd" placeholder="选择操作命令" clearable >
-          <el-option v-for="status in taskCmd" :key="status.value" :value="status.value" :label="status.text"></el-option>
-        </el-select>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">任务状态：</label>
-        <el-select v-model="searchParams.taskStatus" placeholder="选择任务状态" clearable >
-          <el-option v-for="status in taskStatus" :key="status.value" :value="status.value" :label="status.text"></el-option>
-        </el-select>
-      </div>
-      <div class="form-group">
-        <label class="sr-only">归属企业：</label>
-        <tree-select-component v-model="searchParams.compId" :list="companies"></tree-select-component>
-      </div>
-
-      <div @click="search" class="form-group default-btn">查询</div>
-      <div @click="clearSearchParams" class="form-group default-btn">清空</div>
-      <div class="pull-right">
+    <div class="search-header">
+      <form class="form-inline default-form">
+        <div class="form-group">
+          <label >任务名称</label>
+          <el-input type="text" v-model="searchParams.taskName" placeholder="输入任务名称" clearable></el-input>
+        </div>
+        <div class="form-group">
+          <label >任务类型</label>
+          <el-select v-model="searchParams.moduleType" placeholder="选择任务类型" clearable >
+            <el-option v-for="status in deviceType" :key="status.value" :value="status.value" :label="status.text"></el-option>
+          </el-select>
+        </div>
+        <div class="form-group">
+          <label >操作命令</label>
+          <el-select v-model="searchParams.taskCmd" placeholder="选择操作命令" clearable >
+            <el-option v-for="status in taskCmd" :key="status.value" :value="status.value" :label="status.text"></el-option>
+          </el-select>
+        </div>
+        <div class="form-group">
+          <label>归属项目</label>
+          <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
+        </div>
+        <div @click="search" class="form-group default-btn">查询</div>
+        <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+      </form>
+      <div style="display: flex; align-items: center; margin-top: 22px;">
         <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </div>
-    </form>
+    </div>
     <el-table
         :data="list"
         tooltip-effect="dark"
         @selection-change="handleSelectionChange"
-        stripe
         class="my-table"
         :ref="tableRef">
-      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column min-width="100" prop="taskName" label="任务名称"></el-table-column>
+      <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="任务类型"><template slot-scope="scope">{{scope.row.moduleType | deviceTypeNameConverter}}</template></el-table-column>
       <el-table-column label="操作命令"><template slot-scope="scope">{{scope.row.taskCmd | taskCmdNameConverter}}</template></el-table-column>
       <el-table-column label="命令状态"><template slot-scope="scope">{{scope.row.taskStatus | taskStatusNameConverter}}</template></el-table-column>
@@ -50,9 +44,9 @@
         <template v-if="scope.row.modifytime">{{scope.row.modifytime | formDate}}</template>
         <template v-else>{{scope.row.createtime | formDate}}</template>
       </template></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-row type="flex" justify="space-around">
+          <el-row type="flex" justify="space-between">
             <oper-component ref="oper" :id="scope.row.id" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
             <delete-component :id="scope.row.id" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
@@ -104,10 +98,7 @@
                 taskCmd: CommonConstant.taskCmd,
                 taskStatus: CommonConstant.taskStatus,
                 periodType: CommonConstant.taskPeriodType,
-                deviceType: [
-                    {value: 1, text: '灯控器'},
-                    {value: 2, text: '回路控制器'},
-                ],
+                deviceType: CommonConstant.deviceType.slice(0,2),
             }
         },
         created() {

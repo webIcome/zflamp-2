@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button :disabled="!companyid" v-if="!name" type="primary" @click="showModal">选择</el-button>
-    <div v-else class="show-text" @click.self="showModal">{{name}}<span class="clear" @click.self="changeSelect">&times;</span>
+    <div v-else class="show-text" @click.self="showModal">{{name}}<span class="clear" @click.stop="changeSelect">&times;</span>
     </div>
     <el-dialog title="选择基站" :visible.sync="visible" center :width="'600px'" append-to-body>
       <el-form :inline="true" label-width="170px" :model="searchParams" ref="editGroup">

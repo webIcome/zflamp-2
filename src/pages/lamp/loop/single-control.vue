@@ -39,9 +39,9 @@
         </template>
       </el-table-column>
       <el-table-column label="地理位置" show-overflow-tooltip><template slot-scope="scope"><show-position :device='scope.row'></show-position></template></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-row type="flex" justify="space-around">
+          <el-row type="flex" justify="space-between">
             <oper-component ref="oper" :id="scope.row.deviceid" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
             <delete-component :id="scope.row.deviceid" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal"></span></div>
-    <div v-else class="default-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
+    <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal">编辑</span></div>
+    <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
     <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">
       <el-form label-width="170px" :model="data" :rules="Rules" :ref="ref" class="el-form-default" :validate-on-rule-change="false">
         <el-form-item label="任务名称：" prop="taskName">
@@ -11,7 +11,7 @@
           <tree-select-component v-model="data.compId" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="任务类型：" prop="moduleType">
-          <el-select v-model="data.moduleType" placeholder="选择类型" clearable @change="changeModuletype">
+          <el-select v-model="data.moduleType" placeholder="选择类型" clearable @change="changeModuletype" style="width: 100%;">
             <el-option v-for="item in deviceType" :key="item.value" :value="item.value" :label="item.text"></el-option>
           </el-select>
         </el-form-item>

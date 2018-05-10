@@ -84,8 +84,29 @@ label {
       color: #fff;
     }
   }
+  &.table-hover {
+    &>tbody {
+      &>tr{
+        //text-align: center;
+        &.current-row,
+        &:hover {
+          background-color: #317BD3;
+        }
+        &>td {
+          border-top: none;
+        }
+      }
+    }
+    th {
+      //text-align: center;
+    }
+    th,
+    td {
+      padding: 19px 0 19px 10px;
+    }
+  }
   .cell {
-    text-align: center;
+    //text-align: center;
   }
   .icon-item {
     display: inline-block;
@@ -118,13 +139,14 @@ label {
   .running-success {
     display: flex;
     align-items: center;
-    justify-content: center;
+    //justify-content: center;
     .running-icon {
       display: inline-block;
       width: 12px;
       height: 12px;
       border-radius: 50%;
       margin-right: 6px;
+      flex: 0 0 auto;
     }
   }
   .running-fail {
@@ -153,17 +175,18 @@ label {
       margin-right: 10px;
     }
     .el-input {
-      height: 30px;
-      line-height: 30px;
       width: 180px;
+      line-height: 40px;
       input {
-        height: 100%;
-        padding: 0 9px;
+        //padding: 0 9px;
+        height: 30px !important;
+        line-height: 30px;
       }
     }
     .el-select {
-      input {
-        width: 200px;
+      width: 200px;
+      .el-input {
+        width: 100%;
       }
     }
     .form-group {
@@ -182,6 +205,7 @@ label {
   color: #80B5F9;
   cursor: pointer;
   border: 1px solid #80B5F9;
+  background: transparent;
   .default-icon {
     display: inline-block;
     vertical-align: middle;
@@ -252,7 +276,6 @@ label {
     height: 30px !important;
     width: 180px;
     input {
-      padding: 0 9px;
       height: 100% !important;
       line-height: 30px;
     }
@@ -389,7 +412,6 @@ label {
     input {
       height: 30px !important;
       line-height: 30px;
-      padding: 0 9px;
     }
     &[disabled = disabled] {
       height: 30px !important;
@@ -409,5 +431,43 @@ label {
 .item-checkbox{
   .el-checkbox__label {
     display: none;
+  }
+}
+
+.table-div{
+  margin-bottom: 20px;
+  margin-bottom: 20px;
+  .table-thead {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .table-th{
+      padding: 12px 0 12px 10px;
+      color: #8FABD2;
+      font-size: 14px;
+      flex: 1;
+    }
+  }
+  .table-body{
+    .table-tr{
+      margin-bottom: 10px;
+      background-color: #25273E;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &:hover,
+      &.current-row {
+        background-color: #317BD3;
+      }
+      cursor: pointer;
+      .table-td{
+        padding: 19px 0 19px 10px;
+        color: #fff;
+        font-size: 12px;
+        flex: 1;
+      }
+    }
   }
 }

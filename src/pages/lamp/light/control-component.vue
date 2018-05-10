@@ -95,7 +95,6 @@
 
                 ];
                 if (!this.isGroup) {
-                    items.push({value: 5, text: '下发任务'});
                     items.push({value: 7, text: '查询定时任务'})
                 }
                 return items;

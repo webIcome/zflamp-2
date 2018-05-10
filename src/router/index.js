@@ -6,7 +6,10 @@ import listPage from '../pages/list.vue'
 const lightPage = () => import(/* webpackChunkName: "lamp" */ '../pages/lamp/light/index.vue');
 const loopPage = () => import(/* webpackChunkName: "lamp" */ '../pages/lamp/loop/index.vue');
 const taskPage = () => import(/* webpackChunkName: "lamp" */ '../pages/lamp/task/index.vue');
+const lampsPage = () => import(/* webpackChunkName: "lamp" */ '../pages/lamp/lamps/index.vue');
 // const userPage = () => import(/* webpackChunkName: "system" */ '../pages/system/user.vue');
+const logPage = () => import(/* webpackChunkName: "system" */ '../pages/system/log/index.vue');
+const organizePage = () => import(/* webpackChunkName: "system" */ '../pages/system/organize/index.vue');
 Vue.use(Router);
 
 export default new Router({
@@ -17,6 +20,9 @@ export default new Router({
             {path: 'light', name: 'light', component: lightPage},
             {path: 'loop', name: 'loop', component: loopPage},
             {path: 'task', name: 'task', component: taskPage},
+            {path: 'lamps', name: 'lamps', component: lampsPage},
+            {path: 'log', name: 'log', component: logPage},
+            {path: 'organize', name: 'organize', component: organizePage},
             // {path: 'user', name: 'user', component: userPage},
         ]},
     ]

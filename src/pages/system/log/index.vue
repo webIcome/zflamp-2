@@ -1,21 +1,27 @@
 <template>
-  <div>
+  <div class="content-right">
     <div class="search-header">
       <form class="form-inline default-form">
         <div class="form-group">
-          <label>组名称</label>
-          <el-input type="text" v-model="searchParams.groupname" placeholder="输入组名称" clearable/>
+          <label>操作时间</label>
+          <el-date-picker id="date-start" v-model="searchParams.operationtimelow"  type="datetime" :value-format="'yyyy-MM-dd HH:mm:ss'" placeholder="选择开始时间"></el-date-picker>
         </div>
         <div class="form-group">
+          <label>至</label>
+          <el-date-picker id="date-end" v-model="searchParams.operationtimehigh" type="datetime" :value-format="'yyyy-MM-dd HH:mm:ss'" placeholder="选择结束时间"></el-date-picker>
+        </div>
+        <div class="form-group">
+          <label>用户名</label>
+          <el-input type="text" v-model="searchParams.loginname" placeholder="输入用户名" clearable/>
+        </div>
+        <!--<div class="form-group">
           <label>归属项目</label>
           <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
-        </div>
+        </div>-->
         <div @click="search" class="form-group default-btn">查询</div>
         <div @click="clearSearchParams" class="form-group default-btn">清空</div>
       </form>
       <div style="display: flex; align-items: center; margin-top: 22px;">
-        <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds"></control-light-component>
-        <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds"></control-loop-component>
         <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </div>
     </div>
@@ -25,23 +31,11 @@
         @selection-change="handleSelectionChange"
         class="my-table"
         :ref="tableRef">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column min-width="100" prop="groupname" label="组名称"></el-table-column>
-      <el-table-column prop="companyname" label="归属项目"></el-table-column>
-      <el-table-column prop="loopcontrol" label="回路状态"></el-table-column>
-      <el-table-column label="设备列表">
-        <template slot-scope="scope">
-
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="100">
-        <template slot-scope="scope">
-          <el-row type="flex" justify="space-between">
-            <oper-component ref="oper" :id="scope.row.objectid" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>
-          </el-row>
-        </template>
-      </el-table-column>
+      <el-table-column prop="operationtime" label="操作时间"></el-table-column>
+      <el-table-column prop="operation" label="操作内容"></el-table-column>
+      <el-table-column prop="loginname" label="用户名"></el-table-column>
+      <el-table-column prop="username" label="姓名"></el-table-column>
+      <!--<el-table-column prop="companyname" label="归属项目"></el-table-column>-->
     </el-table>
     <el-row type="flex" justify="end">
       <el-pagination
@@ -58,60 +52,40 @@
 </template>
 <script>
     import Config from "../../../config";
-    import Service from "../../../services/group";
-    import operComponent from './oper-component.vue'
-    import controlLightComponent from "../light/control-component.vue"
-    import deleteComponent from './delete-component.vue'
+    import Service from "../../../services/system";
     import CommonConstant from "../../../constants/common";
-    import controlLoopComponent from "../loop/control-component.vue"
     export default {
         components: {
-            operComponent,
-            deleteComponent,
-            controlLightComponent,
-            controlLoopComponent
+
         },
-        name: 'lightPage',
+        name: 'taskPage',
         data() {
             return {
                 searchParams: {},
                 defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE,
+                    pageSize: Config.DEFAULT_PAGE_SIZE
                 },
                 list: [],
                 selectionList: [],
-                selectionIds: [],
                 companies: [],
                 tableRef: 'my-table',
-                moduleType: {}
-            }
-        },
-        props: {
-            moduletype: {
-                default: 1
             }
         },
         created() {
             this.initList();
             this.initCompanies();
-            this.initCommonData();
         },
         methods: {
             initList() {
-                this.findList(Object.assign(this.defaultPaging, {moduletype: this.moduletype}));
+                this.findList(this.defaultPaging);
             },
             initCompanies() {
                 this.$globalCache.companies.then(companies => {
                     this.companies = companies;
                 })
             },
-            initCommonData: function () {
-                CommonConstant.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
-            },
             findList(params) {
-                Service.findList(params).then(data => {
+                Service.findLogs(params).then(data => {
                     this.searchParams.pageNum = data.pageNum;
                     this.searchParams.pages = data.pages;
                     this.searchParams.pageSize = data.pageSize;
@@ -134,9 +108,6 @@
             },
             handleSelectionChange(val) {
                 this.selectionList = val;
-                this.selectionIds = val.map(item => {
-                    return item.deviceid;
-                })
             }
         }
     }

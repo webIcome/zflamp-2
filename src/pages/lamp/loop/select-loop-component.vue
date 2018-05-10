@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button :disabled="!companyid" v-if="!showText" type="primary" @click="showModal">选择</el-button>
-    <div v-else class="show-text" @click="showModal">{{showText}}<span class="clear" @click="clearSelect">&times;</span></div>
+    <div v-else class="show-text" @click="showModal">{{showText}}<span class="clear" @click.stop="clearSelect">&times;</span></div>
     <el-dialog title="选择回路控制器" :visible.sync="visible" center :width="'600px'" append-to-body>
       <el-form :inline="true" label-width="170px" :model="searchParams" ref="editGroup">
         <el-form-item prop="switchstate">
@@ -13,10 +13,18 @@
         <el-table ref="singleTable" :data="list" border class="table" @current-change="select" highlight-current-row>
           <el-table-column label="名称" prop="devicename" align="center"></el-table-column>
           <el-table-column label="设备ID" prop="sn" align="center"></el-table-column>
-          <el-table-column label="归属企业" prop="companyname" align="center"></el-table-column>
+          <el-table-column label="归属项目" prop="companyname" align="center"></el-table-column>
         </el-table>
-        <paging-component v-if="searchParams.pages" :pageNumber="searchParams.pageNum" :pages="searchParams.pages"
-                          @pagingEvent='pagingEvent'></paging-component>
+        <el-row type="flex" justify="end">
+          <el-pagination
+              background
+              :current-page="searchParams.pageNum"
+              layout="total, prev, pager, next, jumper"
+              :page-size="searchParams.pageSize"
+              @current-change="pagingEvent"
+              :total="searchParams.total">
+          </el-pagination>
+        </el-row>
       </div>
       <el-form style="margin-top: 10px; padding: 0" label-width="" :model="data" :rules="Rules" ref="loopnum" class="el-form-default">
         <el-form-item label="" prop="number">
