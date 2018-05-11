@@ -67,7 +67,7 @@
                 if (!filter) this.checkList.push(value)
             },
             goToHome: function () {
-                this.$router.push({path: '/'})
+                this.$router.push({path: '/list'})
             },
         },
         watch: {

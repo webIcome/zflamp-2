@@ -14,6 +14,7 @@
           <el-select v-model="data.vendor" placeholder="选择归属厂商" clearable style="width: 100%;">
             <el-option v-for="type in vendor" :value="type.value" :key="type.value" :label="type.text"></el-option>
           </el-select>
+
         </el-form-item>
         <el-form-item label="归属项目：" prop="companyid">
           <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>

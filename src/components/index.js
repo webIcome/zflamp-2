@@ -7,10 +7,14 @@ import pagingComponent from './paging-component/paging-component.vue'
 import treeSelectComponent from './tree-select-component.vue'
 import selectPosition from './select-position.vue'
 import showPosition from './show-position.vue'
+import lineEchart from "./line-echart.vue"
+import pieEchart from "./pie-echart.vue"
 export default {
     'header-component': headerComponent,
     'paging-component': pagingComponent,
     'tree-select-component': treeSelectComponent,
     'select-position': selectPosition,
-    'show-position': showPosition
+    'show-position': showPosition,
+    'line-echart-component': lineEchart,
+    'pie-echart-component': pieEchart
 }

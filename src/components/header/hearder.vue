@@ -3,7 +3,7 @@
     <div class="pull-left">
       <div class="logo"></div>
       <div @click="goToHome" class="go-home"><i class="home-icon"></i>返回主页</div>
-      <div class="operation-center"><i class="icon"></i>进入营运中心</div>
+      <div @click="goToOperation" class="operation-center"><i class="icon"></i>进入营运中心</div>
     </div>
     <div class="personal">
       <!--<span class="personal-describe"><img :src="user.url" width="40" height="40" class="img-circle"> </span>-->
@@ -17,7 +17,8 @@
       </el-dropdown>
       <div @click="logout" title="退出登入" class="logout"></div>
     </div>
-    <el-dialog title="修改密码" :visible.sync="dialogVisible" center :width="'600px'" @close="clearValidate('controlDevice')">
+    <el-dialog title="修改密码" :visible.sync="dialogVisible" center :width="'600px'"
+               @close="clearValidate('controlDevice')">
       <el-form label-width="140px" :model="password" ref="controlDevice" :rules="Rules" class="el-form-default">
         <el-form-item label="当前密码：" prop="oldpwd">
           <el-input type="password" v-model.trim="password.oldpwd" placeholder="请输入当前密码"></el-input>
@@ -37,97 +38,101 @@
 </template>
 
 <script>
-  import Config from "../../config";
-  import Storage from '../../store/user';
-  export default {
-      name: 'headerComponent',
-    data () {
-      return {
-        dialogVisible: false,
-        user: {},
-        password: {
-          oldpwd: '',
-          newpwd: '',
-          secondNew: ''
-        },
-        Rules: {
-          oldpwd: [
-            {required: true, message: '请输入旧密码'},
-          ],
-          newpwd: [
-            {required: true, message: '请输入新密码'},
-          ],
-          secondNew: [
-            {required: true, message: '请确认新密码'},
-          ],
-        }
-      }
-    },
-    props: {
-      isHome: {
-        type: Boolean,
-        default: false,
-      }
-    },
-    created () {
-      this.user = Storage.state.user;
-    },
-    methods: {
-      handelPersonal(command) {
-          if (command == 'cp') {
-              this.dialogChangePassword();
-          } else if (command == 'logout') {
-              this.logout();
-          }
-      },
-      goToLogin: function () {
-        this.$router.push({path: '/login'})
-      },
-      goToHome: function () {
-        window.location.replace(Config.HOME_PAGE_URL)
-      },
-      changePassword: function (formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            if (this.password.newpwd != this.password.secondNew) {
-              return;
+    import Config from "../../config";
+    import Storage from '../../store/user';
+    export default {
+        name: 'headerComponent',
+        data () {
+            return {
+                dialogVisible: false,
+                user: {},
+                password: {
+                    oldpwd: '',
+                    newpwd: '',
+                    secondNew: ''
+                },
+                Rules: {
+                    oldpwd: [
+                        {required: true, message: '请输入旧密码'},
+                    ],
+                    newpwd: [
+                        {required: true, message: '请输入新密码'},
+                    ],
+                    secondNew: [
+                        {required: true, message: '请确认新密码'},
+                    ],
+                }
             }
-            this.$http.post('user/changePassword', this.password, {baseURL: Config.URL_API}).then(res => {
-              if (res.data.code != 0) {
+        },
+        props: {
+            isHome: {
+                type: Boolean,
+                default: false,
+            }
+        },
+        created () {
+            this.user = Storage.state.user;
+        },
+        methods: {
+            handelPersonal(command) {
+                if (command == 'cp') {
+                    this.dialogChangePassword();
+                } else if (command == 'logout') {
+                    this.logout();
+                }
+            },
+            goToLogin: function () {
+                this.$router.push({path: '/login'})
+            },
+            goToHome: function () {
+//                window.location.replace(Config.HOME_PAGE_URL)
+                this.$router.push({path: '/'})
+            },
+            goToOperation: function () {
+                this.$router.push({path: '/operation'})
+            },
+            changePassword: function (formName) {
+                this.$refs[formName].validate(valid => {
+                    if (valid) {
+                        if (this.password.newpwd != this.password.secondNew) {
+                            return;
+                        }
+                        this.$http.post('user/changePassword', this.password, {baseURL: Config.URL_API}).then(res => {
+                            if (res.data.code != 0) {
 
-              } else {
-                this.$message({
-                  message: '修改成功',
-                  type: 'success',
-                  duration: 1000
-                });
-                this.dialogVisible = false;
-                this.goToLogin()
-              }
-            })
-          }
-        })
-      },
-      dialogChangePassword: function () {
-        this.password = {
-          oldpwd: '',
-          newpwd: '',
-          secondNew: ''
-        };
-        this.dialogVisible = true
-      },
-      logout: function () {
-        this.$http.get('accounts/logout', {baseURL: Config.URL_API}).then(res => {
-          this.goToLogin();
-        })
-      },
-      clearValidate: function (formName) {
-        this.$refs[formName].clearValidate();
-      }
-    },
-    mounted: function () {
+                            } else {
+                                this.$message({
+                                    message: '修改成功',
+                                    type: 'success',
+                                    duration: 1000
+                                });
+                                this.dialogVisible = false;
+                                this.goToLogin()
+                            }
+                        })
+                    }
+                })
+            },
+            dialogChangePassword: function () {
+                this.password = {
+                    oldpwd: '',
+                    newpwd: '',
+                    secondNew: ''
+                };
+                this.dialogVisible = true
+            },
+            logout: function () {
+                this.$http.get('accounts/logout', {baseURL: Config.URL_API}).then(res => {
+                    this.goToLogin();
+                })
+            },
+            clearValidate: function (formName) {
+                this.$refs[formName].clearValidate();
+            }
+        },
+        mounted: function () {
+        }
     }
-  }
 </script>
 
 <style scoped lang="less">
@@ -180,7 +185,7 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      float:right;
+      float: right;
       width: 265px;
       height: 100%;
       .personal-describe {
@@ -219,7 +224,7 @@
         background: url("./imgs/logout.png") no-repeat;
         background-size: contain;
         &:hover {
-          
+
         }
       }
     }
@@ -235,7 +240,8 @@
       .change-password {
         a {
           color: #4395d7
-        };
+        }
+      ;
         border-bottom: 1px solid #ddd;
       }
       a {

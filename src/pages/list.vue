@@ -89,7 +89,7 @@
                         modulename: '系統分析',
                         ename: 'analyze',
                         modulecode: '',
-                        url: '/list/analyze',
+                        url: 'analyze',
                         children: []
                     },
                     {

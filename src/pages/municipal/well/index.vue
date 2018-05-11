@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content-right">
     <div class="search-header">
       <div class="search-header-content">
         <form class="form-inline default-form">

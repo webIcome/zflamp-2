@@ -1,20 +1,48 @@
 <template>
-  <div></div>
+  <div class="content-right">
+    <div class="echart-top">
+      <line-echart-component :data="data" :option="option"></line-echart-component>
+      <line-echart-component :data="data" :option="option"></line-echart-component>
+      <pie-echart-component :data="pieData" :option="pieOption"></pie-echart-component>
+    </div>
+  </div>
 </template>
 <script>
-    const Echarts = require('echarts/lib/echarts')
-    require('echarts/lib/chart/line')
-    require('echarts/lib/chart/pie')
-    require('echarts/lib/component/tooltip');
-    require('echarts/lib/component/title');
-    require('echarts/lib/component/legend');
     export default {
         name: 'statisticsPage',
         data() {
-            return {}
+            return {
+                data: {},
+                option: {},
+                pieData: {},
+                pieOption: {}
+            }
+        },
+        created() {
+            this.initData();
+        },
+        methods: {
+            initData() {
+                this.data = {title: [1, 1, 2, 3], value: [10, 12, 25, 5]};
+                this.option = {startColor: '#ff854A', endColor: 'rgba(255,133,74,0.29)', xName: 'yue'}
+                this.pieData = [
+                    {value: 111, name: 'ddd'},
+                    {value: 111, name: 'aaa'},
+                    {value: 111, name: 'bbb'},
+                    {value: 111, name: 'ccc'},
+                ]
+                this.pieOption = {
+                    name: 'test'
+                }
+            }
+
         }
     }
 </script>
 <style lang="less" scoped>
+  .echart-top {
+    display: flex;
+    height: 500px;
+  }
 
 </style>
