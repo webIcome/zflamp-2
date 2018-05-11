@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="oper-component">
     <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal">编辑</span></div>
     <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
     <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">

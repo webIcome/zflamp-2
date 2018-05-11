@@ -1,22 +1,24 @@
 <template>
   <div>
     <div class="search-header">
-      <form class="form-inline default-form">
-        <div class="form-group">
-          <label>组名称</label>
-          <el-input type="text" v-model="searchParams.groupname" placeholder="输入组名称" clearable/>
+      <div class="search-header-content">
+        <form class="form-inline default-form">
+          <div class="form-group">
+            <label>组名称</label>
+            <el-input type="text" v-model="searchParams.groupname" placeholder="输入组名称" clearable/>
+          </div>
+          <div class="form-group">
+            <label>归属项目</label>
+            <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
+          </div>
+          <div @click="search" class="form-group default-btn">查询</div>
+          <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+        </form>
+        <div class="control-add-content">
+          <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds"></control-light-component>
+          <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds"></control-loop-component>
+          <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
-        <div class="form-group">
-          <label>归属项目</label>
-          <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
-        </div>
-        <div @click="search" class="form-group default-btn">查询</div>
-        <div @click="clearSearchParams" class="form-group default-btn">清空</div>
-      </form>
-      <div style="display: flex; align-items: center; margin-top: 22px;">
-        <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds"></control-light-component>
-        <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds"></control-loop-component>
-        <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </div>
     </div>
     <el-table

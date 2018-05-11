@@ -3,19 +3,7 @@
     <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal">编辑</span></div>
     <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
     <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">
-      <el-form label-width="170px" :model="data" :rules="Rules" :ref="ref" class="el-form-default">
-        <el-form-item label="组名称：" prop="groupname">
-          <el-input v-model.trim="data.groupname" placeholder="请输组名称"></el-input>
-        </el-form-item>
-        <el-form-item label="归属项目：" prop="companyid">
-          <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
-        </el-form-item>
-        <el-form-item label="归属基站：" prop="companyid">
-          <select-area-component v-model="data.areaid"
-                                 @name="data.name=arguments[0]"
-                                 :name="data.name"
-                                 :companyid="data.companyid"></select-area-component>
-        </el-form-item>
+      <el-form label-width="170px" :model="data" :rules="Rules" :ref="ref" class="el-form-default" :validate-on-rule-change="false">
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="edit" type="primary" @click="editDevice">确 定</el-button>
@@ -25,49 +13,26 @@
   </div>
 </template>
 <script>
-    import GroupService from '../../../services/group'
+    import Service from '../../../services/well'
     import CommonConstant from "../../../constants/common";
-    import selectDevicesComponent from "./select-devices-component.vue"
-    import selectAreaComponent from "../area/select-component.vue"
     export default {
-        components: {
-            selectDevicesComponent,
-            selectAreaComponent
-        },
-        name: 'operGroupComponent',
+        name: 'operWellComponent',
         data() {
             return {
-                Rules: {
-                    groupname: [
-                        {required: true, message: '请输入组名称'}
-                    ],
-                    companyid: [
-                        {required: true, message: '选择企业'}
-                    ],
-                    deviceid: [
-                        {required: true, message: '选择设备'}
-                    ],
-                },
                 visible: false,
                 data: {},
                 ref: 'edit',
-                deviceType: CommonConstant.deviceType
             }
         },
         props: {
             companies: {
                 default: []
             },
-            group: {
-                default: function () {
-                    return {}
-                }
+            id: {
+                default: ''
             },
             edit: {
                 default: false
-            },
-            moduletype: {
-                default: ''
             }
         },
         created() {
@@ -76,10 +41,18 @@
         computed: {
             title: function () {
                 if (this.edit) {
-                    return '编辑组';
+                    return '编辑井盖';
                 } else {
-                    return '创建组'
+                    return '创建井盖'
                 }
+            },
+            Rules: function () {
+                let rules = {
+                    taskName: [
+                        {required: true, message: '请输入任务名称'}
+                    ],
+                };
+                return rules;
             }
         },
         methods: {
@@ -88,22 +61,48 @@
             add() {
                 this.$refs[this.ref].validate(valid => {
                     if (valid) {
-                        GroupService.add(this.data).then(res => {
+                        Service.add(this.getTransformDataToSend(this.data)).then(res => {
                             this.emitAddEvent();
                             this.hideModal();
                         });
                     }
                 })
             },
+            getDetail() {
+                Service.getDetail(this.id).then(data => {
+                    this.data = this.getTransformDataToUse(data);
+                })
+            },
             editDevice() {
                 this.$refs[this.ref].validate(valid => {
                     if (valid) {
-                        GroupService.edit(this.data.objectid, this.data).then(res => {
+                        Service.edit(this.getTransformDataToSend(this.data)).then(res => {
                             this.emitEditEvent();
                             this.hideModal();
                         });
                     }
                 })
+            },
+            changeModuletype: function () {
+                if (this.data.taskCmd) this.data.taskCmd = '';
+            },
+            addLoop: function () {
+                this.selectedLoops.push({number: this.selectedLoops.length + 1});
+                this.data.loop = this.selectedLoops.map(item => {
+                    return item.number;
+                }).join();
+            },
+            deleteLoop: function (index) {
+                this.selectedLoops.splice(index, 1);
+                this.data.loop = this.selectedLoops.map(item => {
+                    return item.number;
+                }).join();
+            },
+            getTransformDataToSend(data) {
+                return data;
+            },
+            getTransformDataToUse(data) {
+                return data;
             },
             clearValidate() {
                 if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();
@@ -124,10 +123,10 @@
         watch: {
             visible: function (newValue, oldValue) {
                 if (newValue) {
-                    if (this.edit) this.data = this.$common.copyObj(this.group);
+                    if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = {};
+                    this.data = {}
                 }
             }
         }

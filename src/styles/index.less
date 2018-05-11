@@ -110,7 +110,7 @@ label {
   }
   .icon-item {
     display: inline-block;
-    vertical-align: middle;
+    //vertical-align: middle;
     .edit-icon,
     .set-icon,
     .delete-icon,
@@ -167,7 +167,17 @@ label {
   background-color: #25273E;
   font-size: 14px;
   color: #fff;
+  .search-header-content {
+    display: inline-block;
+    .control-add-content {
+      display: flex;
+      align-items: center;
+      margin-top: 22px;
+      justify-content: space-between
+    }
+  }
   .default-form {
+    display: inline-block;
     font-size: 14px;
     label {
       font-weight: normal;
@@ -470,4 +480,9 @@ label {
       }
     }
   }
+}
+.oper-component {
+  display: inline-block;
+  margin-right: 25px;
+  vertical-align: middle;
 }
