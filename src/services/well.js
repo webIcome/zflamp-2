@@ -4,9 +4,11 @@
 
 import HttpClient from 'axios'
 import {Message} from 'element-ui'
+import Config from "../config";
+const option = {baseURL: Config.WELL_URL_API};
 export default {
     findList(params) {
-        return HttpClient.get('lightController', {params: params}).then(res => {
+        return HttpClient.get('wellcover/findWellCoverPage', Object.assign({params: params},option)).then(res => {
             if (!res.data && !res.data.data) {
                 return {};
             } else {
@@ -15,24 +17,24 @@ export default {
         })
     },
     getDetail(id) {
-        return HttpClient.get('lightController/' + id).then(res => {
+        return HttpClient.get('wellcover/findWellCoverInfoById/' + id).then(res => {
             return res.data.data;
         })
     },
     add(body) {
-        return HttpClient.post('lightController', body).then(res => {
+        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    edit(id, body) {
-        return HttpClient.patch('lightController/' + id, body).then(res => {
+    edit(body) {
+        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    deleteDevice(id) {
-        return HttpClient.delete('lightController/' + id).then(res => {
+    deleteDevice(ids) {
+        return HttpClient.post('wellcover/removeBatchWellCoverInfoByIds', {ids: ids}).then(res => {
             showSuccess(res);
             return res;
         })

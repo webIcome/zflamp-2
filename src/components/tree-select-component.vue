@@ -142,6 +142,23 @@
     position: relative;
     width: auto;
     vertical-align: middle;
+    &.home {
+      input {
+        background: #fff;
+        color: #333;
+        font-size: 20px;
+        padding: 10px 20px;
+        padding-right: 35px;
+        height: 48px;
+        line-height: 48px;
+        cursor: pointer;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+        &:focus {
+          border-color: #c0c4cc;
+        }
+      }
+    }
     input {
       padding-right: 35px;
     }

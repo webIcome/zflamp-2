@@ -25,6 +25,7 @@ export default {
     taskCmdNameConverter: _taskCmdNameConverter,
     taskStatusNameConverter: _taskStatusNameConverter,
     taskPeriodTypeNameConverter: _taskPeriodTypeNameConverter,
+    wellStatusNameConverter: _wellStatusNameConverter,
 }
 function _formDate(date, pattern) {
     if (!date) return;
@@ -208,6 +209,15 @@ function _taskStatusNameConverter(value) {
 function _taskPeriodTypeNameConverter(value) {
     let name = value;
     Common.taskPeriodType.forEach(item => {
+        if (value == item.value) {
+            name = item.text;
+        }
+    });
+    return name
+}
+function _wellStatusNameConverter(value) {
+    let name = value;
+    Common.wellStatus.forEach(item => {
         if (value == item.value) {
             name = item.text;
         }

@@ -4,6 +4,18 @@
     <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
     <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">
       <el-form label-width="170px" :model="data" :rules="Rules" :ref="ref" class="el-form-default" :validate-on-rule-change="false">
+        <el-form-item label="设备名称：" prop="deviceName">
+          <el-input v-model.trim="data.deviceName" placeholder="请输入名称"></el-input>
+        </el-form-item>
+        <el-form-item label="设备ID：" prop="deviceName">
+          <el-input v-model.trim="data.sn" placeholder="请输入设备ID"></el-input>
+        </el-form-item>
+        <el-form-item label="归属企业：" prop="compId">
+          <tree-select-component v-model="data.compId" :list="companies"></tree-select-component>
+        </el-form-item>
+        <el-form-item label="地理位置：" prop="address">
+          <select-position v-model="data.address"></select-position>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="edit" type="primary" @click="editDevice">确 定</el-button>
@@ -22,6 +34,17 @@
                 visible: false,
                 data: {},
                 ref: 'edit',
+                Rules: {
+                    deviceName: [
+                        {required: true, message: '请输入名称'}
+                    ],
+                    compId: [
+                        {required: true, message: '请选择企业'}
+                    ],
+                    sn: [
+                        {required: true, message: '请输入设备ID'}
+                    ],
+                }
             }
         },
         props: {
@@ -46,14 +69,6 @@
                     return '创建井盖'
                 }
             },
-            Rules: function () {
-                let rules = {
-                    taskName: [
-                        {required: true, message: '请输入任务名称'}
-                    ],
-                };
-                return rules;
-            }
         },
         methods: {
             initData() {
@@ -83,26 +98,32 @@
                     }
                 })
             },
-            changeModuletype: function () {
-                if (this.data.taskCmd) this.data.taskCmd = '';
-            },
-            addLoop: function () {
-                this.selectedLoops.push({number: this.selectedLoops.length + 1});
-                this.data.loop = this.selectedLoops.map(item => {
-                    return item.number;
-                }).join();
-            },
-            deleteLoop: function (index) {
-                this.selectedLoops.splice(index, 1);
-                this.data.loop = this.selectedLoops.map(item => {
-                    return item.number;
-                }).join();
-            },
             getTransformDataToSend(data) {
+                data = this.$common.copyObj(data);
+                let position = data.address;
+                delete data.address;
+                data = Object.assign(data, position)
+                data.address = data.position;
+                delete data.position;
+                data.longitude = data.lng;
+                data.latitude = data.lat;
+                delete data.lng;
+                delete data.lat;
                 return data;
             },
             getTransformDataToUse(data) {
+                data.address = this.getPosition(data);
                 return data;
+            },
+            getPosition(position){
+                return {
+                    position: position.address,
+                    lng: position.longitude,
+                    lat: position.latitude,
+                    province: position.province,
+                    city: position.city,
+                    district: position.district
+                };
             },
             clearValidate() {
                 if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();

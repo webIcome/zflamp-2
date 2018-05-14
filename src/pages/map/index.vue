@@ -2,6 +2,14 @@
   <div class="map">
     <div class="my-map" :ref="ref"></div>
     <left-component @search="getDevices"></left-component>
+    <right-component @search="getDetail"
+                     @hide="hidePanel"
+                     @updateDetail="updateDetail"
+                     :apPanel="apPanel"
+                     :lightPanel="lightPanel"
+                     :wellPanel="wellPanel"
+                     :loopPanel="loopPanel"
+                     :detail="deviceDetail"></right-component>
   </div>
 </template>
 
@@ -10,8 +18,10 @@
     import MapServices from "../../services/map";
     import leftComponent from './left-component.vue'
     import MapMarkerClass from "../../utils/map-marker-class";
+    import RightComponent from "./right-component";
     export default {
         components: {
+            RightComponent,
             leftComponent,
         },
         name: 'mapPage',
@@ -25,13 +35,15 @@
                 mapZoom: 5,
                 lightPanel: false,
                 loopPanel: false,
-                stationPanel: false,
+                apPanel: false,
+                wellPanel: false
             }
         },
         created() {
             CommonConstant.deviceType.forEach(item => {
                 this.moduleType[item.name] = item.value;
             })
+            this.moduleType.well = 4;
         },
         mounted() {
             this.initData()
@@ -95,6 +107,9 @@
             addMarker(markerClass) {
                 this.map.addOverlay(markerClass.marker);
             },
+            removeMarker(marker) {
+                if (marker) this.map.removeOverlay(marker);
+            },
             getMarkers() {
                 let markers = [];
                 this.devices.forEach(item => {
@@ -126,6 +141,39 @@
                     })
                 }
             },
+            getDetail (params) {
+                this.hidePanel();
+                if (!params.deviceid) {
+                    this.removeMarker(this.marker.marker);
+                    return;
+                }
+                MapServices.getDetail(params).then(detail => {
+                    this.deviceDetail = detail;
+                    this.addStatus(params.moduletype, this.deviceDetail);
+                    this.showPanel(params.moduletype);
+                    let markerClass = new MapMarkerClass(this.deviceDetail);
+                    markerClass.listen('click',this.markerClickEventFn);
+                    this.addMarker(markerClass);
+                    this.moveMap(this.deviceDetail, this.mapZoom);
+                    this.marker = markerClass;
+                })
+            },
+            updateDetail(params) {
+                MapServices.getDetail(params).then(detail => {
+                    this.deviceDetail = detail;
+                    this.updateMarker(detail, params.moduletype)
+                })
+            },
+            updateMarker(device, moduletype) {
+                this.addStatus(moduletype, device);
+                if (device.status != this.marker.device.status) {
+                    this.marker.device.status = device.status;
+                    this.removeMarker(this.marker);
+                    this.marker.redraw();
+                    this.marker.listen('click',this.markerClickEventFn);
+                    this.addMarker(this.marker)
+                }
+            },
             addLightStatus(data) {
                 if (data.status) return;
                 if (data.runningstate != '正常') {
@@ -137,12 +185,12 @@
                 }
             },
             addStationStatus(data) {
+                data.status = data.runningstate;
                 if (data.status) return;
-                if (data.runningstate == 'offline') {
-                    data.status = 2
-                } else {
-                    data.status = 1
-                }
+
+            },
+            addWellStatus(data) {
+                if (data.status) return;
             },
             addStatus(moduleType, data) {
                 switch (moduleType) {
@@ -154,18 +202,22 @@
                     case this.moduleType.station:
                         this.addStationStatus(data);
                         break;
+                    case this.moduleType.well:
+                        this.addWellStatus(data);
+                        break;
                     default:
                         break;
                 }
                 data.moduletype = moduleType;
             },
             isShowPanel() {
-                return this.lightPanel || this.loopPanel || this.stationPanel
+                return this.lightPanel || this.loopPanel || this.apPanel || this.wellPanel
             },
             hidePanel() {
                 this.hideLightPanel();
                 this.hideLoopPanel();
-                this.hideStationPanel()
+                this.hideStationPanel();
+                this.hideWellPanel();
             },
             showPanel(moduleType) {
                 switch (moduleType) {
@@ -178,9 +230,15 @@
                     case this.moduleType.station:
                         this.showStationPanel();
                         break;
+                    case this.moduleType.well:
+                        this.showWellPanel();
+                        break;
                     default:
                         break;
                 }
+            },
+            hideWellPanel() {
+                this.wellPanel = false;
             },
             hideLightPanel() {
                 this.lightPanel = false;
@@ -189,7 +247,7 @@
                 this.loopPanel = false;
             },
             hideStationPanel() {
-                this.stationPanel = false;
+                this.apPanel = false;
             },
             showLightPanel() {
                 this.lightPanel = true;
@@ -198,15 +256,16 @@
                 this.loopPanel = true;
             },
             showStationPanel() {
-                this.stationPanel = true;
+                this.apPanel = true;
+            },
+            showWellPanel() {
+                this.wellPanel = true;
             }
         },
         watch: {
             devices: function (newVal, oldVal) {
-                if (newVal.length) {
-                    this.moveMap(this.getViewPort(newVal))
-                    this.addClusterer()
-                }
+                this.moveMap(this.getViewPort(newVal))
+                this.addClusterer()
             }
         }
     }

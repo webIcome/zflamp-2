@@ -40,6 +40,12 @@ export default {
             showSuccess(res);
             return res;
         })
+    },
+    controlWell(id, body) {
+        return HttpClient.post('singleControl/ap/' + id, body).then(res => {
+            showSuccess(res);
+            return res;
+        })
     }
 }
 

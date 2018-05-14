@@ -28,8 +28,8 @@
         },
         computed: {
             showText: function () {
-                if (this.device.position) {
-                    return this.device.position;
+                if (this.device.position || this.device.address) {
+                    return this.device.position || this.device.address;
                 } else if (this.device.longitude) {
                     return this.device.longitude + '/' + this.device.latitude;
                 } else {

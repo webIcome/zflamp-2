@@ -11,6 +11,23 @@ export default{
                 defaultLineOption.series[0].areaStyle.color.colorStops[1].color = option.endColor;
                 defaultLineOption.series[0].lineStyle.color = option.endColor;
             }
+            if (option.color) {
+                defaultLineOption.xAxis.nameTextStyle.color = option.color;
+                defaultLineOption.xAxis.axisLabel.color = option.color;
+                defaultLineOption.yAxis.nameTextStyle.color = option.color;
+                defaultLineOption.yAxis.axisLabel.color = option.color;
+            }
+            if (option.ySplitLine) {
+                defaultLineOption.yAxis.splitLine.lineStyle = option.ySplitLine;
+            }
+            if (option.line) {
+                defaultLineOption.xAxis.axisLine = option.line;
+                defaultLineOption.yAxis.axisLine = option.line;
+            }
+            if (option.area) {
+                defaultLineOption.series[0].areaStyle = option.area;
+            }
+
         }
         defaultLineOption.xAxis.data = data.title;
         defaultLineOption.series[0].data = data.value;
@@ -82,7 +99,7 @@ let defaultLineOption = {
                 colorStops: [{
                     offset: 0.5, color: '#44B5FD'
                 }, {
-                    offset: 1, color: 'rgba(110,193,246,0.17)'
+                    offset: 1, color: 'rgba(110,193,246, 0.17)'
                 }],
             }
         },
@@ -101,15 +118,11 @@ let defaultPieOption = {
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
     },
-    legend: {
-        orient: 'vertical',
-        x: 'left',
-    },
     series: [
         {
             name:'访问来源',
             type:'pie',
-            radius: ['80%', '100%'],
+            radius: ['80%', '90%'],
             avoidLabelOverlap: false,
             label: {
                 normal: {

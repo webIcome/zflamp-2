@@ -87,6 +87,11 @@ const CommonConstant = {
     ],
     loopnum: [
         {value: 4, text: 4},
+    ],
+    wellStatus: [
+        {value: 0, text: '正常'},
+        {value: 1, text: '离线'},
+        {value: 2, text: '告警'},
     ]
 };
 
