@@ -1,7 +1,7 @@
 <template>
   <div class="map">
     <div class="my-map" :ref="ref"></div>
-    <left-component @search="getDevices"></left-component>
+    <left-component @search="getDevices" :list="devices"></left-component>
     <right-component @search="getDetail"
                      @hide="hidePanel"
                      @updateDetail="updateDetail"
@@ -101,6 +101,7 @@
             },
             addClusterer() {
                 let markers = this.getMarkers();
+                this.map.clearOverlays();
                 if (this.clusterer) this.clusterer.clearMarkers();
                 this.clusterer = new BMapLib.MarkerClusterer(this.map, {markers: markers})
             },
@@ -187,7 +188,11 @@
             addStationStatus(data) {
                 data.status = data.runningstate;
                 if (data.status) return;
-
+                if (data.runningstate == 'offline') {
+                    data.status = 'offline'
+                } else {
+                    data.status = 'online'
+                }
             },
             addWellStatus(data) {
                 if (data.status) return;

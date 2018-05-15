@@ -92,6 +92,14 @@ const CommonConstant = {
         {value: 0, text: '正常'},
         {value: 1, text: '离线'},
         {value: 2, text: '告警'},
+    ],
+    loopStatus: [
+        {value: 1, text: '在线'},
+        {value: 2, text: '离线'},
+    ],
+    companyFlag: [
+        {value: 0, text: '激活'},
+        {value: 1, text: '冻结'},
     ]
 };
 

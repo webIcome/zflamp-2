@@ -2,7 +2,7 @@
   <div class="content-right">
     <transition-group name="slide-fade">
       <company-component :key="1" v-model="currentCompany"></company-component>
-      <post-component :key="2" v-show="currentCompanyId" :companyId="currentCompanyId" v-model="currentPost"></post-component>
+      <post-component :key="2" v-show="currentCompanyId" :company="currentCompany" v-model="currentPost"></post-component>
       <limitComponent :key="3" v-show="currentPostId" :postId="currentPostId"></limitComponent>
     </transition-group>
 

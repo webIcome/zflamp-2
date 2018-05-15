@@ -2,9 +2,10 @@
   <div class="organize-content">
     <div class="organize-title">岗位信息 </div>
     <div class="organize-btns">
-      <oper-post-component></oper-post-component>
-      <oper-post-component :edit="true" :post="currentRow"></oper-post-component>
-      <div class="default-btn">冻结</div>
+      <oper-post-component @initPaging="refreshPost" :company="company"></oper-post-component>
+      <copy-post-component @initPaging="refreshPost" :post="currentRow" :company="company"></copy-post-component>
+      <oper-post-component @initPaging="refreshPost" :edit="true" :post="currentRow" :company="company"></oper-post-component>
+      <frozen-post-component @initPaging="refreshPost" :post="currentRow"></frozen-post-component>
     </div>
     <div class="table-div">
       <div class="table-thead">
@@ -13,7 +14,7 @@
       </div>
       <div class="table-body">
         <div class="table-tr" v-for="item in list" @click="handleCurrentChange(item)"
-             :class="{'current-row': item.objectid == currentRow.objectid}">
+             :class="{'current-row': item.objectid == currentRow.objectid, 'frozen-row': item.flag == 1}">
           <div class="table-td">{{item.postname}}</div>
           <div class="table-td">{{item.description}}</div>
         </div>
@@ -25,10 +26,12 @@
 <script>
     import Service from "../../../services/system"
     import operPostComponent from "./oper-post.vue"
+    import FrozenPostComponent from "./frozen-post";
+    import CopyPostComponent from "./copy-post";
     export default {
         name: 'postComponent',
         components: {
-            operPostComponent
+            CopyPostComponent, FrozenPostComponent, operPostComponent
         },
         data() {
             return {
@@ -38,11 +41,16 @@
             }
         },
         props: {
-            companyId: '',
+            company: '',
         },
         created() {
         },
         methods: {
+            refreshPost() {
+                Service.getPosts(this.company.objectid).then(list => {
+                    this.list = list;
+                })
+            },
             getPost(id) {
                 Service.getPosts(id).then(list => {
                     this.list = list;
@@ -50,11 +58,10 @@
             },
             handleCurrentChange(val) {
                 this.currentRow = val;
-//                this.$emit('input', val);
             }
         },
         watch: {
-            companyId: function (newVal, oldVal) {
+            ['company.objectid']: function (newVal, oldVal) {
                 if (newVal) this.getPost(newVal)
                 this.currentRow = {}
             },

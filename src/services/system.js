@@ -21,8 +21,7 @@ export default {
         })
     },
     getCompanyList(params) {
-        // return this.getPosts(params);
-        return HttpClient.get('consumption/getCompList', {params: params}).then(res => {
+        return HttpClient.get('company/getCompanyList',  Object.assign({params: params}, option)).then(res => {
             if (!res.data.data) {
                 return [];
             } else {
@@ -36,6 +35,15 @@ export default {
                 return [];
             } else {
                 return res.data.data.list;
+            }
+        });
+    },
+    getLimits(id) {
+        return HttpClient.post('permission/getModuleListByPostid', {postid: id}, option).then(res => {
+            if (!res.data.data) {
+                return [];
+            } else {
+                return res.data.data.result;
             }
         });
     },
@@ -93,6 +101,17 @@ export default {
             return res;
         })
     },
+    getCompanyDetail(id) {
+        return HttpClient.post('company/getDetailsBySn', {objectid: id}, option).then(res => {
+            return res.data.data;
+        })
+    },
+    frozenCompany(body) {
+        return HttpClient.post('company/frozenOrActivate', body, option).then(res => {
+            showSuccess(res)
+            return res;
+        })
+    },
     deleteCompany(body) {
         return HttpClient.post('company/delete', body, option).then(res => {
             showSuccess(res)
@@ -117,7 +136,13 @@ export default {
             return res;
         })
     },
-    confirmLimit(body) {
+    frozenPost(body) {
+        return HttpClient.post('post/frozenOrActivate', body, option).then(res => {
+            showSuccess(res)
+            return res;
+        })
+    },
+    updateLimit(body) {
         return HttpClient.post('permission/changeForPost', body, option).then(res => {
             showSuccess(res)
             return res;

@@ -30,7 +30,7 @@
             showText: function () {
                 if (this.device.position || this.device.address) {
                     return this.device.position || this.device.address;
-                } else if (this.device.longitude) {
+                } else if (Number(this.device.longitude)) {
                     return this.device.longitude + '/' + this.device.latitude;
                 } else {
                     return ''
@@ -64,7 +64,7 @@
                 this.map.addOverlay(marker);
             },
             showModal() {
-                if (this.device.longitude == 0 && this.device.latitude == 0) return;
+                if ((this.device.longitude == 0 && this.device.latitude == 0) || !this.device.longitude  ) return;
                 this.visible = true;
             },
             hideModal() {

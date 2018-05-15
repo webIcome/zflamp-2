@@ -2,9 +2,10 @@
   <div class="organize-content">
     <div class="organize-title">项目管理 </div>
     <div class="organize-btns">
-      <oper-company-component></oper-company-component>
-      <oper-company-component :edit="true" :company="currentRow"></oper-company-component>
-      <div class="default-btn">冻结</div>
+      <oper-company-component @initPaging="initList"></oper-company-component>
+      <oper-company-component @initPaging="initList" :edit="true" :company="currentRow"></oper-company-component>
+      <frozen-company-component @initPaging="initList" :company="currentRow"></frozen-company-component>
+      <!--<div class="default-btn">冻结</div>-->
     </div>
     <div class="table-div">
       <div class="table-thead">
@@ -15,11 +16,11 @@
       </div>
       <div class="table-body"  style="max-height: 600px;overflow: auto;">
         <div class="table-tr" v-for="item in list" @click="handleCurrentChange(item)"
-             :class="{'current-row': item.objectid == currentRow.objectid}">
+             :class="{'current-row': item.objectid == currentRow.objectid, 'frozen-row': item.flag == 1}">
           <div class="table-td">{{item.companyname}}</div>
-          <div class="table-td">{{item.loginname}}</div>
-          <div class="table-td">{{item.username}}</div>
-          <div class="table-td">{{item.operation}}</div>
+          <div class="table-td">{{item.parentname}}</div>
+          <div class="table-td">{{item.flag | companyFlagNameConverter}}</div>
+          <div class="table-td"><show-position :device='item'></show-position></div>
         </div>
       </div>
     </div>
@@ -29,10 +30,11 @@
 <script>
   import Service from "../../../services/system"
   import operCompanyComponent from "./oper-company.vue"
+  import FrozenCompanyComponent from "./frozen-company";
     export default {
         name: 'companyComponent',
         components: {
-            operCompanyComponent,
+            FrozenCompanyComponent, operCompanyComponent,
         },
         data() {
             return {
@@ -43,7 +45,6 @@
         },
         created() {
             this.initList();
-            this.initCompanies();
         },
         methods: {
             initList() {

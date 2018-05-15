@@ -4,15 +4,21 @@
     <div class="panel-control-body">
       <div class="panel-control-item clearfix">
         <div class="panel-img">
-          <img v-if="detail.status == 3"  src="../../assets/map/lightErr.png">
-          <img v-else-if="detail.status == 2"   src="../../assets/map/lightOff.png">
-          <img v-else  src="../../assets/map/light.png">
+          <img  src="../../assets/map/loop-right.png">
+        </div>
+        <div class="loop-switch">
+          <template v-for="item in detail.loopnum">
+            <div>
+              <img @click="loopSwitch(item, 2)" title="关" width="26" height="22" v-if="currentLoopControl[item-1] == 1" src="../../assets/map/loop-swich-on.png">
+              <img @click="loopSwitch(item, 1)" title="开" width="26" height="22"  v-else src="../../assets/map/loop-switch-off.png">
+            </div>
+          </template>
         </div>
       </div>
     </div>
     <div class="panel-bottom">
       <div class="control-panel-time">更新时间：{{detail.uptime | formDate}}</div>
-      <div class="control-panel-status">{{detail.status | apStateNameConverter}}</div>
+      <div class="control-panel-status">{{detail.status | loopStatusNameConverter}}</div>
       <div @click="controlStatus" class="control-panel-status">获取状态</div>
     </div>
   </div>
@@ -26,7 +32,8 @@
             return {
                 brightness: 0,
                 isShowConfirm: false,
-                moduleType: {}
+                moduleType: {},
+                currentLoopControl: [],
             }
         },
         props: {
@@ -34,6 +41,15 @@
                 default: () => {
                     return {}
                 }
+            }
+        },
+        computed: {
+            loopControl: function () {
+               if (!this.detail.loopcontrol) {
+                   return [2,2,2,2]
+               } else {
+                   return this.detail.loopcontrol.split(',')
+               }
             }
         },
         created() {
@@ -44,6 +60,7 @@
                 CommonConstant.deviceType.forEach(item => {
                     this.moduleType[item.name] = item.value;
                 })
+                this.currentLoopControl = Array.concat(this.loopControl);
             },
             hide() {
                 this.$emit('hide');
@@ -52,25 +69,15 @@
                 this.$refs.lightBtns.style.bottom = 1.4 * value - 20 + 'px';
                 this.isShowConfirm = true;
             },
-            controlBrightness() {
-                let data = {};
-                if (!this.brightness) {
-                    data.controltype = 2;
-                } else if (this.brightness == 100) {
-                    data.controltype = 1;
-                } else {
-                    data.controltype = 3;
-                    data.brightness = this.brightness
-                }
-                Services.controlStation(this.detail.deviceid, data).then(res => {
-                    this.hideShowConfirm();
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
-                })
-            },
             controlStatus() {
                 let data = {controltype: 4}
                 Services.controlLoop(this.detail.deviceid, data).then(res => {
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
+                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.loop})
+                })
+            },
+            loopSwitch(loop, switchStatus) {
+                Services.controlLoop(this.detail.deviceid, {controltype: 1, loop: loop, switchtype: switchStatus}).then(res => {
+                    this.$set(this.currentLoopControl, loop-1, switchStatus)
                 })
             },
             hideShowConfirm() {
@@ -100,14 +107,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     .panel-img {
       text-align: center;
       img {
         height: 140px;
       }
     }
+    .loop-switch{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      padding: 37px 20px 0;
+      img{
+        cursor: pointer;
+      }
+    }
   }
   .panel-bottom{
-    margin-top: 49px;
+    margin-top: 31px;
   }
 </style>

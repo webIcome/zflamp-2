@@ -3,6 +3,7 @@
  */
 export default {
     URL_API: 'http://192.168.0.12:20001/',
+    // URL_API: 'http://192.168.0.134:20001/',
     // URL_API: 'http://www.zeta-alliance.com:20001', //正式网统一认证平台
     LAMP_URL_API: 'http://192.168.0.115:20003/',
     // LAMP_URL_API: 'http://www.zeta-alliance.com:20003',//正式网路灯后台地址

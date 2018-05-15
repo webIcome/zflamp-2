@@ -2,7 +2,7 @@
   <div :ref="test" class="operation-center">
     <div class="operation-top">
       <div class="operation-left"></div>
-      <div class="operation-middle">路灯物联网运营指挥中心</div>
+      <div class="operation-middle"><img class="operation-title" src="../../assets/echart/title.png"></div>
       <div class="operation-right"></div>
     </div>
     <div class="operation-item">
@@ -70,6 +70,10 @@
     background: url("../../assets/login/bg.png") no-repeat;
     background-size: contain;
     /*height: 100%;*/
+    .operation-title {
+      display: inline-block;
+
+    }
     .operation-top {
       height: 17%;
       font-size: 48.56px;

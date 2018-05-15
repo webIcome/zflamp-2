@@ -3,13 +3,33 @@
     <div class="left-position-container">
       <div class="go-home" @click="goToHome">进入列表管理</div>
       <div class="device-items">
+        <el-badge class="device-item" :hidden="true">
           <div class="device-ap" :class="{active: apActive}" @click.self="selectCheck(moduleType.station)"><span class="icon"></span>AP</div>
+          <sup @click="showList(apList)" v-if="apList.length" class="el-badge__content is-fixed">{{lightList.length}}</sup>
+        </el-badge>
+        <el-badge class="device-item" :hidden="true">
           <div class="device-lamp" :class="{active: lightActive}" @click.self="selectCheck(moduleType.light)"><span class="icon"></span>灯控器</div>
+          <sup @click="showList(lightList)" v-if="lightList.length" class="el-badge__content is-fixed">{{lightList.length}}</sup>
+        </el-badge>
+        <el-badge class="device-item" :hidden="true">
           <div class="device-loop" :class="{active: loopActive}" @click.self="selectCheck(moduleType.loop)"><span class="icon"></span>回路控制器</div>
+          <sup @click="showList(loopList)" v-if="loopList.length" class="el-badge__content is-fixed">{{loopList.length}}</sup>
+        </el-badge>
+        <el-badge class="device-item" :hidden="true">
           <div class="device-well" :class="{active: wellActive}" @click.self="selectCheck(moduleType.well)"><span class="icon"></span>井盖</div>
+          <sup @click="showList(wellList)" v-if="wellList.length" class="el-badge__content is-fixed">{{wellList.length}}</sup>
+        </el-badge>
       </div>
       <div class="select-items">
         <tree-select-component class="home" v-model="companyid" :list="companies"></tree-select-component>
+      </div>
+      <div v-if="isListShow" class="show-err-list">
+        <div class="hiden"></div>
+        <div class="list">
+          <table>
+            <tr></tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -29,6 +49,53 @@
                 lightActive: false,
                 loopActive: false,
                 wellActive: false,
+                currentList: [],
+                isListShow: false,
+            }
+        },
+        props: {
+            list: {
+                default: function () {
+                    return []
+                }
+            }
+        },
+        computed: {
+            lightList: function () {
+               return this.list.filter(item => {
+                    if (item.status != 1 && item.moduletype == this.moduleType.light){
+                        return true;
+                    } else {
+                        return false
+                    }
+                })
+            },
+            loopList: function () {
+                return this.list.filter(item => {
+                    if (item.status != 1 && item.moduletype == this.moduleType.loop){
+                        return true;
+                    } else {
+                        return false
+                    }
+                })
+            },
+            apList: function () {
+                return this.list.filter(item => {
+                    if (item.status != 1 && item.moduletype == this.moduleType.station){
+                        return true;
+                    } else {
+                        return false
+                    }
+                })
+            },
+            wellList: function () {
+                return this.list.filter(item => {
+                    if (item.status != 0 && item.moduletype == this.moduleType.well){
+                        return true;
+                    } else {
+                        return false
+                    }
+                })
             }
         },
         created() {
@@ -100,6 +167,9 @@
                             break;
                     }
                 })
+            },
+            showList(list) {
+                this.currentList = list;
             }
         },
         watch: {
@@ -134,12 +204,16 @@
         /*top: 157px;*/
         width: 100px;
         font-size: 14px;
+        .device-item{
+          position: relative;
+          top: 51px;
+        }
         .device-ap,
         .device-lamp,
         .device-loop,
         .device-well{
           position: relative;
-          top: 51px;
+          /*top: 51px;*/
           display: flex;
           align-items: center;
           width: 128px;
@@ -158,6 +232,7 @@
           &:hover,
           &:active{
             transform: scale(1.02);
+            color: #4689d7;
           }
           .icon {
             display: inline-block;
@@ -165,7 +240,6 @@
             height: 100%;
             margin-left: 14px;
             margin-right: 7px;
-            background-size: contain;
           }
           .item-checkbox {
             position: absolute;
@@ -177,22 +251,54 @@
         }
         .device-ap {
           .icon {
-            background: url("../../assets/home/device-active.png") no-repeat center;
+            background: url("../../assets/map/ap-off.png") no-repeat center;
+            background-size: contain;
+          }
+          &:hover,
+          &.active {
+            .icon {
+              background: url("../../assets/map/ap-avtive.png") no-repeat center;
+              background-size: contain;
+            }
           }
         }
         .device-lamp {
           .icon {
-            background: url("../../assets/home/device-active.png") no-repeat center;
+            background: url("../../assets/map/light-off.png") no-repeat center;
+            background-size: contain;
+          }
+          &:hover,
+          &.active {
+            .icon {
+              background: url("../../assets/map/light-active.png") no-repeat center;
+              background-size: contain;
+            }
           }
         }
         .device-loop {
           .icon {
-            background: url("../../assets/home/device-active.png") no-repeat center;
+            background: url("../../assets/map/loop-off.png") no-repeat center;
+            background-size: contain;
+          }
+          &:hover,
+          &.active {
+            .icon {
+              background: url("../../assets/map/loop-active.png") no-repeat center;
+              background-size: contain;
+            }
           }
         }
         .device-well {
           .icon {
-            background: url("../../assets/home/device-active.png") no-repeat center;
+            background: url("../../assets/map/well-off.png") no-repeat center;
+            background-size: contain;
+          }
+          &:hover,
+          &.active {
+            .icon {
+              background: url("../../assets/map/well-active.png") no-repeat center;
+              background-size: contain;
+            }
           }
         }
       }
@@ -201,6 +307,17 @@
         left: 223px;
         top: 0px;
         width: 250px;
+      }
+    }
+  }
+</style>
+<style lang="less">
+  .map {
+    .device-items {
+      .device-item {
+        sup {
+          cursor: pointer;
+        }
       }
     }
   }

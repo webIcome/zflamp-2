@@ -3,14 +3,14 @@
     <div v-if="edit" class="icon-item"><span class="edit-icon" @click="showModal">编辑</span></div>
     <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
     <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">
-      <el-form label-width="140px" :model="data" :rules="Rules" ref="editUser" class="el-form-default">
+      <el-form label-width="140px" :model="data" :rules="Rules" :ref="ref" class="el-form-default">
         <el-form-item label="归属企业：" prop="companyid">
           <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="归属岗位：" prop="postid">
           <el-select v-model="data.postid" placeholder="请选择岗位" style="width: 100%">
             <template v-for="post in posts">
-              <el-option :key="data.objectid" :value="post.objectid" :label="post.postname"></el-option>
+              <el-option :key="post.objectid" :value="post.objectid" :label="post.postname"></el-option>
             </template>
           </el-select>
         </el-form-item>
@@ -70,13 +70,17 @@
         },
         props: {
             user: {
-                default: {}
+                default: function () {
+                    return {}
+                }
             },
             edit: {
                 default: false
             },
             companies: {
-                default: []
+                default: function () {
+                    return []
+                }
             }
         },
         created() {

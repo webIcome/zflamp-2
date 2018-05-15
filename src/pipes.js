@@ -26,6 +26,8 @@ export default {
     taskStatusNameConverter: _taskStatusNameConverter,
     taskPeriodTypeNameConverter: _taskPeriodTypeNameConverter,
     wellStatusNameConverter: _wellStatusNameConverter,
+    loopStatusNameConverter:_loopStatusNameConverter,
+    companyFlagNameConverter:_companyFlagNameConverter,
 }
 function _formDate(date, pattern) {
     if (!date) return;
@@ -218,6 +220,24 @@ function _taskPeriodTypeNameConverter(value) {
 function _wellStatusNameConverter(value) {
     let name = value;
     Common.wellStatus.forEach(item => {
+        if (value == item.value) {
+            name = item.text;
+        }
+    });
+    return name
+}
+function _loopStatusNameConverter(value) {
+    let name = value;
+    Common.loopStatus.forEach(item => {
+        if (value == item.value) {
+            name = item.text;
+        }
+    });
+    return name
+}
+function _companyFlagNameConverter(value) {
+    let name = value;
+    Common.companyFlag.forEach(item => {
         if (value == item.value) {
             name = item.text;
         }

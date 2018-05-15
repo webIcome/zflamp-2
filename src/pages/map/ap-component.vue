@@ -4,9 +4,7 @@
     <div class="panel-control-body">
       <div class="panel-control-item clearfix">
         <div class="panel-img">
-          <img v-if="detail.status == 3"  src="../../assets/map/lightErr.png">
-          <img v-else-if="detail.status == 2"   src="../../assets/map/lightOff.png">
-          <img v-else  src="../../assets/map/light.png">
+          <img src="../../assets/map/ap-right.png">
         </div>
         <div class="panel-control-slider">
           <div class="slider-title">控制基站下所有灯</div>
@@ -82,13 +80,13 @@
                 }
                 Services.controlStation(this.detail.deviceid, data).then(res => {
                     this.hideShowConfirm();
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
+                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.station})
                 })
             },
             controlLightStatus() {
                 let data = {controltype: 4}
                 Services.controlStation(this.detail.deviceid, data).then(res => {
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
+                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.station})
                 })
             },
             hideShowConfirm() {

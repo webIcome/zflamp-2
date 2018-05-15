@@ -4,9 +4,7 @@
     <div class="panel-control-body">
       <div class="panel-control-item clearfix">
         <div class="panel-img">
-          <img v-if="detail.status == 3"  src="../../assets/map/lightErr.png">
-          <img v-else-if="detail.status == 2"   src="../../assets/map/lightOff.png">
-          <img v-else  src="../../assets/map/light.png">
+          <img  src="../../assets/map/light-right.png">
         </div>
         <div class="panel-control-slider">
 
@@ -98,7 +96,7 @@
                 }
                 Services.controlLight(this.detail.deviceid, data).then(res => {
                     this.hideShowConfirm();
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
+//                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
                 })
             },
             controlLightStatus() {
@@ -116,7 +114,7 @@
         },
         watch: {
             detail: function (newVal, oldVal) {
-                this.brightness = this.detail.brightness;
+                if (this.detail.brightness < 100) this.brightness = this.detail.brightness;
             },
             isShow: function (newVal, oldVal) {
                 if (!newVal) {

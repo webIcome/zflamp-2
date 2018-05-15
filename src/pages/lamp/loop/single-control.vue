@@ -35,8 +35,8 @@
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="线路状态">
         <template slot-scope="scope">
-          <template v-for="item in scope.row.loopcontrol">
-            <span :class="{'light-on': item.switchstate == 1, 'light-off': item.switchstate == 2}"></span>
+          <template v-for="item in scope.row.loopnum">
+            <span :class="{'light-on': isLoopOn(scope.row, item), 'light-off': !isLoopOn(scope.row, item)}"></span>
           </template>
         </template>
       </el-table-column>
@@ -143,6 +143,11 @@
                     return item.deviceid;
                 })
                 this.timedtasktotal = max;
+            },
+            isLoopOn(item, loop) {
+                return item.loopcontrol.split(',').some(i => {
+                    return i == loop;
+                })
             }
         }
     }

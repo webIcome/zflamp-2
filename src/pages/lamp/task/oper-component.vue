@@ -61,18 +61,18 @@
             </el-row>
           </div>
         </el-form-item>
-        <el-form-item v-if="data.periodType == 'week'" label="星期：" prop="weekArray">
+        <!--<el-form-item v-if="data.periodType == 'week'" label="星期：" prop="weekArray">
           <el-select v-model="data.weekArray" placeholder="请选择周几" clearable>
             <el-option v-for="item in week" :key="item.value" :value="item.value" :label="item.text"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="任务执行时间：" prop="execute">
           <el-time-picker style="width: 250px" v-model="data.execute" placeholder="请选择时间" :value-format="'HH:mm'" :format="'HH:mm'"></el-time-picker>
         </el-form-item>
-        <el-form-item v-if="data.periodType == 'interval'" label="间隔时间：" prop="intervalTime">
+        <!--<el-form-item v-if="data.periodType == 'interval'" label="间隔时间：" prop="intervalTime">
           <el-input type="number" style="width: 200px" v-model.trim.number="data.intervalTime"></el-input>
           分钟
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item v-if="data.taskCmd == 'lightAdjust'" label="调节亮度：" prop="lightValue">
           <el-slider v-model="data.lightValue"></el-slider>
         </el-form-item>
