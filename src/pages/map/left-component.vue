@@ -5,7 +5,7 @@
       <div class="device-items">
         <el-badge class="device-item" :hidden="true">
           <div class="device-ap" :class="{active: apActive}" @click.self="selectCheck(moduleType.station)"><span class="icon"></span>AP</div>
-          <sup @click="showList(apList)" v-if="apList.length" class="el-badge__content is-fixed">{{lightList.length}}</sup>
+          <sup @click="showList(apList)" v-if="apList.length" class="el-badge__content is-fixed">{{apList.length}}</sup>
         </el-badge>
         <el-badge class="device-item" :hidden="true">
           <div class="device-lamp" :class="{active: lightActive}" @click.self="selectCheck(moduleType.light)"><span class="icon"></span>灯控器</div>
@@ -24,10 +24,21 @@
         <tree-select-component class="home" v-model="companyid" :list="companies"></tree-select-component>
       </div>
       <div v-if="isListShow" class="show-err-list">
-        <div class="hiden"></div>
+        <div @click="hidden" class="close">&times;</div>
         <div class="list">
-          <table>
-            <tr></tr>
+          <table class="table">
+            <thead>
+            <th>设备名称</th>
+            <th>设备ID</th>
+            <th>告警类型</th>
+            </thead>
+            <tbody>
+            <tr v-for="log in currentList">
+              <td>{{log.devicename}}</td>
+              <td>{{log.sn}}</td>
+              <td>{{statusModuleType(log)}}</td>
+            </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -169,7 +180,36 @@
                 })
             },
             showList(list) {
+                this.isListShow = true;
                 this.currentList = list;
+            },
+            statusModuleType(device) {
+                let statusArr = [];
+                switch (device.moduletype) {
+                    case this.moduleType.station:
+                        statusArr = CommonContent.apState;
+                        break;
+                    case this.moduleType.light:
+                        statusArr = CommonContent.lightStatus;
+                        break;
+                    case this.moduleType.loop:
+                        statusArr = CommonContent.loopStatus;
+                        break;
+                    case this.moduleType.well:
+                        statusArr = CommonContent.wellStatus;
+                    default:
+                        break;
+                }
+                let name = device.status;
+                statusArr.forEach(item => {
+                    if (device.status == item.value) {
+                        name = item.text;
+                    }
+                });
+                return name;
+            },
+            hidden() {
+                this.isListShow = false;
             }
         },
         watch: {
@@ -307,6 +347,38 @@
         left: 223px;
         top: 0px;
         width: 250px;
+      }
+      .show-err-list {
+        background: #fff;
+        position: absolute;
+        left: 180px;
+        top: 100px;
+        width: 400px;
+        height: 300px;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+        border-radius: 4px;
+        padding: 10px;
+        .close {
+          font-size: 25px;
+        }
+        .table {
+          td {
+            border: none !important;
+          }
+          th {
+            padding: 8px !important;
+          }
+          tbody {
+            display:block;
+            height:210px;
+            overflow-y:auto;
+          }
+          thead, tbody tr {
+            display:table;
+            width:100%;
+            table-layout:fixed;
+          }
+        }
       }
     }
   }

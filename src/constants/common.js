@@ -100,6 +100,11 @@ const CommonConstant = {
     companyFlag: [
         {value: 0, text: '激活'},
         {value: 1, text: '冻结'},
+    ],
+    lightStatus: [
+        {value: 1, text: '开'},
+        {value: 2, text: '关'},
+        {value: 3, text: '故障'},
     ]
 };
 

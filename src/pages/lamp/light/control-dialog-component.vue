@@ -324,7 +324,7 @@
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         let data = this.transformData(this.operData);
-                        data.deviceIds = this.ids;
+                        data.deviceIds = this.ids.join(',');
                         Service.controlLights(data).then(res => {
                             this.hideModal();
                         });

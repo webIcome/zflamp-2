@@ -1,9 +1,7 @@
 <template>
-  <el-row type="flex" justify="space-between">
-    <el-col :span="18" v-if="value">{{deviceNumber}}个设备</el-col>
-    <el-col :span="18" v-else>0个设备</el-col>
-    <el-input v-model="value" v-show="false"></el-input>
-    <el-button :disabled="!editable" :span="6" type="primary" icon="el-icon-edit-outline" @click="dialogEditDevice">编辑</el-button>
+  <div>
+    <el-button :disabled="!companyid" v-if="!showText" type="primary" @click="showModal">选择</el-button>
+    <div v-else class="show-text" @click="showModal">{{showText}}</div>
     <el-dialog title="选择" :visible.sync="dialogVisible" center :width="'550px'"  append-to-body>
       <el-transfer v-model="selectedList"
                    :titles="titles"
@@ -22,7 +20,7 @@
         <el-button type="primary" @click="selectDevice">确 定</el-button>
       </span>
     </el-dialog>
-  </el-row>
+  </div>
 </template>
 <script>
     import LightService from "../../../services/light";
@@ -80,9 +78,13 @@
             editable: function () {
                 return this.moduletype && this.companyid
             },
-            deviceNumber: function () {
-                return this.value.split(',').length
-            }
+            showText: function () {
+                if (this.value) {
+                    return this.value.split(',').length + '个设备';
+                } else {
+                    return 0;
+                }
+            },
         },
         watch: {
             run: function (newVal) {
@@ -118,7 +120,7 @@
                 }
                 this.getSelectedList();
             },
-            dialogEditDevice: function () {
+            showModal: function () {
                 this.resetData();
                 this.searchParams.companyid = this.companyid;
                 this.searchParams.moduletype = this.moduletype;
@@ -171,4 +173,12 @@
     }
 </script>
 <style lang="less" scoped>
+  .show-text {
+    position: relative;
+    cursor: pointer;
+    color: #1789e1;
+    &:hover {
+      color: #2b71b8;
+    }
+  }
 </style>

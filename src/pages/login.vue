@@ -65,7 +65,7 @@
       }
     },
     mounted: function () {
-      this.gVerifyCode = new GVerify({id: 'code'});
+      this.gVerifyCode = new GVerify({id: 'code', line: 0});
       this.getVerifyCode();
     },
     methods: {
@@ -185,7 +185,7 @@
       .verify-code-img {
         /*width: 100px;*/
         height: 32px;
-        background-color: #3bb9dd;
+        background-color: #fff;
         border-radius: 4px;
         box-shadow: 0 0 10px #555;
       }

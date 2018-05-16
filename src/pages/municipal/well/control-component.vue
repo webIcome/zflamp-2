@@ -14,12 +14,21 @@
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p v-if="operData.controltype == 1" class="title">您确认要开灯吗？</p>
-      <p v-else-if="operData.controltype == 2" class="title">您确认要关灯吗？</p>
-      <p v-else-if="operData.controltype == 3" class="title">您确认要将亮度调到{{brightness}}%亮度吗？</p>
-      <p v-else-if="operData.controltype == 4" class="title">您确认要获取状态吗？</p>
+      <p v-if="controltype == 1" class="title">您确认要开灯吗？</p>
+      <p v-else-if="controltype == 2" class="title">您确认要关灯吗？</p>
+      <p v-else-if="controltype == 4" class="title">您确认要获取状态吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="控制井盖" :visible.sync="setVisible" center width="400px">
+      <el-form label-width="100px" :model="operData" ref="controlDevice" :rules="Rules" class="el-form-default">
+        <el-form-item label="告警角度：" prop="angle" required>
+          <el-input type="text" v-model.trim="operData.angle"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="controlSetDevice('controlDevice')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -33,20 +42,34 @@
         name: 'controlWellComponent',
         components: {},
         data() {
+            let validateAngle = (rule, value, callback) => {
+               if (!value) {
+                   return callback(new Error('请输入告警角度'))
+               }
+               if (!/^[0-9]+\d*$/.test(value)) {
+                   return callback(new Error('只能输入正整数'))
+               }
+               if (value > 35 || value < 0) {
+                   return callback(new Error('范围0~35'))
+               }
+            }
             return {
                 moduleType: {},
                 brightness: 0,
                 visible: false,
-                operData: {}
+                setVisible: false,
+                operData: {},
+                controltype: '',
+                Rules: {
+                    angle: [
+                        { validator: validateAngle, trigger: ['blur', 'change'] },
+//                        {required: true, message: '请输入告警角度'},
+//                        {type: 'number', message: '范围0~255',min: 0, max: 255}
+                    ]
+                }
             }
         },
         props: {
-            isGroup: {
-                default: false
-            },
-            isSingle: {
-                default: false
-            },
             ids: {
                 default: []
             },
@@ -66,16 +89,28 @@
             },
             generate(controltype) {
                 this.resetData();
-                this.operData.controltype = controltype;
+                this.controltype = controltype;
                 this.showModal();
             },
             controlDevice: function () {
-                let data = this.transformData(this.operData);
+                let data = {};
+                data.controltype = this.controltype;
                 data.deviceids = this.ids.join(',');
                 Service.control(data).then(res => {
                     this.hideModal();
                     this.initPaging()
                 });
+            },
+            controlSetDevice(formName) {
+                this.$refs[formName].validate(valid => {
+                    if (valid) {
+                        let data = this.operData;
+                        data.deviceIds = this.ids.join(',');
+                        Service.controlLights(data).then(res => {
+                            this.hideModal();
+                        });
+                    }
+                })
             },
             transformData: function (data) {
 
@@ -84,8 +119,14 @@
             showModal() {
                 this.visible = true;
             },
+            showSetModal() {
+                this.setVisible = true;
+            },
             hideModal: function () {
                 this.visible = false;
+            },
+            hideSetModal() {
+                this.setVisible = false;
             },
             initPaging() {
                 this.$emit('initCurrentPaging')

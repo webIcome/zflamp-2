@@ -49,6 +49,36 @@ export default {
             return res;
         })
     },
+    findLights(params) {
+        return HttpClient.get('groupControl/findLightDeviceInfoList', {params: params}).then(res => {
+            if (!res.data && !res.data.data) {
+                return {};
+            } else {
+                return res.data.data;
+            }
+        })
+    },
+    findLoops(params) {
+        return HttpClient.get('groupControl/findLoopDeviceInfoList', {params: params}).then(res => {
+            if (!res.data && !res.data.data) {
+                return {};
+            } else {
+                return res.data.data;
+            }
+        })
+    },
+    updateLightDevices(body){
+        return HttpClient.post('groupControl/updateLightDeviceGroup', body).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    updateLoopDevices(body){
+        return HttpClient.post('groupControl/updateLoopDeviceGroup', body).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
     findGroupedList(params) {
         return HttpClient.get('groupInfo/getDeviceGroupedList', {params: params}).then(res => {
             if (!res.data && !res.data.data) {

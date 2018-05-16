@@ -17,7 +17,7 @@
         <div class="control-add-content">
           <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds"></control-light-component>
           <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds"></control-loop-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <oper-component :companies="companies" :moduletype="moduletype" @initPaging="initList"></oper-component>
         </div>
       </div>
     </div>
@@ -33,13 +33,17 @@
       <el-table-column prop="loopcontrol" label="回路状态"></el-table-column>
       <el-table-column label="设备列表">
         <template slot-scope="scope">
-
+          <set-devices-component @initCurrentPaging="pagingEvent"
+                                 :moduletype="moduletype"
+                                 :moduleType="moduleType"
+                                 :group="scope.row"></set-devices-component>
         </template>
       </el-table-column>
+      <el-table-column label="创建时间"><template slot-scope="scope">{{scope.row.createtime | formDate}}</template></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex" justify="space-between">
-            <oper-component ref="oper" :id="scope.row.objectid" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
+            <oper-component ref="oper" :group="scope.row" :companies="companies" :edit="true" :moduletype="moduletype" @initCurrentPaging="pagingEvent"></oper-component>
             <delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
@@ -66,12 +70,14 @@
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlLoopComponent from "../loop/control-component.vue"
+    import SetDevicesComponent from './set-devices-component.vue'
     export default {
         components: {
             operComponent,
             deleteComponent,
             controlLightComponent,
-            controlLoopComponent
+            controlLoopComponent,
+            SetDevicesComponent
         },
         name: 'lightPage',
         data() {

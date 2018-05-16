@@ -12,7 +12,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="设备ID：" prop="sn">
-              <el-input type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
+              <el-input v-if="!edit" type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
+              <div v-else>{{data.sn}}</div>
             </el-form-item>
           </el-col>
         </el-row>
