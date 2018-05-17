@@ -124,6 +124,12 @@ export default {
             return res;
         })
     },
+    copyPost(body){
+        return HttpClient.post('post/copyAdd', body, option).then(res => {
+            showSuccess(res)
+            return res;
+        })
+    },
     editPost(body) {
         return HttpClient.post('post/edit', body, option).then(res => {
             showSuccess(res)

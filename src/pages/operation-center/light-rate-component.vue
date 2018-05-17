@@ -41,7 +41,8 @@
                 ]
                 this.option = {
                     name: 'test',
-                    color: ['#ffc300', '#b3b3b3', '#00c3d5', '#3a8dde', '#b1b1b1']
+                    color: ['#5282E6', '#999'],
+                    title: '亮灯率'
                 }
             },
         }
@@ -61,9 +62,8 @@
       height: 100%;
       .echart {
         height: 40%;
-        width: 40%;
+        width: 100%;
         flex: 3;
-        margin-top: 17%;
         text-align: center;
       }
       .legend {
@@ -71,16 +71,17 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
         width: 80%;
         color: #fff;
         letter-spacing: 2px;
-        align-content: space-between;
+        align-content: space-around;
+        padding-top: 40px;
         .normal,
         .v-fault{
           font-size: 14px;
-          width: 33%;
-          text-align: center;
+          margin-right: 20px;
+          text-align: left;
           .icon {
             display: inline-block;
             width: 13px;
@@ -90,12 +91,12 @@
         }
         .normal {
           .icon {
-            background: #ffc300;
+            background: #5282E6;
           }
         }
         .v-fault {
           .icon {
-            background: #b3b3b3;
+            background: #999;
           }
         }
       }

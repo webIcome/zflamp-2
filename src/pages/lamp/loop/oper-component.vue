@@ -83,7 +83,9 @@
                     ]
                 },
                 visible: false,
-                data: {},
+                data: {
+                    vendor: 1
+                },
                 ref: 'edit',
                 vendor: CommonConstant.vendor,
                 moduleType: {},
@@ -192,7 +194,9 @@
                     if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = {};
+                    this.data = {
+                        vendor: 1
+                    };
                 }
             }
         }

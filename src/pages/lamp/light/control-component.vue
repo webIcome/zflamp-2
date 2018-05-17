@@ -45,6 +45,7 @@
     import GroupService from "../../../services/group"
     import CommonContent from "../../../constants/common";
     import controlDialogComponent from "./control-dialog-component.vue"
+    import AreaService from "../../../services/area";
     export default {
         name: 'controlLightComponent',
         components: {
@@ -63,6 +64,9 @@
                 default: false
             },
             isSingle: {
+                default: false
+            },
+            isArea: {
                 default: false
             },
             ids: {
@@ -120,13 +124,19 @@
             controlDevice: function () {
                 let data = this.transformData(this.operData);
                 if (this.isGroup) {
-                    data.groupids = this.ids;
+                    data.groupids = this.ids.join(',');
                     GroupService.controlLight(data).then(res => {
                         this.hideModal();
                         this.initPaging()
                     })
+                } else if(this.isArea) {
+                    data.deviceIds = this.ids.join(',');
+                    AreaService.controlStation(data).then(res => {
+                        this.hideModal();
+                        this.initPaging()
+                    })
                 } else {
-                    data.deviceids = this.ids.join(',');
+                    data.deviceIds = this.ids.join(',');
                     LightService.controlLights(data).then(res => {
                         this.hideModal();
                         this.initPaging()

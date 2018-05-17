@@ -244,7 +244,9 @@
                     if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = {};
+                    this.data = {
+                        lamptype: 5
+                    };
                 }
             }
         }

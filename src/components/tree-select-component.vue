@@ -167,7 +167,7 @@
       right: 10px;
       top: 50%;
       user-select: none;
-      margin-top: -13px;
+      margin-top: -10px;
       cursor: pointer;
       font-size: 21px;
       font-weight: 700;

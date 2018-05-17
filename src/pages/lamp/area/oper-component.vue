@@ -53,7 +53,9 @@
                     ],
                 },
                 visible: false,
-                data: {},
+                data: {
+                    vendor: 1
+                },
                 ref: 'edit',
                 moduleType: {},
                 vendor: CommonConstant.vendor,

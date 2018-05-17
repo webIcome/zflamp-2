@@ -3,44 +3,50 @@
  */
 export default{
     getLineOption(data, option) {
+        let lineOption = JSON.parse(JSON.stringify(defaultLineOption));
         if (option) {
-            if (option.xName) defaultLineOption.xAxis.name = option.xName;
-            if (option.yName) defaultLineOption.yAxis.name = option.yName;
-            if (option.startColor) defaultLineOption.series[0].areaStyle.color.colorStops[0].color = option.startColor;
+            if (option.xName) lineOption.xAxis.name = option.xName;
+            if (option.yName) lineOption.yAxis.name = option.yName;
+            if (option.startColor) lineOption.series[0].areaStyle.color.colorStops[0].color = option.startColor;
             if (option.endColor) {
-                defaultLineOption.series[0].areaStyle.color.colorStops[1].color = option.endColor;
-                defaultLineOption.series[0].lineStyle.color = option.endColor;
+                lineOption.series[0].areaStyle.color.colorStops[1].color = option.endColor;
+                lineOption.series[0].lineStyle.color = option.endColor;
             }
             if (option.color) {
-                defaultLineOption.xAxis.nameTextStyle.color = option.color;
-                defaultLineOption.xAxis.axisLabel.color = option.color;
-                defaultLineOption.yAxis.nameTextStyle.color = option.color;
-                defaultLineOption.yAxis.axisLabel.color = option.color;
+                lineOption.xAxis.nameTextStyle.color = option.color;
+                lineOption.xAxis.axisLabel.color = option.color;
+                lineOption.yAxis.nameTextStyle.color = option.color;
+                lineOption.yAxis.axisLabel.color = option.color;
             }
             if (option.ySplitLine) {
-                defaultLineOption.yAxis.splitLine.lineStyle = option.ySplitLine;
+                lineOption.yAxis.splitLine.lineStyle = option.ySplitLine;
             }
             if (option.line) {
-                defaultLineOption.xAxis.axisLine = option.line;
-                defaultLineOption.yAxis.axisLine = option.line;
+                lineOption.xAxis.axisLine = option.line;
+                lineOption.yAxis.axisLine = option.line;
             }
             if (option.area) {
-                defaultLineOption.series[0].areaStyle = option.area;
+                lineOption.series[0].areaStyle = option.area;
             }
 
         }
-        defaultLineOption.xAxis.data = data.title;
-        defaultLineOption.series[0].data = data.value;
-       return defaultLineOption;
+        lineOption.xAxis.data = data.title;
+        lineOption.series[0].data = data.value;
+       return lineOption;
     },
     getPieOption(data, option) {
+        let pieOption = JSON.parse(JSON.stringify(defaultPieOption));
         if (option) {
-            if (option.title) defaultPieOption.legend.data = option.title;
-            if (option.name) defaultPieOption.series[0].name = option.name;
-            if (option.color) defaultPieOption.color = option.color;
+            // if (option.title) pieOption.legend.data = option.title;
+            if (option.name) pieOption.series[0].name = option.name;
+            if (option.color) pieOption.color = option.color;
+            if (option.title) {
+                pieOption.title = option.title;
+                pieOption.series[0].label.emphasis.show = false
+            }
         }
-        defaultPieOption.series[0].data = data;
-        return defaultPieOption
+        pieOption.series[0].data = data;
+        return pieOption
     }
 }
 let defaultLineOption = {
@@ -72,7 +78,8 @@ let defaultLineOption = {
             }
         },
         nameTextStyle: {
-            color: '#8FABD2'
+            color: '#8FABD2',
+            padding: [10,10,20,10]
         },
         name: 'Wh',
         axisLine: {
@@ -118,11 +125,22 @@ let defaultPieOption = {
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
     },
+    title: {
+        text:'',
+        left:'center',
+        top:'45%',
+        // padding:[24,0],
+        textStyle:{
+            color:'#fff',
+            fontSize:20,
+            align:'center'
+        }
+    },
     series: [
         {
             name:'访问来源',
             type:'pie',
-            radius: ['80%', '90%'],
+            radius: ['75%', '90%'],
             avoidLabelOverlap: false,
             label: {
                 normal: {

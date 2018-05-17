@@ -11,7 +11,7 @@
           <el-table-column prop="sn" label="设备ID"></el-table-column>
           <el-table-column label="替换组">
             <template slot-scope="scope">
-              <el-select v-if="scope.row.group.length == 5" v-model="scope.row.exceptgroupid" placeholder="替换组" clearable style="width: 100%;">
+              <el-select v-if="isSelectable(scope.row)" v-model="scope.row.exceptgroupid" placeholder="替换组" clearable style="width: 100%;">
                 <el-option v-for="type in scope.row.group" :value="type.value" :key="type.value" :label="type.text"></el-option>
               </el-select>
             </template>
@@ -135,10 +135,12 @@
             },
             addDeviceGroupId(device) {
                 let groupIds = []
+                let filter = true;
                 device.group.forEach(item => {
                     if (item.value != device.exceptgroupid) groupIds.push(item.value)
+                    if (item.value == this.groupid) filter = false;
                 })
-                groupIds.push(this.groupid);
+                if (filter) groupIds.push(this.groupid);
                 return groupIds;
             },
             handleLeftSelectionChange(val) {
@@ -153,7 +155,13 @@
             isSelectable(row, index) {
                 if (row.group.length != 5) return true;
                 if(row.group.length == 5 && !row.exceptgroupid) {
-                    return false;
+                   return row.group.some(item => {
+                        if (item.value == this.groupid) {
+                            return true;
+                        } else {
+                            return false
+                        }
+                    })
                 } else {
                     return true;
                 }

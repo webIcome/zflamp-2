@@ -132,13 +132,13 @@
             controlDevice: function () {
                 let data = this.transformData(this.operData);
                 if (this.isGroup) {
-                    data.groupids = this.ids;
-                    GroupService.controlLight(data).then(res => {
+                    data.groupids = this.ids.join(',');
+                    GroupService.controlLoop(data).then(res => {
                         this.hideModal();
                         this.initPaging()
                     })
                 } else {
-                    data.deviceids = this.ids.join(',');
+                    data.deviceIds = this.ids.join(',');
                     LoopService.controlLoops(data).then(res => {
                         this.hideModal();
                         this.initPaging()

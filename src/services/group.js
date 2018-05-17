@@ -25,6 +25,12 @@ export default {
             return res;
         })
     },
+    saveUpdate(body) {
+        return HttpClient.post('groupInfo/saveOrUpdateGroupInfo', body).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
     deleteDevice(id) {
         return HttpClient.delete('groupInfo/' + id).then(res => {
             showSuccess(res);
@@ -32,19 +38,13 @@ export default {
         })
     },
     controlLight(body) {
-        return HttpClient.post('groupControl/lightController', body).then(res => {
+        return HttpClient.post('groupControl/batchLightGroupController', body).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    controlLoop(id, body) {
-        return HttpClient.post('groupControl/loopController/' + id, body).then(res => {
-            showSuccess(res);
-            return res;
-        })
-    },
-    controlStation(id, body) {
-        return HttpClient.post('groupControl/ap/' + id, body).then(res => {
+    controlLoop(body) {
+        return HttpClient.post('groupControl/batchLoopGroupController', body).then(res => {
             showSuccess(res);
             return res;
         })

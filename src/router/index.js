@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import login from '../pages/login.vue'
 import map from '../pages/map/index.vue'
 import listPage from '../pages/list.vue'
-import statisticsPage from '../pages/statistics.vue'
+import statisticsPage from '../pages/statistics/index.vue'
 import wellPage from '../pages/municipal/well/index.vue'
 import operationCenterPage from "../pages/operation-center/index.vue"
 const lightPage = () => import(/* webpackChunkName: "lamp" */ '../pages/lamp/light/index.vue');

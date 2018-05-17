@@ -56,7 +56,9 @@ const CommonConstant = {
     ],
     apState: [
         {value: 'online', text: '在线'},
+        {value: '1', text: '在线'},
         {value: 'offline', text: '离线'},
+        {value: '2', text: '离线'},
     ],
     taskCmd: [
         {value: 'lightOn', text: '开灯'},

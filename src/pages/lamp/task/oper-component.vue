@@ -93,7 +93,7 @@
             return {
                 visible: false,
                 data: {
-                    taskStatus: '',
+                    taskStatus: 0,
                     taskCmd: 'lightOn',
                     periodType: 'day'
                 },
@@ -270,9 +270,11 @@
                     if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = { taskStatus: '',
+                    this.data = {
+                        taskStatus: 0,
                         taskCmd: 'lightOn',
-                        periodType: 'single'};
+                        periodType: 'single'
+                    };
                 }
             }
         }

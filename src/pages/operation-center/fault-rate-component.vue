@@ -1,10 +1,13 @@
 <template>
   <div class="fault-rate">
     <div :ref="contentRef" class="fault-rate-content">
-      <div class="content-border left-top"></div>
-      <div class="content-border right-top"></div>
-      <div class="content-border left-bottom"></div>
-      <div class="content-border right-bottom"></div>
+      <template v-if="border">
+        <div class="content-border left-top"></div>
+        <div class="content-border right-top"></div>
+        <div class="content-border left-bottom"></div>
+        <div class="content-border right-bottom"></div>
+      </template>
+
       <div class="echart">
         <pie-echart-component v-if="visible" :data="data" :option="option"></pie-echart-component>
       </div>
@@ -30,6 +33,9 @@
               visible: false
           }
       },
+      props: {
+          border: false
+      },
       created() {
           this.generateHeight();
       },
@@ -47,7 +53,8 @@
               ]
               this.option = {
                   name: 'test',
-                  color: ['#fd6531', '#ffc300', '#00c3d5', '#3a8dde', '#b1b1b1']
+                  color: ['#3EB37F', '#FF854A', '#FF6668', '#5282E6', '#999999'],
+                  title: '故障率'
               }
           },
       }
@@ -67,9 +74,8 @@
       height: 100%;
       .echart {
         height: 40%;
-        width: 40%;
+        width: 100%;
         flex: 3;
-        margin-top: 17%;
         text-align: center;
       }
       .legend {
@@ -81,17 +87,14 @@
         width: 80%;
         color: #fff;
         letter-spacing: 2px;
-        padding-left: 7%;
-        padding-bottom: 10%;
-        padding-top: 10%;
-        align-content: space-between;
+        align-content: space-around;
         .normal,
         .v-fault,
         .p-fault,
         .a-fault,
         .fault {
           font-size: 14px;
-          width: 33%;
+          margin-right: 20px;
           text-align: left;
           .icon {
             display: inline-block;
@@ -102,27 +105,27 @@
         }
         .normal {
           .icon {
-            background: #fd6531;
+            background: #3EB37F;
           }
         }
         .v-fault {
           .icon {
-            background: #ffc300;
+            background: #FF854A;
           }
         }
         .p-fault {
           .icon {
-            background: #00c3d5;
+            background: #FF6668;
           }
         }
         .a-fault {
           .icon {
-            background: #3a8dde;
+            background: #5282E6;
           }
         }
         .fault {
           .icon {
-            background: #b1b1b1;
+            background: #999999;
           }
         }
       }

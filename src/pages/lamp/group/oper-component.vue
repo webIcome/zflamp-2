@@ -12,14 +12,11 @@
         </el-form-item>
         <el-form-item label="归属基站：" prop="apid">
           <select-area-component v-model="data.apid"
-                                 @name="data.name=arguments[0]"
-                                 :name="data.name"
                                  :companyid="data.companyid"></select-area-component>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="edit" type="primary" @click="editDevice">确 定</el-button>
-        <el-button v-else type="primary" @click="add">确 定</el-button>
+        <el-button type="primary" @click="saveUpdate">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -85,20 +82,11 @@
         methods: {
             initData() {
             },
-            add() {
+            saveUpdate() {
                 this.$refs[this.ref].validate(valid => {
                     if (valid) {
-                        GroupService.add(this.data).then(res => {
-                            this.emitAddEvent();
-                            this.hideModal();
-                        });
-                    }
-                })
-            },
-            editDevice() {
-                this.$refs[this.ref].validate(valid => {
-                    if (valid) {
-                        GroupService.edit(this.data.objectid, this.data).then(res => {
+                        this.data.moduletype = this.moduletype;
+                        GroupService.saveUpdate(this.data).then(res => {
                             this.emitEditEvent();
                             this.hideModal();
                         });

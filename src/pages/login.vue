@@ -1,46 +1,28 @@
 <template>
   <div class="login-container">
     <div class="body">
-      <el-row justify="space-between" class="center">
-        <el-col :span="11">
-          <img src="../assets/login/logo.png">
-        </el-col>
-        <el-col :span="2">
-          <img class="parting-line" src="../assets/login/parting-line.png">
-        </el-col>
-        <el-col :span="11">
-          <form class="form-horizontal" @submit.prevent="login">
-            <el-row class="form-group">
-              <div class="col-md-12">登录/Login</div>
-            </el-row>
-            <el-row class="form-group">
-              <el-col :span="24">
-                <input type="text" class="form-control" id="username" name="username" v-model="loginname" placeholder="用户"/>
-              </el-col>
-            </el-row>
-            <el-row class="form-group">
-              <el-col :span="24">
-                <input :type="showPassword? 'text': 'password'" class="form-control" id="password" name="password" v-model="password" placeholder="密码">
-              </el-col>
-              <span @click="toggleShowPassword" :class="showPassword? 'show-password':'not-show-password'"></span>
-            </el-row>
-            <el-row class="form-group">
-              <el-col :span="16">
-                <input type="text" class="form-control verify-code" id="verifyCode" name="verifyCode" v-model="verifyCode" placeholder="验证码输入">
-              </el-col>
-              <el-col :span="8">
-                <div @click="getVerifyCode" class="verify-code-img" id="code"></div>
-              </el-col>
-            </el-row>
-            <el-row class="form-group">
-              <el-col :span="24">
-                <el-button @click="login" :disabled="disabled" type="primary" class="btn">登录</el-button>
-                <button :disabled="disabled" v-show="false" type="submit"></button>
-              </el-col>
-            </el-row>
-          </form>
-        </el-col>
-      </el-row>
+      <div class="content-border left-top"></div>
+      <div class="content-border right-top"></div>
+      <div class="content-border left-bottom"></div>
+      <div class="content-border right-bottom"></div>
+      <form class="form-horizontal" @submit.prevent="login">
+        <div class="login-tile">灯联网</div>
+        <div class="login-user">
+          <input type="text" class="login-input" id="username" name="username" v-model="loginname" placeholder="用户名登录"/>
+          <span class="user-img"></span>
+        </div>
+        <div class="login-password">
+          <input :type="showPassword? 'text': 'password'" class="login-input" id="password" name="password" v-model="password" placeholder="密码">
+          <span class="password-img"></span>
+        </div>
+        <div class="login-verify">
+          <input type="text" class="login-input" id="verifyCode" name="verifyCode" v-model="verifyCode" placeholder="验证码">
+          <div @click="getVerifyCode" class="verify-code-img" id="code"></div>
+        </div>
+        <div class="login-btn">
+          <button :disabled="disabled" class="btn" type="submit">登录</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -106,113 +88,143 @@
 </script>
 <style scoped lang="less">
   .login-container {
-    background: url("../assets/login/bg.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../assets/login/bg.png") no-repeat center;
+    background-size: cover;
     height: 100%;
-    text-align: center;
+    position: relative;
     .body {
+      position: absolute;
       display: inline-block;
-      max-width: 1000px;
-      max-height: 680px;
-      min-width: 720px;
-      min-height: 490px;
-      height: 70%;
-      width: 50%;
-      vertical-align: middle;
+      top: 50%;
+      margin-top: -223px;
+      right: 100px;
+      height: 446px;
+      width: 473px;
       font-size: 16px;
-      background: url("../assets/login/login-bg.png") no-repeat;
-      background-size: 100% 100%;
-      .center {
-        display: inline-block;
+      background: rgba(22,54,101,0.71);
+      .login-tile {
+        font-size: 28px;
+        text-align: center;
+        color: #6fd7f7;
+        padding: 20px;
+        font-weight: bolder;
+        letter-spacing: 5px;
+      }
+      .login-input {
+        border: 1px solid #4f84a9;
+        border-radius: 4px;
         width: 100%;
-        vertical-align: middle;
-      }
-      &:after {
-        display: inline-block;
-        height: 100%;
-        content: '';
-        width: 0;
-        vertical-align: middle;
-      }
-    }
-    &:after {
-      display: inline-block;
-      height: 100%;
-      content: '';
-      width: 0;
-      vertical-align: middle;
-    }
-    form {
-      padding-right: 100px;
-      text-align: left;
-      vertical-align: middle;
-      font-size: 28px;
-      color: rgba(254,254,254, 0.8);
-      margin-left: 20px;
-      .form-group {
-        position: relative;
-        display: block;
-        margin-bottom: 36px;
-        .btn {
-          display: block;
-          width: 100%;
+        background: transparent;
+        height: 54px;
+        line-height: 54px;
+        color: #5086a3;
+        font-size: 16px;
+        &::placeholder {
+          font-weight: bolder;
+          letter-spacing: 2px;
+          color: #5086a3;
         }
       }
-      input {
-        &.form-control {
-          display: block;
+      .login-user,
+      .login-password,
+      .login-verify {
+        position: relative;
+        padding: 0 60px;
+        margin-bottom: 25px;
+      }
+      .login-user {
+        .login-input {
+          padding-left: 50px;
+          padding-right: 16px;
+        }
+        .user-img{
+          position: absolute;
+          top: 50%;
+          margin-top: -10px;
+          left: 80px;
+          display: inline-block;
+          background: url("../assets/login/user.png");
+          width: 17px;
+          height: 20px;
+        }
+      }
+      .login-password {
+        .login-input {
+          padding-left: 50px;
+          padding-right: 16px;
+        }
+        .password-img{
+          position: absolute;
+          top: 50%;
+          margin-top: -10px;
+          left: 80px;
+          display: inline-block;
+          background: url("../assets/login/password.png");
+          width: 17px;
+          height: 21px;
+        }
+      }
+      .login-verify {
+        display: flex;
+        align-items: center;
+        .login-input {
+          padding: 0 16px;
+          margin-right: 16px;
+        }
+      }
+      .login-btn {
+        margin-top: 35px;
+        padding: 0 60px;
+        .btn {
           width: 100%;
-          &:focus {
+          height: 53px;
+          font-size: 22px;
+          color: #fff;
+          background: linear-gradient(bottom, #4274bc, #60a2ec);
+          &:hover {
             outline: 0;
+            box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
           }
         }
-        padding-left: 0;
-        padding-right: 0;
-        background-color: transparent;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        font-size: 22px;
-        color: rgba(254,254,254, 0.8);
-        &::placeholder {
-          font-size: 22px;
-          color: rgba(106, 131, 165, 0.8);
-        }
-        &.verify-code {
-          border-image: linear-gradient(right,rgba(85,109,141,0.3), rgba(85,109,141,0.6) 80%)1 1;
-        }
       }
+    }
       .verify-code-img {
-        /*width: 100px;*/
-        height: 32px;
+        height: 54px;
         background-color: #fff;
         border-radius: 4px;
         box-shadow: 0 0 10px #555;
       }
-      .not-show-password,
-      .show-password{
-        position: absolute;
-        right: 15px;
-        top: 5px;
-        width: 25px;
-        height: 25px;
-        cursor: pointer;
+    .content-border {
+      position: absolute;
+      width: 12px;
+      height: 13px;
+      border: 2px solid #5bb7e5;
+      &.left-top {
+        border-bottom: 0;
+        border-right: 0;
+        top: 0;
+        animation-delay: 0s;
       }
-      .not-show-password{
-        background: url("../assets/login/not-show-password.png") no-repeat center center;
+      &.left-bottom {
+        border-top: 0;
+        border-right: 0;
+        bottom: 0;
+        animation-delay: 0.5s;
       }
-      .show-password {
-        background: url("../assets/login/show-password.png") no-repeat center center;
+      &.right-top {
+        border-bottom: 0;
+        border-left: 0;
+        top: 0;
+        right: 0;
+        animation-delay: 1s;
+      }
+      &.right-bottom {
+        border-top: 0;
+        border-left: 0;
+        bottom: 0;
+        right: 0;
+        animation-delay: 1.5s;
       }
     }
-  }
-  #username {
-    background: url("../assets/login/user-code-line.png") no-repeat bottom left;
-  }
-  #password {
-    background: url("../assets/login/user-code-line.png") no-repeat bottom left;
-  }
-  #verifyCode {
-    background: url("../assets/login/verify-code-line.png") no-repeat bottom left;
   }
 </style>

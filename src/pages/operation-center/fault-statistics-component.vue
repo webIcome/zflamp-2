@@ -16,7 +16,7 @@
 </template>
 <script>
     export default {
-        name: 'faultRateComponent',
+        name: 'faultStatisticsComponent',
         data() {
             return {
                 contentRef: 'contetn-ref',

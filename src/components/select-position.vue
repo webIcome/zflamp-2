@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button v-if="!showText" type="primary" @click="showModal">选择地理位置</el-button>
+    <el-button v-if="!showText" type="primary" @click="showModal">选择</el-button>
     <div v-else class="show-text"><span :title="showText" style="display: inline-block; max-width: 90%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;vertical-align: middle;" @click="showModal">{{showText}}</span><span class="clear" @click="clearSelect">&times;</span></div>
     <el-dialog title="选择地理位置" :visible.sync="visible" center :width="'600px'" append-to-body>
       <div class="lat">纬度：{{pointer.lat}}</div>

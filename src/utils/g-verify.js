@@ -43,15 +43,18 @@ export default class GVerify {
     for(var i = 0; i <txtArr.length; i++) {
       var txt = txtArr[i];
       this.options.code += txt;
-      ctx.font = this._randomNum(this.options.height/1.5, this.options.height) + 'px SimHei'; //随机生成字体大小
-      ctx.fillStyle = this._randomColor(50, 160); //随机生成字体颜色
+      // ctx.font = this._randomNum(this.options.height/1.5, this.options.height) + 'px SimHei'; //随机生成字体大小
+      ctx.font = '22px SimHei'; //随机生成字体大小
+      // ctx.fillStyle = this._randomColor(50, 160); //随机生成字体颜色
+      ctx.fillStyle = '#709ad5'; //随机生成字体颜色
       ctx.shadowOffsetX = this._randomNum(-3, 3);
       ctx.shadowOffsetY = this._randomNum(-3, 3);
       ctx.shadowBlur = this._randomNum(-3, 3);
       ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
       var x = this.options.width / (txtArr.length) * i + this.options.width / (txtArr.length)/4;
       var y = this.options.height / 2;
-      var deg = this._randomNum(-30, 30);
+      // var deg = this._randomNum(-30, 30);
+      var deg = 0;
       /**设置旋转角度和坐标原点**/
       ctx.translate(x, y);
       ctx.rotate(deg * Math.PI / 180);

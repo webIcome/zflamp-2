@@ -49,11 +49,6 @@
                 default: function () {
                     return {}
                 }
-            },
-            company: {
-                default: function () {
-                    return {}
-                }
             }
         },
         created() {
@@ -70,8 +65,7 @@
             add() {
                 this.$refs[this.ref].validate(valid => {
                     if (valid) {
-                        this.data.companyid = this.company.objectid;
-                        Service.addPost(this.data).then(res => {
+                        Service.copyPost(this.data).then(res => {
                             this.emitAddEvent();
                             this.hideModal();
                         });
@@ -79,7 +73,11 @@
                 })
             },
             getDetail() {
-                this.data = this.post;
+                this.data.copyid = this.post.objectid;
+                this.data.companyid = this.post.companyid;
+                this.data.postname = this.post.postname;
+                this.data.description = this.post.description;
+                this.data.flag = this.post.flag;
             },
             clearValidate() {
                 if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();
@@ -100,7 +98,7 @@
         watch: {
             visible: function (newValue, oldValue) {
                 if (newValue) {
-                    if (this.edit) this.getDetail();
+                    this.getDetail();
                     this.clearValidate();
                 } else {
                     this.data = {}

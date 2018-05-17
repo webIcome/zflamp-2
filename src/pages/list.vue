@@ -25,30 +25,6 @@
                         <router-link v-if="child.url" :to="child.url" class="panel-body">
                           {{child.modulename}}
                         </router-link>
-                        <!--<div v-else class="panel-group" id="navTwo" aria-multiselectable="true">
-                          <div class="panel panel-default">
-                            <div class="panel-heading">
-                              <h4 class="panel-title">
-                                <a data-toggle="collapse" @click="collapse(child, true)">
-                                  {{child.modulename}}
-                         <span class="nav-two-selected" v-show="child.isActive"></span>
-                                  <span class="nav-two-selected-hide" v-show="!child.isActive"></span>
-                                </a>
-                              </h4>
-                            </div>
-                            <el-collapse-transition>
-                              <div :id="child.ename" class="panel-collapse collapse" style="display: block"
-                                   v-show="child.isActive">
-                                <template v-for="childTwo in child.children">
-                                  <router-link v-if="childTwo.url" :to="childTwo.url" class="panel-body">
-                                    {{childTwo.modulename}}
-
-                                  </router-link>
-                                </template>
-                              </div>
-                            </el-collapse-transition>
-                          </div>
-                        </div>-->
                       </template>
                     </div>
                   </el-collapse-transition>
@@ -242,12 +218,6 @@
       z-index: 999;
       width: @navWidth;
       background-color: @navBackgroundColor;
-    /*  .title {
-        width: 200px;
-        height: 72px;
-        margin: 44px 0 44px 60px;
-        background: url("../assets/home/logo.png");
-      }*/
       .isActive {
         display: block;
       }
@@ -262,7 +232,9 @@
             .panel-title {
               margin-top: 0;
               margin-bottom: 0;
-              font-size: 18px;
+              a {
+                font-size: 18px;
+              }
               &.active {
                 a {
                   background-color: #317BD3;
@@ -297,10 +269,11 @@
                 position: absolute;
                 right: 30px;
                 top: 50%;
-                width: 11px;
-                height: 20px;
+                width: 10px;
+                height: 18px;
                 margin-top: -10px;
                 background-image: url("../assets/home/hide-nav.png");
+                background-size: cover;
               }
               .nav-selected {
                 position: absolute;
@@ -308,9 +281,10 @@
                 top: 50%;
                 margin-top: -3px;
                 display: inline-block;
-                width: 20px;
-                height: 11px;
+                width: 18px;
+                height: 10px;
                 background-image: url("../assets/home/show-nav.png");
+                background-size: cover;
               }
               &:hover {
                 color: #66bbff;

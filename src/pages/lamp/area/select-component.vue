@@ -46,13 +46,18 @@
                     pageSize: Config.DEFAULT_PAGE_SIZE,
                     pageNum: 1
                 },
+                detail: {},
+                name: ''
             }
         },
         props: {
             companyid: {
                 default: ''
             },
-            name: '',
+            value: ''
+        },
+        created() {
+            if (this.value) this.getDetail();
         },
         methods: {
             search() {
@@ -75,6 +80,12 @@
                     this.list = data.list;
                 })
             },
+            getDetail(){
+                AreaService.getDetail(this.value).then(data => {
+                    this.detail = data;
+                    this.name = this.detail.devicename
+                })
+            },
             showModal: function () {
                 this.findList(this.defaultPaging);
                 this.visible = true;
@@ -82,13 +93,13 @@
             select: function (val) {
                 this.visible = false;
                 this.$emit('input', val.deviceid);
-                this.$emit('name', val.devicename);
+                this.name = val.devicename;
             },
             changeSelect: function (val) {
                 this.$emit('input', '');
-                this.$emit('name', '');
+                this.name = '';
             },
-        }
+        },
     }
 </script>
 <style lang="less" scoped>

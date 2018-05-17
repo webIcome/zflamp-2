@@ -126,7 +126,9 @@
                     ],
                 },
                 visible: false,
-                data: {},
+                data: {
+                    vendor: 1
+                },
                 ref: 'add',
                 lightControllerType: CommonConstant.lightControllerType,
                 sensorType: CommonConstant.sensorType,
@@ -246,7 +248,9 @@
                     if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = {};
+                    this.data = {
+                        vendor: 1
+                    };
                 }
             }
         }

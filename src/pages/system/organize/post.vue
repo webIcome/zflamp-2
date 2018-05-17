@@ -3,8 +3,8 @@
     <div class="organize-title">岗位信息 </div>
     <div class="organize-btns">
       <oper-post-component @initPaging="refreshPost" :company="company"></oper-post-component>
-      <copy-post-component @initPaging="refreshPost" :post="currentRow" :company="company"></copy-post-component>
-      <oper-post-component @initPaging="refreshPost" :edit="true" :post="currentRow" :company="company"></oper-post-component>
+      <copy-post-component @initPaging="refreshPost" :post="currentRow"></copy-post-component>
+      <oper-post-component @initPaging="refreshPost" :edit="true" :post="currentRow"></oper-post-component>
       <frozen-post-component @initPaging="refreshPost" :post="currentRow"></frozen-post-component>
     </div>
     <div class="table-div">

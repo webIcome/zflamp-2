@@ -36,6 +36,12 @@ export default {
             return res;
         })
     },
+    controlStation(body) {
+        return HttpClient.post('singleControl/batchApController', body).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
 }
 
 function showSuccess(res, msg) {
