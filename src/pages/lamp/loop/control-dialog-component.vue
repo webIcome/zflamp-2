@@ -7,17 +7,19 @@
                  :value="item.value"
                  :key="item.value"></el-option>
     </el-select>
-    <el-dialog title="控制回路控制器" :visible.sync="visible" center :width="'550px'" @close="clearValidate('controlDevice')">
-      <el-form label-width="170px" :model="operData" :rules="Rules" ref="controlDevice" class="el-form-default"
+    <el-dialog title="控制回路控制器" :visible.sync="visible" center :width="dialogWidth"
+               @close="clearValidate('controlDevice')">
+      <el-form :label-width="labelWidth" :model="operData" :rules="Rules" ref="controlDevice" class="el-form-default"
                :validate-on-rule-change="false">
-        <template v-if="operData.controltype == 5">
+        <el-form-item v-if="operData.controltype == 5" prop="taskid">
           <select-tasks-component v-model="operData.taskid"
-                                  :moduletype="moduleType.light"
+                                  :moduletype="moduleType.loop"
                                   :ids="ids"></select-tasks-component>
-        </template>
+        </el-form-item>
         <el-form-item v-show="operData.controltype == 6" label="输入心跳包周期" prop="heartperiod">
           <el-input style="width: 200px" type="text" v-model.trim.number="operData.heartperiod"></el-input>
           分钟
+
 
         </el-form-item>
       </el-form>
@@ -77,7 +79,7 @@
                 };
                 if (this.operData.controltype == 5) {
                     rules.taskid = [
-                        {required: true, message: '请选择任务'}
+                        {validator: this.validateTaskNumber, trigger: 'change'}
                     ];
                 }
                 if (this.operData.controltype == 7) {
@@ -92,6 +94,20 @@
                     ];
                 }
                 return rules;
+            },
+            dialogWidth: function () {
+                if (this.operData.controltype == 5) {
+                    return '550px'
+                } else {
+                    return '500px'
+                }
+            },
+            labelWidth: function () {
+                if (this.operData.controltype == 5) {
+                    return '0px'
+                } else {
+                    return '120px'
+                }
             }
         },
         created: function () {
@@ -116,12 +132,14 @@
                             data.heartperiod = this.operData.heartperiod;
                         }
                         if (this.isGroup) {
-                            GroupService.controlLoop(this.device.objectid, data).then(res => {
+                            data.groupids = this.ids.join(',');
+                            GroupService.controlLoop(data).then(res => {
                                 this.hideModal();
                                 this.initPaging();
                             })
                         } else {
-                            LoopService.control(this.device.deviceid, data).then(res => {
+                            data.deviceIds = this.ids.join(',');
+                            LoopService.controlLoops(data).then(res => {
                                 this.hideModal();
                                 this.initPaging();
                             })
@@ -139,6 +157,17 @@
             },
             clearValidate: function (formName) {
                 if (this.$refs[formName]) this.$refs[formName].clearValidate();
+            },
+            validateTaskNumber(rule, value, callback) {
+                if (!value) {
+                    new Error('至少下发2个任务')
+                } else if (value.split(',').length < 2) {
+                    callback(new Error('至少下发2个任务'))
+                } else if (value.split(',').length > 6) {
+                    callback(new Error('最多下发6个任务'))
+                } else {
+                    callback()
+                }
             },
             showModel(show) {
                 if (!show && this.operData.controltype && this.ids.length) {

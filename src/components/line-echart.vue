@@ -4,8 +4,8 @@
 <script>
     const Echarts = require('echarts/lib/echarts');
     require('echarts/lib/chart/line')
-//    require('echarts/lib/component/tooltip');
-//    require('echarts/lib/component/title');
+    require('echarts/lib/component/tooltip');
+    require('echarts/lib/component/title');
     require('echarts/lib/component/legend');
     import EchartOption from "../utils/echart-option"
     export default {

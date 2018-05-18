@@ -36,8 +36,8 @@
                     hasChecked: '${checked}/${total}'
                 },
                 props: {
-                    key: 'objectid',
-                    label: 'taskname'
+                    key: 'id',
+                    label: 'taskName'
                 },
                 selectedList: [],
                 selectDataList: [],
@@ -47,17 +47,9 @@
                 },
                 total: 0,
                 deviceType: {},
-                timedtasktotal: 0
-
             }
         },
         props: {
-            timedtasktotal: {
-                default: 0,
-            },
-            deviceid: {
-                default: '',
-            },
             moduletype: {
                 default: ''
             },
@@ -83,8 +75,7 @@
         methods: {
             initData: function () {
                 this.resetData();
-                this.searchParams.deviceid = this.deviceid;
-                this.searchParams.moduletype = this.moduletype;
+                this.searchParams.moduleType = this.moduletype;
                 this.findList(this.searchParams)
             },
             pagingEvent: function (pageNumber) {
@@ -93,7 +84,7 @@
                 this.findList(this.searchParams);
             },
             findList: function (params) {
-                TaskService.getUnSelectedList(params).then(data => {
+                TaskService.findList(params).then(data => {
                     this.searchParams.pageNum = data.pageNum;
                     this.searchParams.pages = data.pages;
                     this.searchParams.pageSize = data.pageSize;

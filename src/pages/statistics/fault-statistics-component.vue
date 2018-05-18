@@ -1,15 +1,9 @@
 <template>
   <div class="power-statistics">
     <div :ref="contentRef" class="power-statistics-content">
-      <div class="content-title">故障统计</div>
-      <div class="echart-content">
-        <div class="content-border left-top"></div>
-        <div class="content-border right-top"></div>
-        <div class="content-border left-bottom"></div>
-        <div class="content-border right-bottom"></div>
-        <div class="echart">
-          <line-echart-component v-if="visible" :data="data" :option="option"></line-echart-component>
-        </div>
+      <div style="padding-left: 16px; padding-top:13%"><span class="echart-title">故障统计</span></div>
+      <div class="echart">
+        <line-echart-component v-if="visible" :data="data" :option="option"></line-echart-component>
       </div>
     </div>
   </div>
@@ -20,41 +14,35 @@
         data() {
             return {
                 contentRef: 'contetn-ref',
-                data: [],
-                option: {},
                 visible: false
             }
         },
+        props: {
+            data: {
+                default: function () {
+                    return {title: [1, 1, 2, 3], value: [10, 12, 25, 5]}
+                }
+            }
+        },
+        computed: {
+            option: function () {
+                let option = {
+                    xName: '日',
+                    color: '#fff',
+                    ySplitLine: {show: true, width: 0.2, color: '#fff'},
+                    startColor: '#3866ea',
+                    endColor: '#2d3866ea',
+                }
+                return option;
+            }
+        },
         created() {
-            this.generateHeight();
+
         },
         mounted() {
             this.visible = true;
         },
         methods: {
-            generateHeight() {
-                this.data = {title: [1, 1, 2, 3], value: [10, 12, 25, 5]};
-                this.option = {
-                    xName: '日',
-                    color: '#fff',
-                    ySplitLine: {show: true, type: 'dashed', width: 1, color: '#fff'},
-                    line: {show: true},
-                    area: {
-                        color: {
-                            type: 'linear',
-                            x: 0,
-                            y: 0,
-                            x2: 0,
-                            y2: 1,
-                            colorStops: [{
-                                offset: 0.5, color: '#44B5FD'
-                            }, {
-                                offset: 1, color: '#235c87'
-                            }],
-                        }
-                    }
-                }
-            }
         }
     }
 </script>
@@ -67,21 +55,12 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: center;
+      /*justify-content: space-between;*/
       height: 100%;
-      .echart-content {
-        position: relative;
+      .echart {
+        padding: 30px 0 20px;
         height: 100%;
-        width: 110%;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-left: -9%;
-        .echart {
-          height: 100%;
-          width: 80%;
-        }
+        width: 100%;
       }
     }
   }

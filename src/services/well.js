@@ -17,30 +17,30 @@ export default {
         })
     },
     getDetail(id) {
-        return HttpClient.get('wellcover/findWellCoverInfoById/' + id).then(res => {
+        return HttpClient.get('wellcover/findWellCoverInfoById/' + id, option).then(res => {
             return res.data.data;
         })
     },
     add(body) {
-        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body).then(res => {
+        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body,option).then(res => {
             showSuccess(res);
             return res;
         })
     },
     edit(body) {
-        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body).then(res => {
+        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body,option).then(res => {
             showSuccess(res);
             return res;
         })
     },
     deleteDevice(ids) {
-        return HttpClient.post('wellcover/removeBatchWellCoverInfoByIds', {ids: ids}).then(res => {
+        return HttpClient.post('wellcover/removeBatchWellCoverInfoByIds', {ids: ids},option).then(res => {
             showSuccess(res);
             return res;
         })
     },
     control(id, body) {
-        return HttpClient.post('singleControl/lightController/' + id, body).then(res => {
+        return HttpClient.post('singleControl/lightController/' + id, body,option).then(res => {
             showSuccess(res);
             return res;
         })

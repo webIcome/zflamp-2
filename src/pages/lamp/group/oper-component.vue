@@ -11,7 +11,7 @@
           <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="归属基站：" prop="apid">
-          <select-area-component v-model="data.apid"
+          <select-area-component v-if="visible" v-model="data.apid"
                                  :companyid="data.companyid"></select-area-component>
         </el-form-item>
       </el-form>
@@ -87,7 +87,7 @@
                     if (valid) {
                         this.data.moduletype = this.moduletype;
                         GroupService.saveUpdate(this.data).then(res => {
-                            this.emitEditEvent();
+                            this.emitEvent();
                             this.hideModal();
                         });
                     }
@@ -96,11 +96,15 @@
             clearValidate() {
                 if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();
             },
-            emitAddEvent() {
-                this.$emit('initPaging')
+            emitEvent() {
+                if (this.edit) {
+                    this.$emit('initCurrentPaging')
+                } else {
+                    this.$emit('initPaging')
+                }
             },
             emitEditEvent() {
-                this.$emit('initCurrentPaging')
+
             },
             showModal() {
                 this.visible = true;

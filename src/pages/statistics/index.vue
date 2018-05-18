@@ -19,7 +19,9 @@
         <div class="echart-line-item">
           <power-statistics-component v-if="visible"></power-statistics-component>
         </div>
-        <div class="echart-line-item"></div>
+        <div class="echart-line-item">
+          <fault-statistics-component v-if="visible"></fault-statistics-component>
+        </div>
       </div>
     </div>
   </div>

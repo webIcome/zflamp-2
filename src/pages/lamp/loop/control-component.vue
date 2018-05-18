@@ -16,7 +16,7 @@
         <control-dialog-component :ids="ids" :items="searchItems" :isGroup="isGroup"></control-dialog-component>
       </div>
     </template>
-    <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
+    <el-dialog title="确定操作" :visible.sync="visible" center width="450px">
       <template v-if="operData.controltype == 2">
         <div class="text-center">
           <div class="dialog-warning"></div>
@@ -24,15 +24,15 @@
         <p class="title">您确认要获取所有线路状态吗？</p>
       </template>
       <template v-else-if="operData.controltype == 1">
-        <el-form label-width="170px" :model="operData" :rules="Rules"  ref="controlDevice" class="el-form-default" :validate-on-rule-change="false">
+        <el-form label-width="120px" :model="operData" :rules="Rules"  :ref="loopRef" class="el-form-default" >
           <el-form-item v-show="operData.controltype == 1" label="控制回路：" prop="loop">
             <template v-for="(item,index) in selectedLoops" >
               <div style="margin-bottom: 10px">
-                <el-select v-if="!isGroup" style="margin-right: 10px"  v-model="item.number" clearable placeholder="请选择某一线路">
+                <el-select style="width: 100px;margin-right: 10px"  v-model="item.number" clearable placeholder="请选择某一线路">
                   <el-option v-for="item in loopnum" :value="item" :label="item + ' 线路'" :key="item"></el-option>
                 </el-select>
-                <el-input v-else type="number" style="width: 100px; margin-right: 10px" v-model="item.number"></el-input>
-                <div style="display: inline-block;" v-if="operData.controltype==1">
+                <!--<el-input v-else type="number" style="width: 100px; margin-right: 10px" v-model="item.number"></el-input>-->
+                <div style="display: inline-block;">
                   <el-radio v-model="item.switchtype" :label='1'>开</el-radio>
                   <el-radio v-model="item.switchtype" :label='2'>关</el-radio>
                 </div>
@@ -74,9 +74,12 @@
                 Rules: {
                     controltype: [
                         {required: true, message: '请选择指令'},
-                        {required: true, message: '添加回路'}
+                    ],
+                    loop: [
+                        {required: true, message: '添加回路', trigger: 'change'}
                     ]
                 },
+                loopRef: 'loop-ref',
                 selectedLoops: [],
             }
         },
@@ -130,6 +133,13 @@
                 this.showModal();
             },
             controlDevice: function () {
+                if (this.operData.controltype == 1) {
+                    let filter;
+                    this.$refs[this.loopRef].validate(valid => {
+                            filter = valid;
+                    })
+                    if (!filter) return
+                }
                 let data = this.transformData(this.operData);
                 if (this.isGroup) {
                     data.groupids = this.ids.join(',');
@@ -180,7 +190,8 @@
                 this.$emit('initCurrentPaging')
             },
             resetData: function () {
-                this.operData = {}
+                this.operData = {};
+                this.selectedLoops = []
             }
 
         }

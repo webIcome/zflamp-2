@@ -211,7 +211,7 @@
                     case 5:
                     case 6:
                         rules.taskid = [
-                            {required: true, message: '请选择任务'}
+                            {validator: this.validateTaskNumber, trigger: 'change'}
                         ];
                         break;
                     case 7:
@@ -339,6 +339,17 @@
                 }
                 return Object.assign({}, data)
             },
+            validateTaskNumber(rule, value, callback) {
+                if (!value) {
+                    new Error('至少下发2个任务')
+                } else if (value.split(',').length < 2) {
+                    callback(new Error('至少下发2个任务'))
+                } else if (value.split(',').length > 6) {
+                    callback(new Error('最多下发6个任务'))
+                } else {
+                    callback()
+                }
+            },
             showModel(show) {
                 if (!show && this.operData.controltype && this.ids.length) {
                     this.visible = true;
@@ -347,6 +358,9 @@
             hideModal() {
                 this.visible = false;
             },
+            resetData() {
+                this.operData = {}
+            }
         }
     }
 </script>

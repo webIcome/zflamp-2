@@ -7,10 +7,12 @@ export default{
         if (option) {
             if (option.xName) lineOption.xAxis.name = option.xName;
             if (option.yName) lineOption.yAxis.name = option.yName;
-            if (option.startColor) lineOption.series[0].areaStyle.color.colorStops[0].color = option.startColor;
+            if (option.startColor) {
+                lineOption.series[0].areaStyle.color.colorStops[0].color = option.startColor;
+                lineOption.series[0].lineStyle.color = option.startColor;
+            }
             if (option.endColor) {
                 lineOption.series[0].areaStyle.color.colorStops[1].color = option.endColor;
-                lineOption.series[0].lineStyle.color = option.endColor;
             }
             if (option.color) {
                 lineOption.xAxis.nameTextStyle.color = option.color;
@@ -27,6 +29,7 @@ export default{
             }
             if (option.area) {
                 lineOption.series[0].areaStyle = option.area;
+                lineOption.series[0].lineStyle.color = option.area.color.colorStops[0].color;
             }
 
         }
@@ -50,6 +53,15 @@ export default{
     }
 }
 let defaultLineOption = {
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#6a7985'
+            }
+        }
+    },
     xAxis: {
         type: 'category',
         boundaryGap: false,
@@ -96,6 +108,7 @@ let defaultLineOption = {
     series: [{
         type: 'line',
         smooth: true,
+        name: '',
         areaStyle: {
             color: {
                 type: 'linear',
@@ -104,9 +117,9 @@ let defaultLineOption = {
                 x2: 0,
                 y2: 1,
                 colorStops: [{
-                    offset: 0.5, color: '#44B5FD'
+                    offset: 0.3, color: '#44B5FD'
                 }, {
-                    offset: 1, color: 'rgba(110,193,246, 0.17)'
+                    offset: 0.93, color: 'rgba(110,193,246, 0.17)'
                 }],
             }
         },
@@ -123,7 +136,8 @@ let defaultPieOption = {
     color: ['#5282E6', '#7654DF', '#FF6668', '#FF854A', '#5282E6'],
     tooltip: {
         trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
+        formatter: "{a} <br/>{b}: {c} ({d}%)",
+        // showContent: false
     },
     title: {
         text:'',

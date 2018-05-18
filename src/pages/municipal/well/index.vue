@@ -39,14 +39,14 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column min-width="100" prop="wellCoverName" label="设备名称"></el-table-column>
+      <el-table-column min-width="100" prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="compName" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
         <template slot-scope="scope">
           <span
-              :class="{'running-success': scope.row.status == 1, 'running-fail': scope.row.status != 1}">
-            <span class="running-icon"></span>{{scope.row.status | wellStatusNameConverter}}
+              :class="{'running-success': scope.row.status == 0, 'running-fail': scope.row.status != 0}">
+            <span class="running-icon"></span>{{scope.row.statusName}}
           </span>
         </template>
       </el-table-column>

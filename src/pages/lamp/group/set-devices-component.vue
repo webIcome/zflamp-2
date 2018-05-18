@@ -25,7 +25,8 @@
     import CommonConstant from "../../../constants/common";
     import TransferComponent from "./transfer-component";
     export default{
-        components: {TransferComponent}, name: 'selectDevicesComponent',
+        components: {TransferComponent},
+        name: 'selectDevicesComponent',
         data(){
             return {
                 dialogVisible: false,
@@ -60,9 +61,6 @@
             }
         },
         computed: {
-            editable: function () {
-                return this.moduletype && this.companyid
-            },
             showText: function () {
                 if (this.selectDataList.length) {
                     return this.selectDataList.length + '个设备';
@@ -93,8 +91,6 @@
             },
             showModal: function () {
                 this.resetData();
-                this.searchParams.exceptgroupid = this.group.objectid;
-                this.searchParams.apid = this.group.apid;
                 this.dialogVisible = true;
                 this.findList(this.searchParams)
             },
@@ -142,6 +138,7 @@
                 return fn;
             },
             initSelectDataList: function () {
+                this.selectedList = [];
                 this.selectDataList.forEach(item => {
                     this.selectedList.push(item.deviceid);
                 });
@@ -161,6 +158,10 @@
                     default:
                         break;
                 }
+                if (!Object.keys(this.moveItems).length) {
+                    this.dialogVisible = false;
+                    return;
+                }
                 fn({groupDeviceIds: this.transformDataToSend(this.moveItems)}).then(res => {
                     this.emitEditEvent();
                     this.dialogVisible = false;
@@ -175,12 +176,18 @@
             },
             resetData: function () {
                 this.initSelectDataList();
-                this.searchParams.dtype = 1;
-                this.searchParams.objectid = this.group.objectid;
+                this.moveItems = {};
+                this.searchParams.exceptgroupid = this.group.objectid;
+                this.searchParams.apid = this.group.apid;
             },
             emitEditEvent() {
                 this.$emit('initCurrentPaging')
             },
+        },
+        watch: {
+            group: function () {
+                this.getSelectedList()
+            }
         }
     }
 </script>

@@ -16,10 +16,10 @@
                 title: {
                     text:'',
                     left:'center',
-                    top:'45%',
+                    top: 'center',
                     textStyle:{
                         color:'#fff',
-                        fontSize:20,
+                        fontSize:14,
                         align:'center'
                     }
                 }
@@ -93,8 +93,7 @@
         },
         methods: {
             getTitle(title) {
-                this.title.text = title;
-                return this.title;
+                return Object.assign({},this.title,{text: title});
             }
         }
     }
@@ -103,7 +102,7 @@
   .fault-rate-content {
     /*align-self: flex-start;*/
     width: 100%;
-    height: 45%;
+    height: 50%;
     display: flex;
     justify-content: space-around;
   }

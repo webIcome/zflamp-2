@@ -11,20 +11,14 @@
     <div class="form-group">
       <label class="col-md-2 control-label">周期类型：</label>
       <div class="col-md-2 form-control-static">{{device.periodType | taskPeriodTypeNameConverter}}</div>
-      <label class="col-md-2 control-label">星期：</label>
-      <div class="col-md-2 form-control-static">{{device.weekArray | formWeek}}</div>
       <label class="col-md-2 control-label">任务执行时间：</label>
       <div class="col-md-2 form-control-static">{{device.executeHour}}点{{device.executeMinute}}分</div>
-    </div>
-    <div class="form-group">
-      <label class="col-md-2 control-label">间隔周期：</label>
-      <div class="col-md-2 form-control-static">{{device.intervalTime}} 分</div>
       <label class="col-md-2 control-label">亮度：</label>
       <div class="col-md-2 form-control-static">{{device.lightValue}} %</div>
-      <label class="col-md-2 control-label">归属企业：</label>
-      <div class="col-md-2 form-control-static">{{device.compName}}</div>
     </div>
     <div class="form-group">
+      <label class="col-md-2 control-label">归属企业：</label>
+      <div class="col-md-2 form-control-static">{{device.compName}}</div>
       <label class="col-md-2 control-label">创建日期：</label>
       <div class="col-md-2 form-control-static">{{device.createtime | formDate}}</div>
       <label class="col-md-2 control-label">修改日期：</label>

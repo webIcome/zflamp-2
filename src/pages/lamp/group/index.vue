@@ -30,7 +30,6 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column min-width="100" prop="groupname" label="组名称"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
-      <el-table-column prop="loopcontrol" label="回路状态"></el-table-column>
       <el-table-column label="设备列表">
         <template slot-scope="scope">
           <set-devices-component @initCurrentPaging="pagingEvent"
@@ -79,7 +78,7 @@
             controlLoopComponent,
             SetDevicesComponent
         },
-        name: 'lightPage',
+        name: 'groupPage',
         data() {
             return {
                 searchParams: {},
@@ -106,7 +105,7 @@
         },
         methods: {
             initList() {
-                this.findList(Object.assign(this.defaultPaging, {moduletype: this.moduletype}));
+                this.findList(Object.assign(this.searchParams,this.defaultPaging, {moduletype: this.moduletype}));
             },
             initCompanies() {
                 this.$globalCache.companies.then(companies => {
@@ -138,12 +137,13 @@
                 Object.keys(this.searchParams).forEach(key => {
                     this.searchParams[key] = '';
                 });
+                this.searchParams.moduletype = this.moduletype;
                 this.initList();
             },
             handleSelectionChange(val) {
                 this.selectionList = val;
                 this.selectionIds = val.map(item => {
-                    return item.deviceid;
+                    return item.objectid;
                 })
             }
         }
