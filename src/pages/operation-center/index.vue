@@ -7,23 +7,25 @@
     </div>
     <div class="operation-item">
       <div class="operation-left">
-        <fault-rate-component v-if="visible"></fault-rate-component>
+        <fault-rate-component v-if="visible" :data="faultRate"></fault-rate-component>
       </div>
       <div class="operation-middle">
-        <center-rate-component v-if="visible"></center-rate-component>
+        <center-rate-component v-if="visible" :lightData="lightOnline" :apData="apOnline" :wellData="wellOnline"></center-rate-component>
       </div>
       <div class="operation-right">
-        <power-statistics-component v-if="visible"></power-statistics-component>
+        <power-statistics-component v-if="visible" :data="powerStatistics"></power-statistics-component>
       </div>
     </div>
     <div class="operation-empty"></div>
     <div class="operation-item operation-bottom">
       <div class="operation-left">
-        <light-rate-component v-if="visible"></light-rate-component>
+        <light-rate-component v-if="visible" :data="lightRate"></light-rate-component>
       </div>
-      <div class="operation-middle"></div>
+      <div class="operation-middle">
+        <console-component v-if="visible"></console-component>
+      </div>
       <div class="operation-right">
-        <fault-statistics-component v-if="visible"></fault-statistics-component>
+        <fault-statistics-component v-if="visible" :data="lightStatistics"></fault-statistics-component>
       </div>
     </div>
     <div class="operation-empty"></div>
@@ -35,10 +37,12 @@
   import lightRateComponent from './light-rate-component.vue'
   import faultStatisticsComponent from "./fault-statistics-component.vue"
   import centerRateComponent from "./center-rate-component.vue"
+  import ConsoleComponent from "./console-component";
+  import Service from '../../services/operation-center'
   export default {
       name: 'operationCenterPage',
       components: {
-          faultRateComponent,
+          ConsoleComponent, faultRateComponent,
           powerStatisticsComponent,
           lightRateComponent,
           faultStatisticsComponent,
@@ -48,7 +52,39 @@
           return {
               test: 'test',
               visible: false,
+              data: {},
+              time: 180000,
+              timer: '',
+              apOnline: [
+                  {value: 0, name: '在线'},
+                  {value: 0, name: '离线'}
+              ],
+              faultRate: [
+                  {value: 0, name: '故障'},
+                  {value: 0, name: '正常'}
+              ],
+              lightOnline: [
+                  {value: 0, name: '在线'},
+                  {value: 0, name: '离线'}
+              ],
+              wellOnline: [
+                  {value: 0, name: '在线'},
+                  {value: 0, name: '离线'}
+              ],
+              lightRate: [
+                  {value: 0, name: '亮灯'},
+                  {value: 0, name: '灭灯'}
+              ],
+              powerStatistics: [],
+              lightStatistics: []
           }
+      },
+      created() {
+          this.initData();
+          this.timer = setInterval(this.initData.bind(this), this.time)
+      },
+      computed:{
+
       },
       mounted() {
           this.$nextTick(() => {
@@ -57,9 +93,50 @@
           })
       },
       methods: {
-          generateHeight() {1
+          initData() {
+              Service.getApLineRate().then(data => {
+                  this.apOnLine = [
+                      {value: data, name: '在线'},
+                      {value: 100 - data, name: '离线'}
+                  ]
+              });
+              Service.getLightLineRate().then(data => {
+                  this.lightOnlineRate = [
+                      {value: data, name: '在线'},
+                      {value: 100 - data, name: '离线'}
+                  ]
+              });
+              Service.getWellLineRate().then(data => {
+                  this.wellOnLineRate = [
+                      {value: data, name: '在线'},
+                      {value: 100 - data, name: '离线'}
+                  ]
+              })
+              Service.getFaultRate().then(data => {
+                  this.faultRate = [
+                      {value: data, name: '故障'},
+                      {value: 100 - data, name: '正常'}
+                  ]
+              });
+              Service.getLightRate().then(data => {
+                  this.lightRate = [
+                      {value: data, name: '亮灯'},
+                      {value: 100 - data, name: '灭灯'}
+                  ]
+              });
+              Service.getLightStatistics(1).then(data => {
+                  this.lightStatistics = data;
+              });
+              Service.getPowerStatistics(1).then(data => {
+                  this.powerStatistics = data
+              });
+          },
+          generateHeight() {
               this.$refs[this.test].style.height = document.body.clientWidth * 1080/1500 + 'px';
-          }
+          },
+      },
+      destroyed() {
+          clearInterval(this.timer);
       }
   }
 </script>
@@ -88,15 +165,18 @@
     .operation-right,
     .operation-left {
       /*flex: 1 1 auto;*/
-      width: 27.67%;
+      width: 27%;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
+    .operation-right {
+      width: 28%;
+    }
     .operation-middle {
       /*flex: 1.614 1 auto;*/
-      width: 44.7%;
+      width: 45%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -111,9 +191,11 @@
     color: #31dbff;
     font-size: 26px;
     text-align: left;
-    padding-left: 30px;
-    margin-bottom: 7%;
+    padding: 15px 30px;
+    margin-bottom: 15px;
     letter-spacing: 5px;
+    background: linear-gradient(to right, #07486f, rgba(7,72,111,0.2));
+    width: 100%;
   }
   .content-border {
     position: absolute;
@@ -125,28 +207,28 @@
       border-bottom: 0;
       border-right: 0;
       top: 0;
-      left: 10%;
+      left: 0;
       animation-delay: 0s;
     }
     &.left-bottom {
       border-top: 0;
       border-right: 0;
       bottom: 0;
-      left: 10%;
+      left: 0;
       animation-delay: 0.5s;
     }
     &.right-top {
       border-bottom: 0;
       border-left: 0;
       top: 0;
-      right: 10%;
+      right: 0;
       animation-delay: 1s;
     }
     &.right-bottom {
       border-top: 0;
       border-left: 0;
       bottom: 0;
-      right: 10%;
+      right: 0;
       animation-delay: 1.5s;
     }
   }

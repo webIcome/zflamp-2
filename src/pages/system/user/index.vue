@@ -31,10 +31,11 @@
       <el-table-column prop="email" label="电子邮箱"></el-table-column>
       <el-table-column label="有效期至"><template slot-scope="scope">{{scope.row.expiretime | formDate}}</template></el-table-column>
       <el-table-column label="创建时间"><template slot-scope="scope">{{scope.row.createtime | formDate}}</template></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="170">
         <template slot-scope="scope">
-          <el-row type="flex">
+          <el-row type="flex" justify="space-between">
             <oper-component ref="oper" :user="scope.row" :companies="companies" :edit="true" @initCurrentPaging="pagingEvent"></oper-component>
+            <reset-password-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></reset-password-component>
             <delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
@@ -59,9 +60,10 @@
     import CommonConstant from "../../../constants/common";
     import deleteComponent from "./delete-component.vue"
     import operComponent from "./oper-component.vue"
+    import ResetPasswordComponent from "./reset-password-component";
     export default {
         components: {
-            deleteComponent,
+            ResetPasswordComponent, deleteComponent,
             operComponent
         },
         name: 'taskPage',

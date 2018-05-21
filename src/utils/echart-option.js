@@ -20,6 +20,17 @@ export default{
                 lineOption.yAxis.nameTextStyle.color = option.color;
                 lineOption.yAxis.axisLabel.color = option.color;
             }
+            if (option.nameColor) {
+                lineOption.xAxis.nameTextStyle.color = option.nameColor;
+                lineOption.yAxis.nameTextStyle.color = option.nameColor;
+            }
+            if (option.nameFontSize) {
+                lineOption.xAxis.nameTextStyle.fontSize = option.nameFontSize;
+                lineOption.yAxis.nameTextStyle.fontSize = option.nameFontSize;
+            }
+            if (option.namePadding) {
+                lineOption.yAxis.nameTextStyle.padding = option.namePadding;
+            }
             if (option.ySplitLine) {
                 lineOption.yAxis.splitLine.lineStyle = option.ySplitLine;
             }
@@ -136,14 +147,13 @@ let defaultPieOption = {
     color: ['#5282E6', '#7654DF', '#FF6668', '#FF854A', '#5282E6'],
     tooltip: {
         trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)",
+        formatter: "{a} <br/>{b}: {d}%",
         // showContent: false
     },
     title: {
         text:'',
         left:'center',
-        top:'45%',
-        // padding:[24,0],
+        top:'center',
         textStyle:{
             color:'#fff',
             fontSize:20,

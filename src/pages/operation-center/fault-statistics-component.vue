@@ -8,7 +8,7 @@
         <div class="content-border left-bottom"></div>
         <div class="content-border right-bottom"></div>
         <div class="echart">
-          <line-echart-component v-if="visible" :data="data" :option="option"></line-echart-component>
+          <line-echart-component v-if="visible" :data="dataUse" :option="option"></line-echart-component>
         </div>
       </div>
     </div>
@@ -20,25 +20,14 @@
         data() {
             return {
                 contentRef: 'contetn-ref',
-                data: [],
-                option: {},
-                visible: false
-            }
-        },
-        created() {
-            this.generateHeight();
-        },
-        mounted() {
-            this.visible = true;
-        },
-        methods: {
-            generateHeight() {
-                this.data = {title: [1, 1, 2, 3], value: [10, 12, 25, 5]};
-                this.option = {
+                option: {
                     xName: '日',
-                    color: '#fff',
-                    ySplitLine: {show: true, type: 'dashed', width: 1, color: '#fff'},
-                    line: {show: true},
+                    yName: '次数',
+                    nameColor: '#fff',
+                    nameFontSize: '16',
+                    namePadding: [0,0,0,0],
+                    ySplitLine: {show: false, type: 'dashed', width: 1, color: '#555'},
+                    line: {show: true, lineStyle: {color: '#5c859b'}},
                     area: {
                         color: {
                             type: 'linear',
@@ -53,7 +42,44 @@
                             }],
                         }
                     }
+                },
+                visible: false
+            }
+        },
+        props: {
+            data: {
+                default: function () {
+                    return []
                 }
+            }
+        },
+        computed: {
+            dataUse: function () {
+                let value = [];
+                let title = [];
+                this.data.forEach(item => {
+                    value.push(item.num);
+                    title.push(item.name)
+                });
+                return {
+                    title: title,
+                    value: value
+                }
+            }
+        },
+        created() {
+        },
+        mounted() {
+            this.visible = true;
+        },
+        methods: {
+        },
+        watch: {
+            data: function (newVal) {
+                this.visible = false;
+                setTimeout(() => {
+                    this.visible = true;
+                })
             }
         }
     }
@@ -62,25 +88,28 @@
   .power-statistics {
     height: 100%;
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
     .power-statistics-content {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: center;
+      justify-content: flex-start;
       height: 100%;
+      width: 90%;
       .echart-content {
         position: relative;
         height: 100%;
-        width: 110%;
+        width: 100%;
         text-align: center;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-left: -9%;
+        border: 1px solid #419ed0;
+        background: linear-gradient(to left, rgba(14,62,119,0.1), rgba(14,62,119,0.5));
         .echart {
           height: 100%;
-          width: 80%;
+          width: 100%;
         }
       }
     }
