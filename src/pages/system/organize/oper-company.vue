@@ -7,7 +7,7 @@
         <el-form-item label="项目名称：" prop="companyname">
           <el-input :span="12" v-model.trim="data.companyname" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item v-if="!edit" label="归属项目：" prop="parentid">
+        <el-form-item label="归属项目：" prop="parentid">
           <tree-select-component v-model="data.parentid" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="状态：" prop="lightControllerType">
@@ -39,14 +39,14 @@
                 ref: 'edit',
                 companies:[],
                 companyFlag: CommonConstant.companyFlag,
-                /*Rules: {
+                Rules: {
                     companyname: [
                         {required: true, message: '项目名称'}
                     ],
                     parentid: [
                         {required: true, message: '归属项目'}
                     ],
-                }*/
+                }
             }
         },
         props: {
@@ -71,7 +71,7 @@
                     return '创建项目'
                 }
             },
-            Rules: function () {
+         /*   Rules: function () {
                 let rules = {
                     companyname: [
                         {required: true, message: '项目名称'}
@@ -83,7 +83,7 @@
                     ]
                 }
                 return rules
-            }
+            }*/
         },
         methods: {
             initData() {

@@ -15,7 +15,7 @@
             <el-option v-for="type in vendor" :value="type.value" :key="type.value" :label="type.text"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="归属企业：" prop="companyid">
+        <el-form-item label="归属项目：" prop="companyid">
           <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="地理位置：" prop="position">

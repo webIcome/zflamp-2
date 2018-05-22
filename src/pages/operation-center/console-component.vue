@@ -2,9 +2,11 @@
   <div class="console-center">
     <div class="console-content">
       <div class="console-scroll" id="console-scroll">
-        <template v-for="item in datas">
-          <div class="console-item">{{item}}</div>
-        </template>
+        <div :ref="test">
+          <template v-for="item in datas">
+            <div class="console-item">{{item}}</div>
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -14,6 +16,7 @@
         name: 'consoleComponent',
         data() {
             return {
+                test: 'test-ref',
                 datas: [1,1,1,1,1,11,1,1,1,1,1,1,1],
                 length: 100,
             }
@@ -26,7 +29,6 @@
             }
         },
         created() {
-
         },
         methods: {
         },
@@ -38,7 +40,7 @@
                             this.datas.pop();
                         }
                     });
-                    this.datas.push(item);
+                    this.datas.unshift(item);
                 }
             }
         }
@@ -64,14 +66,17 @@
         height: 80%;
         width: 100%;
         overflow-y: scroll;
+        &::-webkit-scrollbar {
+          width: 5px;
+          height: 5px;
+          cursor: pointer;
+        }
        &::-webkit-scrollbar-thumb {
          border-radius: 10px;
          box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-         background-color: #564;
+         background-color: #2ca1b9;
         }
         &::-webkit-scrollbar-track {
-           box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-           border-radius: 10px;
            background-color: transparent;
         }
         .console-item{

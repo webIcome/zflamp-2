@@ -96,26 +96,7 @@
             getTitle(title) {
                 return Object.assign({},this.title,{text: title});
             },
-            initData() {
-                Service.getApLineRate().then(data => {
-                    this.apData = [
-                        {value: data, name: '在线'},
-                        {value: 100 - data, name: '离线'}
-                    ]
-                });
-                Service.getLightLineRate().then(data => {
-                    this.lightData = [
-                        {value: data, name: '在线'},
-                        {value: 100 - data, name: '离线'}
-                    ]
-                });
-                Service.getWellLineRate().then(data => {
-                    this.apData = [
-                        {value: data, name: '在线'},
-                        {value: 100 - data, name: '离线'}
-                    ]
-                });
-            }
+
         },
         watch: {
             apData: function (newVal) {

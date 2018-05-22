@@ -1,7 +1,9 @@
 <template>
   <div class="power-statistics">
     <div :ref="contentRef" class="power-statistics-content">
-      <div style="padding-left: 16px; padding-top:13%"><span class="echart-title">用电量统计</span></div>
+      <div style="padding-left: 16px; padding-top:13%"><span class="echart-title">用电量统计</span>
+        <el-radio v-model="type" :label="1" border>日</el-radio>
+        <el-radio v-model="type" :label="2" border>月</el-radio></div>
       <div class="echart">
         <line-echart-component v-if="visible" :data="data" :option="option"></line-echart-component>
       </div>
@@ -9,26 +11,26 @@
   </div>
 </template>
 <script>
+    import Service from '../../services/operation-center'
     export default {
         name: 'powerStatisticsComponent',
         data() {
             return {
                 contentRef: 'contetn-ref',
-                visible: false
-            }
-        },
-        props: {
-            data: {
-                default: function () {
-                    return {title: [1, 1, 2, 3], value: [10, 12, 25, 5]}
+                visible: false,
+                type: 1,
+                data: {title: [], value: []},
+                Type: {
+                    1: '日',
+                    2: '月',
                 }
             }
         },
         computed: {
             option: function () {
                 let option = {
-                    xName: '日',
-                    color: '#fff',
+                    xName: this.Type[this.type],
+                    nameColor: '#fff',
                     ySplitLine: {show: true, width: 0.2, color: '#fff'},
                     area: {
                         color: {
@@ -43,6 +45,12 @@
                                 offset: 0.93, color: 'rgba(110,193,246,0.17)'
                             }],
                         }
+                    },
+
+                }
+                if (this.type == 2) {
+                    option.grid = {
+                        left: '15%'
                     }
                 }
                 return option;
@@ -52,9 +60,30 @@
 
         },
         mounted() {
-            this.visible = true;
+            this.getData(this.type)
         },
         methods: {
+            getData(type) {
+                this.visible = false;
+                Service.getPowerStatistics(type).then(data => {
+                    let value = [];
+                    let title = [];
+                    data.forEach(item => {
+                        value.push(item.num);
+                        title.push(item.name)
+                    });
+                    this.data = {
+                        title: title,
+                        value: value
+                    }
+                    this.visible = true;
+                })
+            }
+        },
+        watch: {
+            type: function (newVal) {
+                this.getData(newVal);
+            }
         }
     }
 </script>

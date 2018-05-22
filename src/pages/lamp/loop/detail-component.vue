@@ -17,7 +17,7 @@
         <div class="col-md-2 form-control-static">{{device.loopnum}}</div>
       </div>
       <div class="form-group">
-        <label class="col-md-2 control-label">归属企业：</label>
+        <label class="col-md-2 control-label">归属项目：</label>
         <div class="col-md-2 form-control-static">{{device.companyname}}</div>
         <label class="col-md-2 control-label">地理位置：</label>
         <div class="col-md-2 form-control-static">{{device.position}}</div>

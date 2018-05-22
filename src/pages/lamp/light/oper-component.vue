@@ -19,7 +19,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="归属企业：" prop="companyid">
+            <el-form-item label="归属项目：" prop="companyid">
               <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
             </el-form-item>
           </el-col>

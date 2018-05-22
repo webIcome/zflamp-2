@@ -42,6 +42,9 @@ export default{
                 lineOption.series[0].areaStyle = option.area;
                 lineOption.series[0].lineStyle.color = option.area.color.colorStops[0].color;
             }
+            if (option.grid) {
+                lineOption.grid = option.grid;
+            }
 
         }
         lineOption.xAxis.data = data.title;

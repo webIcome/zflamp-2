@@ -62,39 +62,39 @@
                 navs: [],
                 localNavs: [
                     {
-                        modulename: '系統分析',
+                        modulename: '统计分析',
                         ename: 'analyze',
-                        modulecode: '',
+                        modulecode: 'STATISTICALANALYSIS',
                         url: 'analyze',
                         children: []
                     },
                     {
                         modulename: '路灯',
                         ename: 'light',
-                        modulecode: 'LAMPSBGL',
+                        modulecode: 'LAMP',
                         children: [
-                            {modulename: '任务管理', modulecode: '3', url: 'task'},
-                            {modulename: '灯控器', modulecode: '1', url: 'light'},
-                            {modulename: '回路控制器', modulecode: '2', url: 'loop'},
-                            {modulename: '灯具&电源', modulecode: '4', url: 'lamps'},
+                            {modulename: '任务管理', modulecode: 'LAMPTASK', url: 'task'},
+                            {modulename: '灯控器', modulecode: 'LAMPLIGHTCONTROL', url: 'light'},
+                            {modulename: '回路控制器', modulecode: 'LAMPLOOPCONTROL', url: 'loop'},
+                            {modulename: '灯具&电源', modulecode: 'LAMPSUPPLYLAT', url: 'lamps'},
                         ]
                     },
                     {
                         modulename: '市政终端',
                         ename: 'municipal',
-                        modulecode: 'LAMPCLGL',
+                        modulecode: 'MUNICIPAL',
                         children: [
-                            {modulename: '井盖', modulecode: '3', url: 'well'},
+                            {modulename: '井盖', modulecode: 'MUNICIPALCOVER', url: 'well'},
                         ]
                     },
                     {
                         modulename: '系统管理',
                         ename: 'system',
-                        modulecode: 'LAMPNHFX',
+                        modulecode: 'SYSTEMMANAGEMENT',
                         children: [
-                            {modulename: '项目管理', url: 'organize', modulecode: 'INETLIGHTZZGL'},
-                            {modulename: '用户管理', url: 'user', modulecode: 'INETLIGHTYHGL'},
-                            {modulename: '操作日志', url: 'log', modulecode: 'INETLIGHTCZRZ'},
+                            {modulename: '项目管理', url: 'organize', modulecode: 'ZZGL'},
+                            {modulename: '用户管理', url: 'user', modulecode: 'YHGL'},
+                            {modulename: '操作日志', url: 'log', modulecode: 'CZRZ'},
                         ]
                     },
                 ]
@@ -161,25 +161,35 @@
             },
             getMenus(){
                 let currentHash = window.location.hash.substring(window.location.hash.indexOf('/'));
-                HomeService.getMenus(1).then(list => {
-                    /*this.navs = list.map(item => {
-                        let children = [];
+                this.navs = this.localNavs;
+                this.isActiveHide();
+                this.initMenus(currentHash);
+                /*HomeService.getMenus(1).then(list => {
+                    this.navs = list.map(item => {
                         this.localNavs.forEach((nav, index) => {
                             if (item.modulecode == nav.modulecode) {
-                                children = nav.children;
                                 item.ename = nav.ename;
-                                if (!children.length) {
+                                if (!item.children.length) {
                                     item.url = nav.url;
+                                } else {
+                                    item.children = item.children.map(i => {
+                                        nav.children.forEach(localItem => {
+                                            if (localItem.modulecode == i.modulecode) {
+                                                i.ename = localItem.ename;
+                                                i.url = localItem.url;
+                                            }
+                                        })
+                                        return i
+                                    });
                                 }
                             }
+
                         });
-                        item.children = children;
                         return item;
-                    });*/
-                    this.navs = this.localNavs;
+                    });
                     this.isActiveHide();
                     this.initMenus(currentHash);
-                })
+                })*/
             }
         }
     }

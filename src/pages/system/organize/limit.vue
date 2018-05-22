@@ -14,8 +14,8 @@
           <div class="limits-children">
             <template v-for="item in limit.children">
               <div class="limits-children-item">
-                <span @click="unSelectLimit(item)" v-if="item.checked" class="limits-input-checked"></span>
-                <span @click="selectLimit(item)"v-else class="limits-input"></span>
+                <span @click="unSelectLimit(item, limit)" v-if="item.checked" class="limits-input-checked"></span>
+                <span @click="selectLimit(item, limit)"v-else class="limits-input"></span>
                 {{item.modulename}}</div>
             </template>
           </div>
@@ -60,9 +60,12 @@
                 });
                 return array
             },
-            selectLimit(item) {
+            selectLimit(item, parent) {
                 this.isEdit = true;
                 item.checked = true;
+                if (parent) {
+                    parent.checked = true;
+                }
                 function exec(list) {
                     if (list && list.length) {
                         list.forEach(item => {
@@ -74,7 +77,7 @@
                 }
                 exec(item.children);
             },
-            unSelectLimit(item) {
+            unSelectLimit(item, parent) {
                 this.isEdit = true;
                 item.checked = false;
                 function exec(list) {
@@ -87,6 +90,12 @@
                     }
                 }
                 exec(item.children);
+                if (parent) {
+                   let filter = parent.children.every(item => {
+                        return !item.checked
+                    })
+                    if (filter) parent.checked = false;
+                }
             },
             updateLimit: function () {
                 let ids = this.getIds(this.list);

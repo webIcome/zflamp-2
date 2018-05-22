@@ -4,7 +4,7 @@
     <div v-else class="add-btn" @click="showModal"><span class="add-icon default-icon"></span>创建</div>
     <el-dialog :title="title" :visible.sync="visible" center :width="'600px'">
       <el-form label-width="140px" :model="data" :rules="Rules" :ref="ref" class="el-form-default">
-        <el-form-item label="归属企业：" prop="companyid">
+        <el-form-item label="归属项目：" prop="companyid">
           <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="归属岗位：" prop="postid">

@@ -1,11 +1,12 @@
 <template>
   <div :ref="contentRef" class="fault-rate-content">
-    <pie-echart-component v-if="visible" :data="apUseData" :option="apOption"></pie-echart-component>
-    <pie-echart-component v-if="visible" :data="lightUseData" :option="lightOption"></pie-echart-component>
-    <pie-echart-component v-if="visible" :data="wellUseData" :option="wellOption"></pie-echart-component>
+    <pie-echart-component v-if="visible" :data="apData" :option="apOption"></pie-echart-component>
+    <pie-echart-component v-if="visible" :data="lightData" :option="lightOption"></pie-echart-component>
+    <pie-echart-component v-if="visible" :data="wellData" :option="wellOption"></pie-echart-component>
   </div>
 </template>
 <script>
+    import Service from '../../services/operation-center'
     export default {
         name: 'onlineRateComponent',
         data() {
@@ -22,85 +23,75 @@
                         fontSize:14,
                         align:'center'
                     }
-                }
+                },
+                apData: [
+                    {value: 0, name: '在线'},
+                    {value: 0, name: '离线'}
+                ],
+                lightData: [
+                    {value: 0, name: '在线'},
+                    {value: 0, name: '离线'}
+                ],
+                wellData: [
+                    {value: 0, name: '在线'},
+                    {value: 0, name: '离线'}
+                ],
+                apOption: {},
+                lightOption: {},
+                wellOption: {}
             }
         },
-        props: {
-            apData: {
-                default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'ss'},
-                    ]
-                }
-            },
-            lightData: {
-                default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'ss'},
-                    ]
-                }
-            },
-            wellData: {
-                default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'ss'},
-                    ]
-                }
-            },
-        },
-        computed: {
-            apUseData: function () {
-                return this.apData;
-            },
-            lightUseData: function () {
-                return this.lightData;
-            },
-            wellUseData: function () {
-                return this.wellData;
-            },
-            apOption: function () {
-                let option ={
-                    name: 'test',
-                    color: ['#5282E6', '#999'],
-                    title: this.getTitle('a\n\n基站在线率')
-                };
-                return option;
-            },
-            lightOption: function () {
-                let option ={
-                    name: 'test',
-                    color: ['#5282E6', '#999'],
-                    title: this.getTitle('灯控器在线率')
-                };
-                return option;
-            },
-            wellOption: function () {
-                let option ={
-                    name: 'test',
-                    color: ['#5282E6', '#999'],
-                    title: this.getTitle('终端在线率')
-                };
-                return option;
-            },
-        },
         created() {
+
         },
         mounted() {
-            this.visible = true;
+            this.initData();
         },
         methods: {
             getTitle(title) {
                 return Object.assign({},this.title,{text: title});
+            },
+            initData() {
+                Promise.all([Service.getApLineRate(), Service.getLightLineRate(), Service.getWellLineRate()])
+                    .then(([apData, lightData, wellData]) => {
+                    this.apData = [
+                        {value: apData, name: '在线'},
+                        {value: 100 - apData, name: '离线'}
+                    ];
+                    this.lightData = [
+                        {value: lightData, name: '在线'},
+                        {value: 100 - lightData, name: '离线'}
+                    ];
+                    this.wellData = [
+                        {value: wellData, name: '在线'},
+                        {value: 100 - wellData, name: '离线'}
+                    ];
+                    this.initOption(apData, lightData, wellData);
+                    this.visible = true;
+                })
+            },
+            initOption(apData, lightData, wellData) {
+                this.apOption ={
+                    name: '基站',
+                    color: ['#5282E6', '#999'],
+                    title: this.getTitle(apData +'%\n\n基站在线率')
+                };
+                this.lightOption ={
+                    name: '灯控器',
+                    color: ['#5282E6', '#999'],
+                    title: this.getTitle(lightData +'%\n\n灯控器在线率')
+                };
+                this.wellOption ={
+                    name: '终端',
+                    color: ['#5282E6', '#999'],
+                    title: this.getTitle(wellData +'%\n\n终端在线率')
+                }
             }
         }
     }
 </script>
 <style lang="less" scoped>
   .fault-rate-content {
-    /*align-self: flex-start;*/
     width: 100%;
     height: 50%;
     display: flex;

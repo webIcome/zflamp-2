@@ -11,7 +11,7 @@
           <el-input v-if="!edit" type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
           <div v-else>{{data.sn}}</div>
         </el-form-item>
-        <el-form-item label="归属企业：" prop="compId">
+        <el-form-item label="归属项目：" prop="compId">
           <tree-select-component v-model="data.compId" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="地理位置：" prop="address">

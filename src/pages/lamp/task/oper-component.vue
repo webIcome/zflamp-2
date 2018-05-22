@@ -7,7 +7,7 @@
         <el-form-item label="任务名称：" prop="taskName">
           <el-input type="text" v-model.trim="data.taskName" placeholder="输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="归属企业：" prop="compId">
+        <el-form-item label="归属项目：" prop="compId">
           <tree-select-component v-model="data.compId" :list="companies"></tree-select-component>
         </el-form-item>
         <el-form-item label="任务类型：" prop="moduleType">

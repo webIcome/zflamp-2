@@ -5,49 +5,38 @@
         <pie-echart-component v-if="visible" :data="data" :option="option"></pie-echart-component>
       </div>
       <div class="legend">
-        <div class="normal"><span class="icon"></span>亮灯数量</div>
-        <div class="v-fault"><span class="icon"></span>灭灯数量</div>
+        <div class="normal"><span class="icon"></span>亮灯</div>
+        <div class="v-fault"><span class="icon"></span>灭灯</div>
       </div>
     </div>
   </div>
 </template>
 <script>
+    import Service from '../../services/operation-center'
     export default {
-        name: 'faultRateComponent',
+        name: 'lightRateComponent',
         data() {
             return {
                 contentRef: 'contetn-ref',
                 visible: false,
-                title: {
-                    text:'亮灯率',
-                    left:'center',
-                    top:'45%',
-                    textStyle:{
-                        color:'#fff',
-                        fontSize:20,
-                        align:'center'
+                option: {
+                    name: '灯控器',
+                    color: ['#ffc500', '#999'],
+                    title: {
+                        text:'亮灯率',
+                        left:'center',
+                        top:'center',
+                        textStyle:{
+                            color:'#fff',
+                            fontSize:20,
+                            align:'center'
+                        }
                     }
-                }
-            }
-        },
-        props: {
-            data: {
-                default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'aaa'},
-                    ]
-                }
-            }
-        },
-        computed: {
-            option: function () {
-                let option = {
-                    name: 'test',
-                    color: ['#5282E6', '#999'],
-                    title: this.title
-                };
-                return option;
+                },
+                data: [
+                    {value: 0, name: '亮灯'},
+                    {value: 0, name: '灭灯'},
+                ]
             }
         },
         created() {
@@ -57,7 +46,14 @@
             this.visible = true;
         },
         methods: {
-
+            initData() {
+                Service.getLightRate().then(data => {
+                    this.data = [
+                        {value: data, name: '亮灯'},
+                        {value: 100 - data, name: '灭灯'}
+                    ]
+                })
+            }
         }
     }
 </script>
@@ -65,7 +61,6 @@
   .fault-rate {
     height: 100%;
     width: 100%;
-    text-align: center;
     .fault-rate-content {
       position: relative;
       display: flex;
@@ -74,10 +69,8 @@
       justify-content: center;
       height: 100%;
       .echart {
-        height: 40%;
         width: 100%;
-        flex: 3;
-        text-align: center;
+        flex: 4;
       }
       .legend {
         flex: 1;
@@ -88,8 +81,7 @@
         width: 80%;
         color: #fff;
         letter-spacing: 2px;
-        align-content: space-around;
-        padding-top: 40px;
+        align-items: center;
         .normal,
         .v-fault{
           font-size: 14px;

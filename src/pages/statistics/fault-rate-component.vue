@@ -6,63 +6,57 @@
       </div>
       <div class="legend">
         <div class="normal"><span class="icon"></span>正常</div>
-        <div class="v-fault"><span class="icon"></span>电压异常</div>
-        <div class="p-fault"><span class="icon"></span>电源故障</div>
-        <div class="a-fault"><span class="icon"></span>电流异常</div>
         <div class="fault"><span class="icon"></span>故障</div>
       </div>
     </div>
   </div>
 </template>
 <script>
+  import Service from '../../services/operation-center'
     export default {
         name: 'faultRateComponent',
         data() {
             return {
                 contentRef: 'content-ref',
                 visible: false,
-                title: {
-                    text:'故障率',
-                    left:'center',
-                    top:'45%',
-                    textStyle:{
-                        color:'#fff',
-                        fontSize:20,
-                        align:'center'
+                option: {
+                    name: '灯控器',
+                    color: ['#3EB37F', '#FF854A'],
+                    title: {
+                        text:'故障率',
+                        left:'center',
+                        top:'center',
+                        textStyle:{
+                            color:'#fff',
+                            fontSize:20,
+                            align:'center'
+                        }
                     }
-                }
-            }
-        },
-        props: {
-            data: {
-                default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'aaa'},
-                        {value: 111, name: 'bbb'},
-                        {value: 111, name: 'ccc'},
-                        {value: 111, name: 'ss'},
-                    ]
-                }
+                },
+                data: [
+                    {value: 0, name: '正常'},
+                    {value: 0, name: '故障'},
+
+                ]
             }
         },
         computed: {
-            option: function () {
-                let option = {
-                    name: 'test',
-                    color: ['#3EB37F', '#FF854A', '#FF6668', '#5282E6', '#999999'],
-                    title: this.title
-                }
-                return option;
-            }
         },
         created() {
+            this.initData();
         },
         mounted() {
             this.visible = true;
         },
         methods: {
-
+            initData() {
+                Service.getFaultRate().then(data => {
+                    this.data = [
+                        {value: data, name: '故障'},
+                        {value: 100 - data, name: '正常'}
+                    ]
+                })
+            }
         }
     }
 </script>
@@ -70,19 +64,17 @@
   .fault-rate {
     height: 100%;
     width: 100%;
-    text-align: center;
     .fault-rate-content {
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
       height: 100%;
       .echart {
         height: 40%;
         width: 100%;
-        flex: 3;
-        text-align: center;
+        flex: 4;
       }
       .legend {
         flex: 1;
@@ -90,14 +82,11 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
+        align-items: center;
         width: 80%;
         color: #fff;
         letter-spacing: 2px;
-        align-content: space-around;
         .normal,
-        .v-fault,
-        .p-fault,
-        .a-fault,
         .fault {
           font-size: 14px;
           margin-right: 20px;
@@ -114,24 +103,9 @@
             background: #3EB37F;
           }
         }
-        .v-fault {
-          .icon {
-            background: #FF854A;
-          }
-        }
-        .p-fault {
-          .icon {
-            background: #FF6668;
-          }
-        }
-        .a-fault {
-          .icon {
-            background: #5282E6;
-          }
-        }
         .fault {
           .icon {
-            background: #999999;
+            background: #FF854A;
           }
         }
       }

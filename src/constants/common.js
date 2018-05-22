@@ -20,6 +20,7 @@ const CommonConstant = {
     ],
     lightControllerType: [
         {value: 1, text: '普通型单灯控制器-LCCHZT'},
+        {value: 2, text: '单灯控制器标准版-LCC1ZT'},
     ],
     loopControllerType: [
         {value: 1, text: 'CCZ1ZT'},

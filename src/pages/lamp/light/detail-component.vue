@@ -85,7 +85,7 @@
       <div class="col-md-2 form-control-static">{{device.noinducedbrightness}} %</div>
       <label class="col-md-2 control-label">上报时间：</label>
       <div class="col-md-2 form-control-static">{{device.uptime | formDate}}</div>
-      <label class="col-md-2 control-label">归属企业：</label>
+      <label class="col-md-2 control-label">归属项目：</label>
       <div class="col-md-2 form-control-static">{{device.companyname}}</div>
     </div>
     <div class="form-group">

@@ -39,8 +39,8 @@ export default {
             return res;
         })
     },
-    control(id, body) {
-        return HttpClient.post('singleControl/lightController/' + id, body,option).then(res => {
+    control(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body,option).then(res => {
             showSuccess(res);
             return res;
         })

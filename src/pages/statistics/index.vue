@@ -121,6 +121,7 @@
     .echart-title {
       font-size: 26px;
       color: #fff;
+      margin-right: 20px;
     }
   }
 </style>

@@ -8,12 +8,12 @@ import Config from "../config";
 const option = {baseURL: Config.LAMP_URL_API};
 export default {
     getPowerStatistics(type) {
-        return HttpClient.get('dataCenter/findElectricityStatistical', {type: type}).then(res => {
+        return HttpClient.get('dataCenter/findElectricityStatistical', {params: {type: type}}).then(res => {
             return res.data.data;
         })
     },
     getLightStatistics(type) {
-        return HttpClient.get('dataCenter/findLightFaultStatistic', {type: type}).then(res => {
+        return HttpClient.get('dataCenter/findLightFaultStatistic', {params: {type: type}}).then(res => {
             return res.data.data;
         })
     },

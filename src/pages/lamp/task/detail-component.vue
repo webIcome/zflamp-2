@@ -17,7 +17,7 @@
       <div class="col-md-2 form-control-static">{{device.lightValue}} %</div>
     </div>
     <div class="form-group">
-      <label class="col-md-2 control-label">归属企业：</label>
+      <label class="col-md-2 control-label">归属项目：</label>
       <div class="col-md-2 form-control-static">{{device.compName}}</div>
       <label class="col-md-2 control-label">创建日期：</label>
       <div class="col-md-2 form-control-static">{{device.createtime | formDate}}</div>

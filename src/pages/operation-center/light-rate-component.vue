@@ -81,7 +81,7 @@
       border: 1px solid #419ed0;
       background: linear-gradient(to right, rgba(14, 62, 119, 0.1), rgba(14, 62, 119, 0.5));
       .echart {
-        height: 40%;
+        height: 50%;
         width: 100%;
         margin-top: 25%;
       }

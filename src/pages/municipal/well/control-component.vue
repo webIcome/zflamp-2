@@ -7,28 +7,27 @@
       <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">设置告警角度</el-button>
     </div>
     <div class="control control-status">
-      <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">校准角度</el-button>
+      <el-button :disabled="!ids.length" @click="generate(3)" class="control-btn">校准角度</el-button>
     </div>
 
     <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p v-if="controltype == 1" class="title">您确认要开灯吗？</p>
-      <p v-else-if="controltype == 2" class="title">您确认要关灯吗？</p>
-      <p v-else-if="controltype == 4" class="title">您确认要获取状态吗？</p>
+      <p v-if="operateType == 1" class="title">您确认要查询状态吗？</p>
+      <p v-else-if="operateType == 3" class="title">您确认要校准角度吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog title="控制井盖" :visible.sync="setVisible" center width="400px">
-      <el-form label-width="100px" :model="operData" ref="controlDevice" :rules="Rules" class="el-form-default">
+      <el-form label-width="100px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
         <el-form-item label="告警角度：" prop="angle" required>
           <el-input type="text" v-model.trim="operData.angle"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="controlSetDevice('controlDevice')">确 定</el-button>
+        <el-button type="primary" @click="controlSetDevice('well-form')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -44,27 +43,25 @@
         data() {
             let validateAngle = (rule, value, callback) => {
                if (!value) {
-                   return callback(new Error('请输入告警角度'))
+                    callback(new Error('请输入告警角度'))
+               } else if (!/^[0-9]+\d*$/.test(value)) {
+                    callback(new Error('只能输入正整数'))
+               }else if (value > 35 || value < 0) {
+                    callback(new Error('范围0~35'))
+               } else {
+                   callback();
                }
-               if (!/^[0-9]+\d*$/.test(value)) {
-                   return callback(new Error('只能输入正整数'))
-               }
-               if (value > 35 || value < 0) {
-                   return callback(new Error('范围0~35'))
-               }
-            }
+            };
             return {
                 moduleType: {},
                 brightness: 0,
                 visible: false,
                 setVisible: false,
                 operData: {},
-                controltype: '',
+                operateType: '',
                 Rules: {
                     angle: [
-                        { validator: validateAngle, trigger: ['blur', 'change'] },
-//                        {required: true, message: '请输入告警角度'},
-//                        {type: 'number', message: '范围0~255',min: 0, max: 255}
+                        { validator: validateAngle, trigger: 'change' },
                     ]
                 }
             }
@@ -73,9 +70,6 @@
             ids: {
                 default: []
             },
-            timedtasktotal: {
-                default: 0
-            }
         },
         computed: {},
         created: function () {
@@ -87,15 +81,19 @@
                     this.moduleType[item.name] = item.value;
                 })
             },
-            generate(controltype) {
+            generate(operateType) {
                 this.resetData();
-                this.controltype = controltype;
-                this.showModal();
+                this.operateType = operateType;
+                if (operateType == 2) {
+                    this.showSetModal()
+                } else {
+                    this.showModal();
+                }
             },
             controlDevice: function () {
                 let data = {};
-                data.controltype = this.controltype;
-                data.deviceids = this.ids.join(',');
+                data.operateType = this.operateType;
+                data.deviceIds = this.ids.join(',');
                 Service.control(data).then(res => {
                     this.hideModal();
                     this.initPaging()
@@ -106,15 +104,11 @@
                     if (valid) {
                         let data = this.operData;
                         data.deviceIds = this.ids.join(',');
-                        Service.controlLights(data).then(res => {
+                        Service.control(data).then(res => {
                             this.hideModal();
                         });
                     }
                 })
-            },
-            transformData: function (data) {
-
-                return data
             },
             showModal() {
                 this.visible = true;
@@ -124,8 +118,6 @@
             },
             hideModal: function () {
                 this.visible = false;
-            },
-            hideSetModal() {
                 this.setVisible = false;
             },
             initPaging() {
@@ -134,18 +126,11 @@
             resetData: function () {
                 this.operData = {}
             }
-
         }
     }
 </script>
 
 <style scoped lang="less">
-  .control-on {
-    .control-icon {
-      /*background: url("../../../assets/control/light-on.png") no-repeat;*/
-      /*background-size: contain;*/
-    }
-  }
 
   .control-brightness {
     display: flex;

@@ -160,7 +160,7 @@
             handleSelectionChange(val) {
                 this.selectionList = val;
                 this.selectionIds = val.map(item => {
-                    return item.deviceid;
+                    return item.id;
                 })
             }
         }
