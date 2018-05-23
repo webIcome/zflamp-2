@@ -3,8 +3,17 @@
     <div class="console-content">
       <div class="console-scroll" id="console-scroll">
         <div :ref="test">
-          <template v-for="item in datas">
-            <div class="console-item">{{item}}</div>
+          <template v-for="item in data">
+            <div class="console-item">
+              <span>{{item.id}}、</span>
+              <span>{{item.uptime}}</span>
+              <span>,</span>
+              <span>{{item.deviceName}}</span>
+              <span>,</span>
+              <span>设备ID : {{item.sn}}</span>
+              <span>,</span>
+              <span>{{item.alarmContent}}</span>
+            </div>
           </template>
         </div>
       </div>
@@ -17,14 +26,14 @@
         data() {
             return {
                 test: 'test-ref',
-                datas: [1,1,1,1,1,11,1,1,1,1,1,1,1],
+                datas: [],
                 length: 100,
             }
         },
         props: {
             data: {
                 default: function () {
-                    return []
+                    return ['aaaaaaaaaaaaaaaaaaa']
                 }
             }
         },
@@ -33,7 +42,7 @@
         methods: {
         },
         watch: {
-            data: function (newVal) {
+           /* data: function (newVal) {
                 if (newVal) {
                     newVal.forEach(item => {
                         if (this.datas.length >= this.length) {
@@ -42,7 +51,7 @@
                     });
                     this.datas.unshift(item);
                 }
-            }
+            }*/
         }
     }
 </script>
@@ -82,6 +91,14 @@
         .console-item{
           color: #FDCD72;
           font-size: 14px;
+          display: flex;
+          justify-content: flex-start;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          span {
+            white-space: nowrap;
+            margin-right: 5px;
+          }
         }
       }
 

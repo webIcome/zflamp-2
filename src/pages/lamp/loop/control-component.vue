@@ -180,6 +180,13 @@
                     return item.number;
                 }).join();
             },
+            showMessage() {
+                this.$message({
+                    message: '该回路最多有'+ this.loopnum + '个回路数',
+                    type: 'warning',
+                    duration: 1500
+                })
+            },
             showModal() {
                 this.visible = true;
             },

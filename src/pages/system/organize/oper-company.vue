@@ -149,6 +149,9 @@
                 if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();
             },
             emitEvent() {
+                this.$globalCache.refleshCompanies().then(companies => {
+                    this.companies = companies;
+                });
                 this.$emit('initPaging')
             },
             showModal() {

@@ -26,7 +26,7 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-component :ids="selectionIds"></control-component>
+          <control-component :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -67,9 +67,9 @@
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex">
-            <oper-component ref="oper" :id="scope.row.deviceId" :companies="companies" :edit="true"
+            <oper-component ref="oper" :id="scope.row.id" :companies="companies" :edit="true"
                             @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.deviceId" @initCurrentPaging="pagingEvent"></delete-component>
+            <delete-component :id="scope.row.id" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
       </el-table-column>

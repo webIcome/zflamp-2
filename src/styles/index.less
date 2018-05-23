@@ -178,7 +178,8 @@ label {
       display: flex;
       align-items: center;
       margin-top: 22px;
-      justify-content: space-between
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
   }
   .default-form {
@@ -259,10 +260,12 @@ label {
 }
 .control-items {
   display: inline-flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
   .control {
     margin-right: 30px;
+    margin-bottom: 10px;
   }
   .control-btn {
     height: 34px;
@@ -271,6 +274,7 @@ label {
     font-size: 14px;
     color: #317BD3;
     background-color: #fff;
+    border: 1px solid #317BD3;
     &>span {
       display: flex;
       justify-content: center;
@@ -466,6 +470,20 @@ label {
     }
   }
   .table-body{
+    max-height: 600px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 10px;
+      cursor: pointer;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+      background-color: #2ca1b9;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
     .table-tr{
       margin-bottom: 10px;
       background-color: #25273E;

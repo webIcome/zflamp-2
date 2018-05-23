@@ -82,9 +82,9 @@
                     {
                         modulename: '市政终端',
                         ename: 'municipal',
-                        modulecode: 'MUNICIPAL',
+                        modulecode: 'TERMINAL',
                         children: [
-                            {modulename: '井盖', modulecode: 'MUNICIPALCOVER', url: 'well'},
+                            {modulename: '井盖', modulecode: 'TERMINALCOVER', url: 'well'},
                         ]
                     },
                     {
@@ -161,10 +161,7 @@
             },
             getMenus(){
                 let currentHash = window.location.hash.substring(window.location.hash.indexOf('/'));
-                this.navs = this.localNavs;
-                this.isActiveHide();
-                this.initMenus(currentHash);
-                /*HomeService.getMenus(1).then(list => {
+                HomeService.getMenus(1).then(list => {
                     this.navs = list.map(item => {
                         this.localNavs.forEach((nav, index) => {
                             if (item.modulecode == nav.modulecode) {
@@ -187,9 +184,10 @@
                         });
                         return item;
                     });
+//                    this.navs = this.localNavs;
                     this.isActiveHide();
                     this.initMenus(currentHash);
-                })*/
+                })
             }
         }
     }
@@ -261,7 +259,6 @@
               align-items: center;
               width: 100%;
               height: 60px;
-              line-height: 100px;
               color: #8FABD2;
               font-size: 14px;
               &.router-link-active {

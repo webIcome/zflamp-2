@@ -3,7 +3,9 @@
     <div class="operation-top">
       <div class="operation-left"></div>
       <div class="operation-middle"></div>
-      <div class="operation-right"></div>
+      <div class="operation-right">
+        <div class="go-home"></div>
+      </div>
     </div>
     <div class="operation-item">
       <div class="operation-left">
@@ -22,7 +24,7 @@
         <light-rate-component v-if="visible" :data="lightRate"></light-rate-component>
       </div>
       <div class="operation-middle">
-        <console-component v-if="visible"></console-component>
+        <console-component v-if="visible" :data="alarmData"></console-component>
       </div>
       <div class="operation-right">
         <fault-statistics-component v-if="visible" :data="lightStatistics"></fault-statistics-component>
@@ -76,7 +78,8 @@
                   {value: 0, name: '灭灯'}
               ],
               powerStatistics: [],
-              lightStatistics: []
+              lightStatistics: [],
+              alarmData: []
           }
       },
       created() {
@@ -130,10 +133,16 @@
               Service.getPowerStatistics(1).then(data => {
                   this.powerStatistics = data
               });
+              Service.getAlarm().then(data => {
+                  this.alarmData = data;
+              })
           },
           generateHeight() {
               this.$refs[this.test].style.height = document.body.clientWidth * 1080/1500 + 'px';
           },
+          goHome() {
+              this.$router.push({path: '/list'})
+          }
       },
       destroyed() {
           clearInterval(this.timer);
@@ -183,6 +192,9 @@
     }
     .operation-empty {
       height: 5.8%;
+    }
+    .go-home {
+
     }
   }
 </style>

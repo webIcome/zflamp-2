@@ -79,13 +79,13 @@
         computed: {
             setItems: function () {
                 let items = [
-                    {value: 8, text: '故障阈值设置'},
-                    {value: 10, text: '故障使能设置'},
-                    {value: 12, text: '电参数上报周期设置'},
-                    {value: 15, text: '传感器使能设置'},
-                    {value: 16, text: '感应亮度设置'},
-                    {value: 13, text: '电能累计清零'},
-                    {value: 14, text: '亮灯时长累计清零'},
+//                    {value: 8, text: '故障阈值设置'},
+//                    {value: 10, text: '故障使能设置'},
+//                    {value: 12, text: '电参数上报周期设置'},
+//                    {value: 15, text: '传感器使能设置'},
+//                    {value: 16, text: '感应亮度设置'},
+//                    {value: 13, text: '电能累计清零'},
+//                    {value: 14, text: '亮灯时长累计清零'},
                 ]
                 if (!this.isGroup) {
                     items.push({value: 5, text: '下发任务'});
@@ -94,8 +94,8 @@
             },
             searchItems: function () {
                 let items = [
-                    {value: 9, text: '故障阈值查询'},
-                    {value: 11, text: '故障使能查询'},
+//                    {value: 9, text: '故障阈值查询'},
+//                    {value: 11, text: '故障使能查询'},
 
                 ];
                 if (!this.isGroup) {

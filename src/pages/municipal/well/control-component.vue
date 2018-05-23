@@ -9,6 +9,9 @@
     <div class="control control-status">
       <el-button :disabled="!ids.length" @click="generate(3)" class="control-btn">校准角度</el-button>
     </div>
+    <div class="control control-status">
+      <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">告警归档</el-button>
+    </div>
 
     <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
       <div class="text-center">
@@ -16,6 +19,7 @@
       </div>
       <p v-if="operateType == 1" class="title">您确认要查询状态吗？</p>
       <p v-else-if="operateType == 3" class="title">您确认要校准角度吗？</p>
+      <p v-else-if="operateType == 4" class="title">您确认要归档这些设备吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -83,7 +87,7 @@
             },
             generate(operateType) {
                 this.resetData();
-                this.operateType = operateType;
+                if (operateType) this.operateType = operateType;
                 if (operateType == 2) {
                     this.showSetModal()
                 } else {
@@ -92,6 +96,13 @@
             },
             controlDevice: function () {
                 let data = {};
+                if (this.operateType == 4) {
+                    Service.pigeonholeWell(this.ids.join(',')).then(res => {
+                        this.hideModal();
+                        this.initPaging()
+                    })
+                    return;
+                }
                 data.operateType = this.operateType;
                 data.deviceIds = this.ids.join(',');
                 Service.control(data).then(res => {

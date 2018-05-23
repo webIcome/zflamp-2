@@ -152,7 +152,7 @@
     padding: 10px 9px 25px;
     font-size: 16px;
     max-width: 298px;
-    min-width: 250px;
+    /*min-width: 250px;*/
     .limits {
       display: flex;
       flex-direction: column;

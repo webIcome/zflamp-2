@@ -14,7 +14,7 @@
         <div class="table-th">激活状态</div>
         <div class="table-th">项目位置</div>
       </div>
-      <div class="table-body"  style="max-height: 600px;overflow: auto;">
+      <div class="table-body">
         <div class="table-tr" v-for="item in list" @click="handleCurrentChange(item)"
              :class="{'current-row': item.objectid == currentRow.objectid, 'frozen-row': item.flag == 1}">
           <div class="table-td">{{item.companyname}}</div>

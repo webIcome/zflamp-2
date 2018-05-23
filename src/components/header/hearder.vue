@@ -158,6 +158,9 @@
         cursor: pointer;
         display: flex;
         align-items: center;
+        &:hover {
+          color: #fff;
+        }
         .home-icon {
           margin-right: 17px;
           display: inline-block;
@@ -171,6 +174,9 @@
         cursor: pointer;
         display: flex;
         align-items: center;
+        &:hover {
+          color: #fff;
+        }
         .icon {
           display: inline-block;
           width: 24px;

@@ -41,7 +41,12 @@ export default {
         return HttpClient.get('dataCenter/findTerminalLineRate', {baseURL: Config.WELL_URL_API}).then(res => {
             return res.data.data;
         })
-    }
+    },
+    getAlarm() {
+        return HttpClient.get('dataCenter/findLightAlarmRecordList', option).then(res => {
+            return res.data.data;
+        })
+    },
 }
 
 function showSuccess(res, msg) {

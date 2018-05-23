@@ -73,14 +73,14 @@
             </el-form-item>
 
           </el-col>
-          <el-col :span="12">
+        <!--  <el-col :span="12">
             <el-form-item label="灯具类型：" prop="lampTypeID">
               <select-lamps-component v-model="data.lampTypeID"
                                       @name="data.lampType=arguments[0]"
                                       :companyId=data.companyid
                                       :modelnum="data.lampType"></select-lamps-component>
             </el-form-item>
-          </el-col>
+          </el-col>-->
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">

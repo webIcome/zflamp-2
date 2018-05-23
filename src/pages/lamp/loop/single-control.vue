@@ -145,7 +145,7 @@
                 this.timedtasktotal = max;
             },
             isLoopOn(item, loop) {
-                return item.loopcontrol.split(',').some(i => {
+                return item.loopcontrol.split('.').some(i => {
                     return i == loop;
                 })
             }

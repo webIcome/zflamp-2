@@ -7,7 +7,10 @@ class GlobalCache {
     constructor() {
         this._companies;
     }
-
+    refleshCompanies() {
+        this._companies = null;
+        return this.companies;
+    }
     get companies() {
         if (!this._companies) {
             this._companies = HttpClient.get('company/getTreeInfo', {baseURL: Config.URL_API}).then(res => {
