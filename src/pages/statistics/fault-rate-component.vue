@@ -43,18 +43,20 @@
         computed: {
         },
         created() {
-            this.initData();
+
         },
         mounted() {
-            this.visible = true;
+            this.initData();
+
         },
         methods: {
             initData() {
                 Service.getFaultRate().then(data => {
                     this.data = [
+                        {value: 100 - data, name: '正常'},
                         {value: data, name: '故障'},
-                        {value: 100 - data, name: '正常'}
                     ]
+                    this.visible = true;
                 })
             }
         }

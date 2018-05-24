@@ -32,7 +32,7 @@ export default class MapMarkerClass {
                 break;
             case 4:
                 imgUrl = WellStatus[device.status];
-                if (!imgUrl) imgUrl = StationStatus[1];
+                if (!imgUrl) imgUrl = WellStatus[0];
                 break;
             default:
                 imgUrl = LightStatus[1];
@@ -59,7 +59,7 @@ export default class MapMarkerClass {
         this._eventFn(this);
     }
     _createMarker(device, imgUrl, width, height) {
-        let point = new BMap.Point(device.longitude, device.latitude);
+        let point = new BMap.Point(device.lng, device.lat);
         let icon = new BMap.Icon(imgUrl, new BMap.Size(width, height), {imageSize: new BMap.Size(width, height)});
         this._marker = new BMap.Marker(point, {icon: icon, title: device.sn});
         return this._marker;

@@ -30,7 +30,8 @@
                 visible: false,
                 option: {
                     name: '灯控器',
-                    color: ['#3EB37F', '#FF854A', '#FF6668', '#5282E6', '#999999'],
+//                    color: ['#3EB37F', '#FF854A', '#FF6668', '#5282E6', '#999999'],
+                    color: ['#FF854A','#3EB37F'],
                     title: {
                         text:'故障率',
                         left:'center',

@@ -87,16 +87,6 @@
                 this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
             }
         },
-        watch: {
-            detail: function (newVal, oldVal) {
-                this.brightness = this.detail.brightness;
-            },
-            isShow: function (newVal, oldVal) {
-                if (!newVal) {
-                    this.hideShowConfirm()
-                }
-            }
-        }
     }
 </script>
 <style lang="less" scoped>

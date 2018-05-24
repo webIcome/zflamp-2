@@ -16,6 +16,11 @@ export default {
             }
         })
     },
+    getList(params) {
+        return HttpClient.get('wellcover/findWellCoverList', Object.assign({params: params},option)).then(res => {
+            return res.data.data;
+        })
+    },
     getDetail(id) {
         return HttpClient.get('wellcover/findWellCoverInfoById/' + id, option).then(res => {
             return res.data.data;

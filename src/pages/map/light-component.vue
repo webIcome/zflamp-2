@@ -76,6 +76,7 @@
                 CommonConstant.deviceType.forEach(item => {
                     this.moduleType[item.name] = item.value;
                 })
+                this.brightness = this.detail.brightness;
             },
             hide() {
                 this.$emit('hide');
@@ -112,16 +113,6 @@
                 this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
             }
         },
-        watch: {
-            detail: function (newVal, oldVal) {
-                if (this.detail.brightness < 100) this.brightness = this.detail.brightness;
-            },
-            isShow: function (newVal, oldVal) {
-                if (!newVal) {
-                    this.hideShowConfirm()
-                }
-            }
-        }
     }
 </script>
 <style lang="less" scoped>

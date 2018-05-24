@@ -11,20 +11,18 @@
     </div>
     <div class="panel-bottom">
       <div class="control-panel-time">更新时间：{{detail.uptime | formDate}}</div>
-      <div class="control-panel-status">{{detail.status | wellStatusNameConverter}}</div>
+      <div class="control-panel-status">{{detail.statusName}}</div>
       <div @click="controlStatus" class="control-panel-status">获取状态</div>
     </div>
   </div>
 </template>
 <script>
-    import Services from "../../services/map";
+    import Services from "../../services/well";
     import CommonConstant from "../../constants/common";
     export default{
         name: 'wellComponent',
         data() {
             return {
-                brightness: 0,
-                isShowConfirm: false,
                 moduleType: {}
             }
         },
@@ -43,33 +41,15 @@
                 CommonConstant.deviceType.forEach(item => {
                     this.moduleType[item.name] = item.value;
                 })
+                this.moduleType.well = 4
             },
             hide() {
                 this.$emit('hide');
             },
-            showConfirm(value) {
-                this.$refs.lightBtns.style.bottom = 1.4 * value - 20 + 'px';
-                this.isShowConfirm = true;
-            },
-            controlBrightness() {
-                let data = {};
-                if (!this.brightness) {
-                    data.controltype = 2;
-                } else if (this.brightness == 100) {
-                    data.controltype = 1;
-                } else {
-                    data.controltype = 3;
-                    data.brightness = this.brightness
-                }
-                Services.controlStation(this.detail.deviceid, data).then(res => {
-                    this.hideShowConfirm();
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.well})
-                })
-            },
             controlStatus() {
-                let data = {controltype: 4}
-                Services.controlWell(this.detail.deviceid, data).then(res => {
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.well})
+                let data = {operateType: 1, deviceIds: this.detail.id};
+                Services.control(data).then(res => {
+                    this.updateDetail({deviceid: this.detail.id, moduletype: this.moduleType.well})
                 })
             },
             hideShowConfirm() {
@@ -77,16 +57,6 @@
             },
             updateDetail(data) {
                 this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
-            }
-        },
-        watch: {
-            detail: function (newVal, oldVal) {
-                this.brightness = this.detail.brightness;
-            },
-            isShow: function (newVal, oldVal) {
-                if (!newVal) {
-                    this.hideShowConfirm()
-                }
             }
         }
     }

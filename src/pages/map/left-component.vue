@@ -17,7 +17,7 @@
         </el-badge>
         <el-badge class="device-item" :hidden="true">
           <div class="device-well" :class="{active: wellActive}" @click.self="selectCheck(moduleType.well)"><span class="icon"></span>井盖</div>
-          <sup @click="showList(wellList)" v-if="wellList.length" class="el-badge__content is-fixed">{{wellList.length}}</sup>
+          <sup @click="showList(wellFaultList)" v-if="wellFaultList.length" class="el-badge__content is-fixed">{{wellFaultList.length}}</sup>
         </el-badge>
       </div>
       <div class="select-items">
@@ -69,6 +69,11 @@
                 default: function () {
                     return []
                 }
+            },
+            wellList: {
+                default: function () {
+                    return []
+                }
             }
         },
         computed: {
@@ -99,8 +104,8 @@
                     }
                 })
             },
-            wellList: function () {
-                return this.list.filter(item => {
+            wellFaultList: function () {
+                return this.wellList.filter(item => {
                     if (item.status != 0 && item.moduletype == this.moduleType.well){
                         return true;
                     } else {
@@ -119,8 +124,9 @@
                 })
                 this.moduleType.well = 4;
                 this.initCompanies();
-                this.selectCheck()
-//                this.search({moduletype: this.checkList})
+                this.searchWell({compIds: this.companyid})
+                this.search({companyid: this.companyid, moduletype: this.checkList})
+                this.showActive();
             },
             initItems() {
                 this.$globalCache.items.then(data => {
@@ -139,6 +145,9 @@
                 params.moduletype = params.moduletype.join(',');
                 this.$emit('search', params)
             },
+            searchWell(params) {
+                this.$emit('searchWell', params);
+            },
             selectCheck(value) {
                 if (value) {
                     let filter = false;
@@ -151,7 +160,14 @@
                     if (!filter) this.checkList.push(value);
                 }
                 this.showActive();
-                this.search({companyid: this.companyid, moduletype: this.checkList})
+                if (this.checkList.some(item => item == this.moduleType.well)) {
+                    this.searchWell({compIds: this.companyid})
+                } else if (value == this.moduleType.well) {
+                    this.searchWell({compIds: this.companyid, clear: true})
+                }
+                if (value != this.moduleType.well){
+                    this.search({companyid: this.companyid, moduletype: this.checkList})
+                }
             },
             goToHome: function () {
                 this.$router.push({path: '/list'})
@@ -214,7 +230,11 @@
         },
         watch: {
             companyid(newVal, oldVal) {
-                this.search({companyid: newVal, moduletype: this.checkList});
+                if (this.checkList.some(item => item == this.moduleType.well)) {
+                    this.searchWell({compIds: newVal})
+                } else {
+                    this.search({companyid: newVal, moduletype: this.checkList});
+                }
             },
         }
     }

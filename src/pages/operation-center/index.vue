@@ -4,7 +4,7 @@
       <div class="operation-left"></div>
       <div class="operation-middle"></div>
       <div class="operation-right">
-        <div class="go-home"></div>
+        <div class="go-home" @click="goHome"></div>
       </div>
     </div>
     <div class="operation-item">
@@ -194,7 +194,10 @@
       height: 5.8%;
     }
     .go-home {
-
+      background: url("../../assets/echart/gohome.png");
+      width: 147px;
+      height: 30px;
+      cursor: pointer;
     }
   }
 </style>

@@ -43,7 +43,7 @@
 
         },
         mounted() {
-            this.visible = true;
+            this.initData()
         },
         methods: {
             initData() {
@@ -52,6 +52,7 @@
                         {value: data, name: '亮灯'},
                         {value: 100 - data, name: '灭灯'}
                     ]
+                    this.visible = true;
                 })
             }
         }

@@ -1,7 +1,7 @@
 <template>
   <div class="map">
     <div class="my-map" :ref="ref"></div>
-    <left-component @search="getDevices" :list="devices"></left-component>
+    <left-component @search="getDevices" @searchWell="getWellList" :list="devices" :wellList="wellList"></left-component>
     <right-component @search="getDetail"
                      @hide="hidePanel"
                      @updateDetail="updateDetail"
@@ -19,6 +19,7 @@
     import leftComponent from './left-component.vue'
     import MapMarkerClass from "../../utils/map-marker-class";
     import RightComponent from "./right-component";
+    import WellServices from '../../services/well'
     export default {
         components: {
             RightComponent,
@@ -30,13 +31,22 @@
                 ref: 'my-map',
                 map: '',
                 devices: [],
+                wellList: [],
+                isSearchWell: false,
+                isSearchDevices: false,
                 deviceDetail: {},
                 moduleType: {},
                 mapZoom: 5,
                 lightPanel: false,
                 loopPanel: false,
                 apPanel: false,
-                wellPanel: false
+                wellPanel: false,
+                marker: ''
+            }
+        },
+        computed: {
+            isSearch: function () {
+                return this.isSearchWell || this.isSearchDevices;
             }
         },
         created() {
@@ -52,7 +62,6 @@
             initData() {
                 this.createMap();
                 this.setMapEvent();
-                this.getDevices();
             },
             getViewPort(Points) {
                 return this.map.getViewport(Points)
@@ -80,9 +89,25 @@
                 this.map.centerAndZoom(options.center, options.zoom);
             },
             getDevices(params) {
+                this.isSearchDevices = true;
                 MapServices.getDevices(params).then(devices => {
                     this.devices = this.transformDevices(devices);
+                    this.isSearchDevices = false;
                 })
+            },
+            getWellList(params) {
+                this.isSearchWell = true;
+                if (params.clear) {
+                    this.$nextTick(() => {
+                        this.wellList = [];
+                        this.isSearchWell = false;
+                    })
+                } else {
+                    WellServices.getList(params).then(devices => {
+                        this.wellList = this.transformWellList(devices);
+                        this.isSearchWell = false;
+                    })
+                }
             },
             transformDevices(devices) {
                 return devices.map(item => {
@@ -90,6 +115,35 @@
                     item.lat = item.latitude;
                     if (item.lng != 0 || item.lat != 0) {
                         return item;
+                    }
+                }).filter(item => {
+                    if (item) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+            },
+            transformWellList(list) {
+                return list.map(item => {
+                    if (item.longitude && item.latitude) {
+                        return {
+                            lng: item.longitude,
+                            lat: item.latitude,
+                            deviceid: item.id,
+                            moduletype: this.moduleType.well,
+                            sn: item.sn,
+                            status: item.status,
+                        };
+                    } else if (item.longitude == 0 || item.longitude == 0) {
+                        return {
+                            lng: item.longitude,
+                            lat: item.latitude,
+                            deviceid: item.id,
+                            moduletype: this.moduleType.well,
+                            sn: item.sn,
+                            status: item.status,
+                        };
                     }
                 }).filter(item => {
                     if (item) {
@@ -113,7 +167,7 @@
             },
             getMarkers() {
                 let markers = [];
-                this.devices.forEach(item => {
+                this.devices.concat(this.wellList).forEach(item => {
                     let markerClass = new MapMarkerClass(item);
                     markerClass.listen('click', this.markerClickEventFn);
                     markers.push(markerClass.marker);
@@ -124,23 +178,35 @@
                 if (this.isShowPanel()) {
                     this.hidePanel()
                 } else {
-                    MapServices.getDetail({
-                        moduletype: markerClass.device.moduletype,
-                        deviceid: markerClass.device.deviceid
-                    }).then(device => {
-                        this.deviceDetail = device;
-                        this.addStatus(markerClass.device.moduletype, this.deviceDetail);
-                        if (this.deviceDetail.status != markerClass.device.status) {
-                            markerClass.device.status = this.deviceDetail.status;
-                            this.removeMarker(markerClass.marker);
-                            markerClass.redraw();
-                            markerClass.listen('click', this.markerClickEventFn);
-                            this.addMarker(markerClass)
-                        }
-                        this.showPanel(markerClass.device.moduletype);
-                        this.marker = markerClass;
-                    })
+                    switch (markerClass.device.moduletype) {
+                        case this.moduleType.well:
+                            WellServices.getDetail(markerClass.device.deviceid).then(device => {
+                                this.resetMarker(markerClass, device)
+                            });
+                            break;
+                        default:
+                            MapServices.getDetail({
+                                moduletype: markerClass.device.moduletype,
+                                deviceid: markerClass.device.deviceid
+                            }).then(device => {
+                                this.resetMarker(markerClass, device)
+                            })
+                            break
+                    }
                 }
+            },
+            resetMarker(markerClass, device) {
+                this.deviceDetail = device;
+                this.addStatus(markerClass.device.moduletype, this.deviceDetail);
+                if (this.deviceDetail.status != markerClass.device.status) {
+                    markerClass.device.status = this.deviceDetail.status;
+                    this.removeMarker(markerClass.marker);
+                    markerClass.redraw();
+                    markerClass.listen('click', this.markerClickEventFn);
+                    this.addMarker(markerClass)
+                }
+                this.showPanel(markerClass.device.moduletype);
+                this.marker = markerClass;
             },
             getDetail (params) {
                 this.hidePanel();
@@ -148,22 +214,44 @@
                     this.removeMarker(this.marker.marker);
                     return;
                 }
-                MapServices.getDetail(params).then(detail => {
-                    this.deviceDetail = detail;
-                    this.addStatus(params.moduletype, this.deviceDetail);
-                    this.showPanel(params.moduletype);
-                    let markerClass = new MapMarkerClass(this.deviceDetail);
-                    markerClass.listen('click',this.markerClickEventFn);
-                    this.addMarker(markerClass);
-                    this.moveMap(this.deviceDetail, this.mapZoom);
-                    this.marker = markerClass;
-                })
+                switch (params.moduletype) {
+                    case this.moduleType.well:
+                        WellServices.getDetail(params.deviceid).then(detail => {
+                            this.transformDetail(detail, this.moduleType.well)
+                        });
+                        break;
+                    default:
+                        MapServices.getDetail(params).then(detail => {
+                            this.transformDetail(detail, params.moduletype)
+                        })
+                        break
+                }
+            },
+            transformDetail(detail, moduletype) {
+                this.deviceDetail = detail;
+                this.addStatus(moduletype, this.deviceDetail);
+                this.showPanel(moduletype);
+                let markerClass = new MapMarkerClass(this.deviceDetail);
+                markerClass.listen('click',this.markerClickEventFn);
+                this.addMarker(markerClass);
+                this.moveMap(this.deviceDetail, this.mapZoom);
+                this.marker = markerClass;
             },
             updateDetail(params) {
-                MapServices.getDetail(params).then(detail => {
-                    this.deviceDetail = detail;
-                    this.updateMarker(detail, params.moduletype)
-                })
+                switch (params.moduletype) {
+                    case this.moduleType.well:
+                        WellServices.getDetail(params.deviceid).then(detail => {
+                            this.deviceDetail = detail;
+                            this.updateMarker(detail, params.moduletype)
+                        });
+                        break;
+                    default:
+                        MapServices.getDetail(params).then(detail => {
+                            this.deviceDetail = detail;
+                            this.updateMarker(detail, params.moduletype)
+                        });
+                        break
+                }
             },
             updateMarker(device, moduletype) {
                 this.addStatus(moduletype, device);
@@ -268,9 +356,15 @@
             }
         },
         watch: {
-            devices: function (newVal, oldVal) {
+           /* devices: function (newVal, oldVal) {
                 this.moveMap(this.getViewPort(newVal))
                 this.addClusterer()
+            },*/
+            isSearch: function (newVal) {
+                if (!newVal) {
+                    this.moveMap(this.getViewPort(this.devices.concat(this.wellList)));
+                    this.addClusterer()
+                }
             }
         }
     }
