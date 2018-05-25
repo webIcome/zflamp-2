@@ -88,7 +88,6 @@
   .power-statistics {
     height: 100%;
     width: 100%;
-    text-align: center;
     .power-statistics-content {
       display: flex;
       flex-direction: column;
