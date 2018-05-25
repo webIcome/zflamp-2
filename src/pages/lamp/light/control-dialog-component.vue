@@ -6,8 +6,8 @@
                  :value="item.value"
                  :key="item.value"></el-option>
     </el-select>
-    <el-dialog title="控制灯控器" :visible.sync="visible" center width="900px">
-      <el-form label-width="220px" :model="operData" ref="controlDevice" :rules="Rules" class="el-form-default"
+    <el-dialog title="控制灯控器" :visible.sync="visible" center :width="dialogWidth">
+      <el-form :label-width="labelWidth" :model="operData" ref="controlDevice" :rules="Rules" class="el-form-default"
                :validate-on-rule-change="false">
         <el-form-item v-if="operData.controltype == 5" prop="taskid">
           <select-tasks-component v-model="operData.taskid"
@@ -310,8 +310,19 @@
                 }
                 return rules;
             },
-            isAllow: function () {
-                return this.isGroup || this.device.timedtasktotal < 6
+            dialogWidth: function () {
+                if (this.operData.controltype == 5) {
+                    return '550px'
+                } else {
+                    return '550px'
+                }
+            },
+            labelWidth: function () {
+                if (this.operData.controltype == 5) {
+                    return '0px'
+                } else {
+                    return '220px'
+                }
             }
         },
         created() {
@@ -341,7 +352,7 @@
             },
             validateTaskNumber(rule, value, callback) {
                 if (!value) {
-                    new Error('至少下发2个任务')
+                    callback(new Error('至少下发2个任务'))
                 } else if (value.split(',').length < 2) {
                     callback(new Error('至少下发2个任务'))
                 } else if (value.split(',').length > 6) {

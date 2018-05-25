@@ -36,6 +36,14 @@
             getOption(data) {
                 return EchartOption.getPieOption(data,  this.option)
             }
+        },
+        watch:{
+            data: function () {
+                this.initData();
+            },
+            option: function () {
+                this.initData();
+            }
         }
     }
 </script>

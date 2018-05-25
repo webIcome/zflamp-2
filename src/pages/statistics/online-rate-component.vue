@@ -1,8 +1,8 @@
 <template>
   <div :ref="contentRef" class="fault-rate-content">
-    <pie-echart-component v-if="visible" :data="apData" :option="apOption"></pie-echart-component>
-    <pie-echart-component v-if="visible" :data="lightData" :option="lightOption"></pie-echart-component>
-    <pie-echart-component v-if="visible" :data="wellData" :option="wellOption"></pie-echart-component>
+    <pie-echart-component :data="apData" :option="apOption"></pie-echart-component>
+    <pie-echart-component :data="lightData" :option="lightOption"></pie-echart-component>
+    <pie-echart-component :data="wellData" :option="wellOption"></pie-echart-component>
   </div>
 </template>
 <script>
@@ -13,7 +13,6 @@
             return {
                 contentRef: 'contetn-ref',
                 test: 'test',
-                visible: false,
                 title: {
                     text:'',
                     left:'center',
@@ -67,7 +66,6 @@
                         {value: 100 - wellData, name: '离线'}
                     ];
                     this.initOption(apData, lightData, wellData);
-                    this.visible = true;
                 })
             },
             initOption(apData, lightData, wellData) {

@@ -44,7 +44,7 @@
             showText: function () {
                 if (this.value.position) {
                     return this.value.position;
-                } else if(this.value.lng) {
+                } else if(this.value.lng || this.value.lat) {
                     return this.value.lng + '/' + this.value.lat;
                 } else {
                     return ''

@@ -21,8 +21,8 @@
         <div class="col-md-2 form-control-static">{{device.companyname}}</div>
         <label class="col-md-2 control-label">地理位置：</label>
         <div class="col-md-2 form-control-static">{{device.position}}</div>
-        <label class="col-md-2 control-label">回路控制状态：</label>
-        <div class="col-md-2 form-control-static">{{device.loopcontrol | switchStateNameConverter}}</div>
+        <label class="col-md-2 control-label">已开线路：</label>
+        <div class="col-md-2 form-control-static">{{transformLoopStatus(device.loopcontrol)}}</div>
       </div>
       <div class="form-group">
         <label class="col-md-2 control-label">DI口状态：</label>
@@ -75,7 +75,16 @@
                 LoopService.getDetail(this.id).then(data => {
                     this.device = data;
                 })
-            }
+            },
+            transformLoopStatus(status) {
+                if(!status) {
+                    return '无'
+                } else {
+                    return status.split('.').map(item => {
+                        return item + '线路';
+                    }).join()
+                }
+            },
         },
         mounted(){
             this.initData();

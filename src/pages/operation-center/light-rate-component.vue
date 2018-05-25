@@ -6,7 +6,7 @@
       <div class="content-border left-bottom"></div>
       <div class="content-border right-bottom"></div>
       <div class="echart">
-        <pie-echart-component v-if="visible" :data="data" :option="option"></pie-echart-component>
+        <pie-echart-component :data="data" :option="option"></pie-echart-component>
       </div>
       <div class="legend">
         <div class="normal"><span class="icon"></span>亮灯</div>
@@ -22,7 +22,6 @@
         data() {
             return {
                 contentRef: 'content-ref',
-                visible: false,
                 option: {
                     name: '灯控器',
                     color: ['#ffc500', '#999'],
@@ -49,19 +48,10 @@
         created() {
         },
         mounted() {
-            this.visible = true;
         },
         methods: {
 
         },
-        watch: {
-            data: function (newVal) {
-                this.visible = false;
-                setTimeout(() => {
-                    this.visible = true;
-                })
-            }
-        }
     }
 </script>
 <style lang="less" scoped>

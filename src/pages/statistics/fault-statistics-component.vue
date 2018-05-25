@@ -7,7 +7,7 @@
         <el-radio v-model="type" :label="2" border>月</el-radio>
       </div>
       <div class="echart">
-        <line-echart-component v-if="visible" :data="data" :option="option"></line-echart-component>
+        <line-echart-component :data="data" :option="option"></line-echart-component>
       </div>
     </div>
   </div>
@@ -62,7 +62,6 @@
         },
         methods: {
             getData(type) {
-                this.visible = false;
                 Service.getLightStatistics(type).then(data => {
                     let value = [];
                     let title = [];
@@ -74,7 +73,6 @@
                         title: title,
                         value: value
                     }
-                    this.visible = true;
                 })
             }
         },

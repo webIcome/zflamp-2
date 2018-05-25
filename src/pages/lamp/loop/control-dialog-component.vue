@@ -160,7 +160,7 @@
             },
             validateTaskNumber(rule, value, callback) {
                 if (!value) {
-                    new Error('至少下发2个任务')
+                    callback(new Error('至少下发2个任务'))
                 } else if (value.split(',').length < 2) {
                     callback(new Error('至少下发2个任务'))
                 } else if (value.split(',').length > 6) {

@@ -5,7 +5,7 @@
         <el-radio v-model="type" :label="1" border>日</el-radio>
         <el-radio v-model="type" :label="2" border>月</el-radio></div>
       <div class="echart">
-        <line-echart-component v-if="visible" :data="data" :option="option"></line-echart-component>
+        <line-echart-component :data="data" :option="option"></line-echart-component>
       </div>
     </div>
   </div>
@@ -17,7 +17,6 @@
         data() {
             return {
                 contentRef: 'contetn-ref',
-                visible: false,
                 type: 1,
                 data: {title: [], value: []},
                 Type: {
@@ -64,7 +63,6 @@
         },
         methods: {
             getData(type) {
-                this.visible = false;
                 Service.getPowerStatistics(type).then(data => {
                     let value = [];
                     let title = [];
@@ -76,7 +74,6 @@
                         title: title,
                         value: value
                     }
-                    this.visible = true;
                 })
             }
         },

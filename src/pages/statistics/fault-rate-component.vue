@@ -2,7 +2,7 @@
   <div class="fault-rate">
     <div :ref="contentRef" class="fault-rate-content">
       <div class="echart">
-        <pie-echart-component v-if="visible" :data="data" :option="option"></pie-echart-component>
+        <pie-echart-component :data="data" :option="option"></pie-echart-component>
       </div>
       <div class="legend">
         <div class="normal"><span class="icon"></span>正常</div>
@@ -18,7 +18,6 @@
         data() {
             return {
                 contentRef: 'content-ref',
-                visible: false,
                 option: {
                     name: '灯控器',
                     color: ['#3EB37F', '#FF854A'],
@@ -47,7 +46,6 @@
         },
         mounted() {
             this.initData();
-
         },
         methods: {
             initData() {
@@ -56,7 +54,6 @@
                         {value: 100 - data, name: '正常'},
                         {value: data, name: '故障'},
                     ]
-                    this.visible = true;
                 })
             }
         }

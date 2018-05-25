@@ -1,9 +1,9 @@
 <template>
   <div style="width: 100%; height: 100%">
     <div :ref="contentRef" class="fault-rate-content">
-      <pie-echart-component v-if="apVisible" :data="apData" :option="apOption"></pie-echart-component>
-      <pie-echart-component v-if="lightVisible" :data="lightData" :option="lightOption"></pie-echart-component>
-      <pie-echart-component v-if="wellVisible" :data="wellData" :option="wellOption"></pie-echart-component>
+      <pie-echart-component :data="apData" :option="apOption"></pie-echart-component>
+      <pie-echart-component :data="lightData" :option="lightOption"></pie-echart-component>
+      <pie-echart-component :data="wellData" :option="wellOption"></pie-echart-component>
     </div>
     <map-component></map-component>
   </div>
@@ -18,9 +18,7 @@
             return {
                 contentRef: 'contetn-ref',
                 test: 'test',
-                apVisible: false,
-                lightVisible: false,
-                wellVisible: false,
+                visible: true,
                 title: {
                     text:'',
                     left:'center',
@@ -36,26 +34,17 @@
         props: {
             apData: {
                 default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'ss'},
-                    ]
+                    return []
                 }
             },
             lightData: {
                 default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'ss'},
-                    ]
+                    return []
                 }
             },
             wellData: {
                 default: function () {
-                    return [
-                        {value: 111, name: 'ddd'},
-                        {value: 111, name: 'ss'},
-                    ]
+                    return []
                 }
             },
         },
@@ -87,37 +76,11 @@
         },
         created() {
         },
-        mounted() {
-            this.apVisible = true;
-            this.wellVisible = true;
-            this.lightVisible = true;
-        },
         methods: {
             getTitle(title) {
                 return Object.assign({},this.title,{text: title});
             },
-
         },
-        watch: {
-            apData: function (newVal) {
-                this.apVisible = false;
-                setTimeout(() => {
-                    this.apVisible = true;
-                })
-            },
-            lightData: function (newVal) {
-                this.lightVisible = false;
-                setTimeout(() => {
-                    this.lightVisible = true;
-                })
-            },
-            wellData: function (newVal) {
-                this.wellVisible = false;
-                setTimeout(() => {
-                    this.wellVisible = true;
-                })
-            }
-        }
     }
 </script>
 <style lang="less" scoped>

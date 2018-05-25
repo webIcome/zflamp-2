@@ -5,7 +5,6 @@
                  :titles="titles"
                  :data="list"
                  :props="props"
-                 @change="selectDevice"
                  :format="format">
       <el-pagination style="margin-top: 5px" class="transfer-footer" slot="left-footer" @current-change="pagingEvent"
                      small
@@ -64,9 +63,10 @@
         },
         watch: {
             selectedList: function (newVal, oldVal) {
-                if (newVal.length > 6) {
+               /* if (newVal.length > 6) {
                     this.selectedList = oldVal;
-                }
+                }*/
+                this.$emit('input', this.selectedList.join());
             }
         },
         created: function () {
@@ -104,11 +104,6 @@
                 });
                 return list.concat(this.selectDataList);
             },
-            initSelectList: function () {
-                this.selectedList = [];
-                this.$emit('input', this.selectedList.join());
-            },
-
             initSelectDataList() {
                 this.selectDataList = this.list.filter(item => {
                     let filter = false;
@@ -119,9 +114,6 @@
                     });
                     return filter;
                 })
-            },
-            selectDevice: function () {
-                this.$emit('input', this.selectedList.join());
             },
             resetData: function () {
                 this.selectedList = [];

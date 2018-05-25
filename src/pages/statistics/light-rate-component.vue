@@ -2,7 +2,7 @@
   <div class="fault-rate">
     <div :ref="contentRef" class="fault-rate-content">
       <div class="echart">
-        <pie-echart-component v-if="visible" :data="data" :option="option"></pie-echart-component>
+        <pie-echart-component :data="data" :option="option"></pie-echart-component>
       </div>
       <div class="legend">
         <div class="normal"><span class="icon"></span>亮灯</div>
@@ -52,7 +52,6 @@
                         {value: data, name: '亮灯'},
                         {value: 100 - data, name: '灭灯'}
                     ]
-                    this.visible = true;
                 })
             }
         }

@@ -86,6 +86,7 @@
                 this.$refs[this.ref].validate(valid => {
                     if (valid) {
                         this.data.moduletype = this.moduletype;
+                        if (this.data.objectid) this.data.groupid = this.data.objectid;
                         GroupService.saveUpdate(this.data).then(res => {
                             this.emitEvent();
                             this.hideModal();

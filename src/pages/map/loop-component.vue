@@ -9,7 +9,7 @@
         <div class="loop-switch">
           <template v-for="item in detail.loopnum">
             <div>
-              <img @click="loopSwitch(item, 2)" title="开" width="26" height="22" v-if="currentLoopControl[item-1] == 1" src="../../assets/map/loop-swich-on.png">
+              <img @click="loopSwitch(item, 2)" title="开" width="26" height="22" v-if="currentLoopStatus(item)" src="../../assets/map/loop-swich-on.png">
               <img @click="loopSwitch(item, 1)" title="关" width="26" height="22"  v-else src="../../assets/map/loop-switch-off.png">
             </div>
           </template>
@@ -46,9 +46,9 @@
         computed: {
             loopControl: function () {
                if (!this.detail.loopcontrol) {
-                   return [2,2,2,2]
+                   return []
                } else {
-                   return this.detail.loopcontrol.split(',')
+                   return this.detail.loopcontrol.split('.')
                }
             }
         },
@@ -78,6 +78,11 @@
             loopSwitch(loop, switchStatus) {
                 Services.controlLoop(this.detail.deviceid, {controltype: 1, loop: loop, switchtype: switchStatus}).then(res => {
                     this.$set(this.currentLoopControl, loop-1, switchStatus)
+                })
+            },
+            currentLoopStatus(loop) {
+                return this.currentLoopControl.some(item => {
+                    return item == loop;
                 })
             },
             hideShowConfirm() {

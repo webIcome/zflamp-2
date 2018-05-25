@@ -59,23 +59,23 @@
               timer: '',
               apOnline: [
                   {value: 0, name: '在线'},
-                  {value: 0, name: '离线'}
+                  {value: 100, name: '离线'}
               ],
               faultRate: [
                   {value: 0, name: '故障'},
-                  {value: 0, name: '正常'}
+                  {value: 100, name: '正常'}
               ],
               lightOnline: [
                   {value: 0, name: '在线'},
-                  {value: 0, name: '离线'}
+                  {value: 100, name: '离线'}
               ],
               wellOnline: [
                   {value: 0, name: '在线'},
-                  {value: 0, name: '离线'}
+                  {value: 100, name: '离线'}
               ],
               lightRate: [
                   {value: 0, name: '亮灯'},
-                  {value: 0, name: '灭灯'}
+                  {value: 100, name: '灭灯'}
               ],
               powerStatistics: [],
               lightStatistics: [],
@@ -83,7 +83,6 @@
           }
       },
       created() {
-          this.initData();
           this.timer = setInterval(this.initData.bind(this), this.time)
       },
       computed:{
@@ -94,27 +93,25 @@
               this.generateHeight();
               this.visible = true;
           })
+          this.initData();
       },
       methods: {
           initData() {
-              Service.getApLineRate().then(data => {
-                  this.apOnLine = [
-                      {value: data, name: '在线'},
-                      {value: 100 - data, name: '离线'}
-                  ]
-              });
-              Service.getLightLineRate().then(data => {
-                  this.lightOnlineRate = [
-                      {value: data, name: '在线'},
-                      {value: 100 - data, name: '离线'}
-                  ]
-              });
-              Service.getWellLineRate().then(data => {
-                  this.wellOnLineRate = [
-                      {value: data, name: '在线'},
-                      {value: 100 - data, name: '离线'}
-                  ]
-              })
+              Promise.all([Service.getApLineRate(), Service.getLightLineRate(), Service.getWellLineRate()])
+                  .then(([apData, lightData, wellData]) => {
+                      this.apOnline = [
+                          {value: apData, name: '在线'},
+                          {value: 100 - apData, name: '离线'}
+                      ];
+                      this.lightOnline = [
+                          {value: lightData, name: '在线'},
+                          {value: 100 - lightData, name: '离线'}
+                      ];
+                      this.wellOnline = [
+                          {value: wellData, name: '在线'},
+                          {value: 100 - wellData, name: '离线'}
+                      ];
+                  });
               Service.getFaultRate().then(data => {
                   this.faultRate = [
                       {value: data, name: '故障'},

@@ -8,7 +8,7 @@
         <div class="content-border left-bottom"></div>
         <div class="content-border right-bottom"></div>
         <div class="echart">
-          <line-echart-component v-if="visible" :data="dataUse" :option="option"></line-echart-component>
+          <line-echart-component :data="dataUse" :option="option"></line-echart-component>
         </div>
       </div>
     </div>
@@ -43,7 +43,6 @@
                         }
                     }
                 },
-                visible: false
             }
         },
         props: {
@@ -70,18 +69,9 @@
         created() {
         },
         mounted() {
-            this.visible = true;
         },
         methods: {
         },
-        watch: {
-            data: function (newVal) {
-                this.visible = false;
-                setTimeout(() => {
-                    this.visible = true;
-                })
-            }
-        }
     }
 </script>
 <style lang="less" scoped>

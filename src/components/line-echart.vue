@@ -36,6 +36,14 @@
             getLineOption(data) {
                 return EchartOption.getLineOption(data,  this.option)
             }
+        },
+        watch:{
+            data: function () {
+                this.initData();
+            },
+            option: function () {
+                this.initData();
+            }
         }
     }
 </script>

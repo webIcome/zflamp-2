@@ -9,7 +9,7 @@
       </template>
 
       <div class="echart">
-        <pie-echart-component v-if="visible" :data="data" :option="option"></pie-echart-component>
+        <pie-echart-component :data="data" :option="option"></pie-echart-component>
       </div>
       <div class="legend">
         <div class="normal"><span class="icon"></span>正常</div>
@@ -27,7 +27,6 @@
         data() {
             return {
                 contentRef: 'content-ref',
-                visible: false,
                 option: {
                     name: '灯控器',
 //                    color: ['#3EB37F', '#FF854A', '#FF6668', '#5282E6', '#999999'],
@@ -55,19 +54,10 @@
         created() {
         },
         mounted() {
-            this.visible = true;
         },
         methods: {
 
         },
-        watch: {
-            data: function (newVal) {
-                this.visible = false;
-                setTimeout(() => {
-                    this.visible = true;
-                })
-            }
-        }
     }
 </script>
 <style lang="less" scoped>
