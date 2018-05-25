@@ -3,6 +3,7 @@
     <div class="my-map" :ref="ref"></div>
     <left-component @search="getDevices" @searchWell="getWellList" :list="devices" :wellList="wellList"></left-component>
     <right-component @search="getDetail"
+                     @searchWell="getWellDetail"
                      @hide="hidePanel"
                      @updateDetail="updateDetail"
                      :apPanel="apPanel"
@@ -86,6 +87,7 @@
                 this.map.enableKeyboard();//启用键盘上下左右键移动地图
             },
             moveMap(options) {
+                this.mapZoom = options.zoom;
                 this.map.centerAndZoom(options.center, options.zoom);
             },
             getDevices(params) {
@@ -214,18 +216,19 @@
                     this.removeMarker(this.marker.marker);
                     return;
                 }
-                switch (params.moduletype) {
-                    case this.moduleType.well:
-                        WellServices.getDetail(params.deviceid).then(detail => {
-                            this.transformDetail(detail, this.moduleType.well)
-                        });
-                        break;
-                    default:
-                        MapServices.getDetail(params).then(detail => {
-                            this.transformDetail(detail, params.moduletype)
-                        })
-                        break
+                MapServices.getDetail(params).then(detail => {
+                    this.transformDetail(detail, params.moduletype)
+                })
+            },
+            getWellDetail(id) {
+                this.hidePanel();
+                if (!id) {
+                    this.removeMarker(this.marker.marker);
+                    return;
                 }
+                WellServices.getDetail(id).then(detail => {
+                    this.transformDetail(detail, this.moduleType.well)
+                });
             },
             transformDetail(detail, moduletype) {
                 this.deviceDetail = detail;
@@ -233,8 +236,9 @@
                 this.showPanel(moduletype);
                 let markerClass = new MapMarkerClass(this.deviceDetail);
                 markerClass.listen('click',this.markerClickEventFn);
+                this.removeMarker(this.marker.marker)
                 this.addMarker(markerClass);
-                this.moveMap(this.deviceDetail, this.mapZoom);
+                this.moveMap({center: (new BMap.Point(detail.longitude, detail.latitude)), zoom:  16});
                 this.marker = markerClass;
             },
             updateDetail(params) {
@@ -257,7 +261,7 @@
                 this.addStatus(moduletype, device);
                 if (device.status != this.marker.device.status) {
                     this.marker.device.status = device.status;
-                    this.removeMarker(this.marker);
+                    this.removeMarker(this.marker.marker);
                     this.marker.redraw();
                     this.marker.listen('click',this.markerClickEventFn);
                     this.addMarker(this.marker)
@@ -301,6 +305,8 @@
                     default:
                         break;
                 }
+                data.lng = data.longitude;
+                data.lat = data.latitude;
                 data.moduletype = moduleType;
             },
             isShowPanel() {

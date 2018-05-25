@@ -26,8 +26,8 @@
     </el-dialog>
     <el-dialog title="控制井盖" :visible.sync="setVisible" center width="400px">
       <el-form label-width="100px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
-        <el-form-item label="告警角度：" prop="angle" required>
-          <el-input type="text" v-model.trim="operData.angle"></el-input>
+        <el-form-item label="告警角度：" prop="operateValue" required>
+          <el-input type="text" v-model.trim="operData.operateValue"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -64,7 +64,7 @@
                 operData: {},
                 operateType: '',
                 Rules: {
-                    angle: [
+                    operateValue: [
                         { validator: validateAngle, trigger: 'change' },
                     ]
                 }
@@ -114,6 +114,7 @@
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         let data = this.operData;
+                        data.operateType = this.operateType;
                         data.deviceIds = this.ids.join(',');
                         Service.control(data).then(res => {
                             this.hideModal();

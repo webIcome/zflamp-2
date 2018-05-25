@@ -17,6 +17,7 @@
 <script>
     import Services from "../../services/map";
     import CommonConstant from "../../constants/common";
+    import WellServices from '../../services/well'
     export default{
         name: 'rightPosition',
         data() {
@@ -24,7 +25,6 @@
                 id: '',
                 loading: false,
                 list: [],
-                listData: [],
                 isShowConfirm: false,
                 moduleType: {}
             }
@@ -48,19 +48,37 @@
                     this.moduleType[item.name] = item.value;
                 })
             },
-            findList(params) {
+            findList(value) {
                 this.loading = true;
-                Services.findDevices(params).then(data => {
+                this.list = [];
+                Services.findDevices(value).then(devices => {
                     this.loading = false;
-                    this.listData = data;
-                    this.list = this.getTransformList(data);
+                    this.list = this.list.concat(this.getTransformList(devices))
                 }).catch(err => {
                     this.loading = false
-                })
+                });
+                WellServices.getList({keys: value, pageSize: 5, pageNum: 1}).then(wellList => {
+                    this.loading = false;
+                    this.list = this.list.concat(this.getTransformWellList(wellList))
+                }).catch(err => {
+                    this.loading = false
+                });
+                /*Promise.all([Services.findDevices(value),WellServices.getList({keys: value, pageSize: 10, pageNum: 1})]).then(([devices,wellList]) => {
+                    this.loading = false;
+                    this.list = this.getTransformList(devices).concat(this.getTransformWellList(wellList));
+                }).catch(err => {
+                    this.loading = false
+                });*/
             },
             getTransformList(list) {
                 return list.map(item => {
                     let label = this.$common.getLabel(item.moduletype, CommonConstant.deviceType) + ':' + item.devicename + "/" + item.sn;
+                    return {value: JSON.stringify(item), label: label}
+                });
+            },
+            getTransformWellList(list) {
+                return list.map(item => {
+                    let label = '井盖:' + item.deviceName + "/" + item.sn;
                     return {value: JSON.stringify(item), label: label}
                 });
             },
@@ -70,7 +88,12 @@
                 } else {
                     value = {}
                 }
-                this.$emit('search', {deviceid: value.deviceid, moduletype: value.moduletype})
+                if (value.moduletype) {
+                    this.$emit('search', {deviceid: value.deviceid, moduletype: value.moduletype})
+                } else {
+                    this.$emit('searchWell', value.id)
+                }
+
             },
         }
     }

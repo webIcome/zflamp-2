@@ -34,7 +34,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column min-width="100" prop="taskName" label="任务名称"></el-table-column>
-      <el-table-column prop="companyname" label="归属项目"></el-table-column>
+      <el-table-column prop="compName" label="归属项目"></el-table-column>
       <el-table-column label="任务类型"><template slot-scope="scope">{{scope.row.moduleType | deviceTypeNameConverter}}</template></el-table-column>
       <el-table-column label="操作命令"><template slot-scope="scope">{{scope.row.taskCmd | taskCmdNameConverter}}</template></el-table-column>
       <el-table-column label="命令状态"><template slot-scope="scope">{{scope.row.taskStatus | taskStatusNameConverter}}</template></el-table-column>
@@ -129,9 +129,7 @@
                 this.findList(Object.assign(this.searchParams, this.defaultPaging));
             },
             clearSearchParams: function (e) {
-                Object.keys(this.searchParams).forEach(key => {
-                    this.searchParams[key] = '';
-                });
+                this.searchParams = {};
                 this.initList();
             },
             handleSelectionChange(val) {

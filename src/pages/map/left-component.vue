@@ -33,10 +33,10 @@
             <th>告警类型</th>
             </thead>
             <tbody>
-            <tr v-for="log in currentList">
-              <td>{{log.devicename}}</td>
-              <td>{{log.sn}}</td>
-              <td>{{statusModuleType(log)}}</td>
+            <tr v-for="device in currentList">
+              <td>{{device.deviceName}}</td>
+              <td>{{device.sn}}</td>
+              <td>{{device.statusName}}</td>
             </tr>
             </tbody>
           </table>
@@ -84,7 +84,19 @@
                     } else {
                         return false
                     }
-                })
+                }).map(item => {
+                   let name = item.status;
+                   CommonContent.lightStatus.forEach(i => {
+                       if (item.status == i.value) {
+                           name = i.text;
+                       }
+                   });
+                   return {
+                       deviceName: item.devicename,
+                       sn: item.sn,
+                       statusName: name
+                   }
+               })
             },
             loopList: function () {
                 return this.list.filter(item => {
@@ -92,6 +104,18 @@
                         return true;
                     } else {
                         return false
+                    }
+                }).map(item => {
+                    let name = item.status;
+                    CommonContent.loopStatus.forEach(i => {
+                        if (item.status == i.value) {
+                            name = i.text;
+                        }
+                    });
+                    return {
+                        deviceName: item.devicename,
+                        sn: item.sn,
+                        statusName: name
                     }
                 })
             },
@@ -102,14 +126,33 @@
                     } else {
                         return false
                     }
+                }).map(item => {
+                    let name = item.status;
+                    CommonContent.apState.forEach(i => {
+                        if (item.status == i.value) {
+                            name = i.text;
+
+                        }
+                    });
+                    return {
+                        deviceName: item.devicename,
+                        sn: item.sn,
+                        statusName: name
+                    }
                 })
             },
             wellFaultList: function () {
                 return this.wellList.filter(item => {
-                    if (item.status != 0 && item.moduletype == this.moduleType.well){
+                    if (item.status != 0){
                         return true;
                     } else {
                         return false
+                    }
+                }).map(item => {
+                    return {
+                        deviceName: item.deviceName,
+                        sn: item.sn,
+                        statusName: item.statusName
                     }
                 })
             }
@@ -198,31 +241,6 @@
             showList(list) {
                 this.isListShow = true;
                 this.currentList = list;
-            },
-            statusModuleType(device) {
-                let statusArr = [];
-                switch (device.moduletype) {
-                    case this.moduleType.station:
-                        statusArr = CommonContent.apState;
-                        break;
-                    case this.moduleType.light:
-                        statusArr = CommonContent.lightStatus;
-                        break;
-                    case this.moduleType.loop:
-                        statusArr = CommonContent.loopStatus;
-                        break;
-                    case this.moduleType.well:
-                        statusArr = CommonContent.wellStatus;
-                    default:
-                        break;
-                }
-                let name = device.status;
-                statusArr.forEach(item => {
-                    if (device.status == item.value) {
-                        name = item.text;
-                    }
-                });
-                return name;
             },
             hidden() {
                 this.isListShow = false;

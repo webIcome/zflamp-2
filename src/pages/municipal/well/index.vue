@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column label="上报时间">
         <template slot-scope="scope">
-          <template>{{scope.row.createtime | formDate}}</template>
+          <template>{{scope.row.uploadTime | formDate}}</template>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100">
@@ -152,9 +152,7 @@
                 this.findList(Object.assign(this.searchParams, this.defaultPaging));
             },
             clearSearchParams: function (e) {
-                Object.keys(this.searchParams).forEach(key => {
-                    this.searchParams[key] = '';
-                });
+                this.searchParams = {};
                 this.initList();
             },
             handleSelectionChange(val) {

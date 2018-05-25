@@ -5,6 +5,15 @@ class Common {
     static copyObj(obj) {
         return JSON.parse(JSON.stringify(obj));
     }
+    static getLabel(value, arr) {
+        let label = value;
+        arr.forEach(item => {
+            if(item.value == value) {
+                label = item.text;
+            }
+        })
+        return label;
+    }
 }
 export default {
     install(Vue, pluginOptions = {}) {

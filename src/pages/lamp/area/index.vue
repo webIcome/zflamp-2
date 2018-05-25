@@ -135,9 +135,7 @@
                 this.findList(Object.assign(this.searchParams, this.defaultPaging));
             },
             clearSearchParams: function (e) {
-                Object.keys(this.searchParams).forEach(key => {
-                    this.searchParams[key] = '';
-                });
+                this.searchParams = {};
                 this.initList();
             },
             handleSelectionChange(val) {

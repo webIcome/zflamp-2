@@ -1,6 +1,6 @@
 <template>
   <div class="map-right">
-    <search-component @search="search"></search-component>
+    <search-component @search="search" @searchWell="searchWell"></search-component>
     <ap-component v-if="apPanel" :detail="detail"></ap-component>
     <light-component v-if="lightPanel" :detail="detail" @updateDetail="updateDetail"  @hide="hide"></light-component>
     <well-component v-if="wellPanel" :detail="detail" @updateDetail="updateDetail" @hide="hide"></well-component>
@@ -33,6 +33,9 @@
       methods: {
           search(params) {
               this.$emit('search', params);
+          },
+          searchWell(id) {
+              this.$emit('searchWell', id);
           },
           updateDetail(params) {
               this.$emit('updateDetail', params)

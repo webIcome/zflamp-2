@@ -21,9 +21,6 @@
         <div @click="search" class="form-group default-btn">查询</div>
         <div @click="clearSearchParams" class="form-group default-btn">清空</div>
       </form>
-      <div style="display: flex; align-items: center; margin-top: 22px;">
-        <oper-component :companies="companies" @initPaging="initList"></oper-component>
-      </div>
     </div>
     <el-table
         :data="list"
@@ -58,7 +55,7 @@
         components: {
 
         },
-        name: 'taskPage',
+        name: 'logPage',
         data() {
             return {
                 searchParams: {},
