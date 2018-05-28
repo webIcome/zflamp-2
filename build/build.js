@@ -16,19 +16,31 @@ const archiver = require('archiver')
 const spinner = ora('building for production...')
 spinner.start()
 webpackConfig.module.rules.push({
-  test: /\.(png|jpg|gif|svg)$/,
+    test: /\.(gif|png|jpe?g|svg)$/i,
   use: [   // 推荐这样配置
     {
       loader: 'image-webpack-loader',
-      query: {
-        progressive: true,
-        optimizationLevel: 7,
-        interlaced: false,
-        pngquant: {
-          quality: '65-90',
-          speed: 4
+        options: {
+            mozjpeg: {
+                progressive: true,
+                quality: 65
+            },
+            // optipng.enabled: false will disable optipng
+            optipng: {
+                enabled: false,
+            },
+            pngquant: {
+                quality: '65-90',
+                speed: 4
+            },
+            gifsicle: {
+                interlaced: false,
+            },
+            // the webp option will enable WEBP
+            webp: {
+                quality: 75
+            }
         }
-      }
     }
   ]
 })
