@@ -28,7 +28,7 @@
     </div>
     <div class="panel-bottom">
       <div class="control-panel-time">更新时间：{{detail.uptime | formDate}}</div>
-      <div class="control-panel-status">{{detail.status | apStateNameConverter}}</div>
+      <div class="control-panel-status">{{detail.status | apMapStateNameConverter}}</div>
       <!--<div @click="controlLightStatus" class="control-panel-refresh">刷新</div>-->
     </div>
   </div>

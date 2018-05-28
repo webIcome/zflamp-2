@@ -28,7 +28,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column min-width="100" prop="groupname" label="组名称"></el-table-column>
+      <el-table-column prop="groupname" label="组名称"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="设备列表">
         <template slot-scope="scope">

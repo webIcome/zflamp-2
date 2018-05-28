@@ -38,13 +38,16 @@
 <script>
     import Service from '../../../services/system'
     import CommonConstant from "../../../constants/common";
+    import Storage from '../../../store/user';
+    import moment from 'moment'
     export default {
         name: 'operUserComponent',
         data() {
             return {
                 visible: false,
                 data: {
-                    postid: ''
+                    postid: '',
+                    expiretime: Storage.state.expiretime
                 },
                 ref: 'edit',
                 posts: [],
@@ -65,6 +68,9 @@
                         {required: true, message: '请填写邮箱'},
                         { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change'}
                     ],
+                    expiretime: [
+                        {required: true, message: '请选择有效期'}
+                    ]
                 }
             }
         },
@@ -98,7 +104,7 @@
                 let date = new Date();
                 return {
                     disabledDate(time) {
-                        return time <= date;
+                        return time <= date || time > moment(Storage.state.expiretime, 'YYYY-MM-DD HH:mm:ss');
                     }
                 }
             }
@@ -157,7 +163,8 @@
                     this.clearValidate();
                 } else {
                     this.data = {
-                        postid: ''
+                        postid: '',
+                        expiretime: Storage.state.expiretime
                     }
                 }
             },

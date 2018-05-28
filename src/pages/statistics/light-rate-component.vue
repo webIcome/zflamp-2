@@ -35,7 +35,7 @@
                 },
                 data: [
                     {value: 0, name: '亮灯'},
-                    {value: 0, name: '灭灯'},
+                    {value: 100, name: '灭灯'},
                 ]
             }
         },

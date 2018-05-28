@@ -33,7 +33,7 @@
                     }
                 },
                 data: [
-                    {value: 0, name: '正常'},
+                    {value: 100, name: '正常'},
                     {value: 0, name: '故障'},
 
                 ]

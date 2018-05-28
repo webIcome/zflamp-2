@@ -180,10 +180,15 @@
           height: 53px;
           font-size: 22px;
           color: #fff;
-          background: linear-gradient(bottom, #4274bc, #60a2ec);
+          background: linear-gradient(to bottom, #4274bc, #60a2ec);
           &:hover {
             outline: 0;
             box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          }
+          &[disabled] {
+            &:hover {
+              box-shadow: none;
+            }
           }
         }
       }

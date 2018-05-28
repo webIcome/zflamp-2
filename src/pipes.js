@@ -21,6 +21,7 @@ export default {
     modeNameConverter: _modeNameConverter,
     noinducedbrightnessNameConverter: _noinducedbrightnessNameConverter,
     apStateNameConverter:_apStateNameConverter,
+    apMapStateNameConverter:_apMapStateNameConverter,
     vendorNameConverter:_vendorNameConverter,
     taskCmdNameConverter: _taskCmdNameConverter,
     taskStatusNameConverter: _taskStatusNameConverter,
@@ -175,6 +176,15 @@ function _enableSensorNameConverter(value) {
 function _apStateNameConverter(value) {
     let name = value;
     Common.apState.forEach(item => {
+        if (value == item.value) {
+            name = item.text;
+        }
+    });
+    return name
+}
+function _apMapStateNameConverter(value) {
+    let name = value;
+    Common.apMapState.forEach(item => {
         if (value == item.value) {
             name = item.text;
         }

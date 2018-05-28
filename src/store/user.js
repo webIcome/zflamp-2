@@ -21,7 +21,14 @@ export default {
       }else {
         return null;
       }
-    }
+    },
+      get expiretime() {
+          if (this.user) {
+              return this.user[Types.EXPIRE_TIME];
+          }else {
+              return null;
+          }
+      }
   },
   login(access) {
     return Services.login(access).then(res => {

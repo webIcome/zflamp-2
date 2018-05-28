@@ -16,8 +16,8 @@
             <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
           </div>
           <div class="form-group">
-            <label >选择开关状态</label>
-            <el-select v-model="searchParams.runningstate" placeholder="选择开关状态" clearable >
+            <label >选择运行状态</label>
+            <el-select v-model="searchParams.runningstate" placeholder="选择运行状态" clearable >
               <el-option v-for="status in apState" :key="status.value" :value="status.value" :label="status.text"></el-option>
             </el-select>
           </div>
@@ -37,7 +37,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
+      <el-table-column prop="devicename" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">

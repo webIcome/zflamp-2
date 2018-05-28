@@ -79,7 +79,7 @@
         computed: {
             lightList: function () {
                return this.list.filter(item => {
-                    if (item.status != 1 && item.moduletype == this.moduleType.light){
+                    if (item.status == 3 && item.moduletype == this.moduleType.light){
                         return true;
                     } else {
                         return false
@@ -128,10 +128,9 @@
                     }
                 }).map(item => {
                     let name = item.status;
-                    CommonContent.apState.forEach(i => {
+                    CommonContent.apMapState.forEach(i => {
                         if (item.status == i.value) {
                             name = i.text;
-
                         }
                     });
                     return {

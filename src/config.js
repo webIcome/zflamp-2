@@ -9,6 +9,7 @@ export default {
     LAMP_URL_API: 'http://192.168.0.152:20003/',
     // LAMP_URL_API: 'http://www.zeta-alliance.com:20003',//正式网路灯后台地址
     WELL_URL_API: 'http://192.168.0.152:20004/',
+    // WELL_URL_API: 'http://192.168.0.115:20004/',
     HOME_PAGE_URL: '/',
     DEFAULT_PAGE_SIZE: 10,
 }

@@ -25,15 +25,15 @@
                 },
                 apData: [
                     {value: 0, name: '在线'},
-                    {value: 0, name: '离线'}
+                    {value: 100, name: '离线'}
                 ],
                 lightData: [
                     {value: 0, name: '在线'},
-                    {value: 0, name: '离线'}
+                    {value: 100, name: '离线'}
                 ],
                 wellData: [
                     {value: 0, name: '在线'},
-                    {value: 0, name: '离线'}
+                    {value: 100, name: '离线'}
                 ],
                 apOption: {},
                 lightOption: {},

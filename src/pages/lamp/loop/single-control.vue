@@ -30,7 +30,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
+      <el-table-column prop="devicename" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="线路状态">

@@ -279,11 +279,10 @@
             },
             addStationStatus(data) {
                 data.status = data.runningstate;
-                if (data.status) return;
                 if (data.runningstate == 'offline') {
-                    data.status = 'offline'
+                    data.status = 2
                 } else {
-                    data.status = 'online'
+                    data.status = 1
                 }
             },
             addWellStatus(data) {

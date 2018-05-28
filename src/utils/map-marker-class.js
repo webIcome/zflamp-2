@@ -67,23 +67,23 @@ export default class MapMarkerClass {
 }
 
 let LightStatus = {
-    1: '/static/imgs/light-on.png',//开
-    2: '/static/imgs/light-offline.png',//关
-    3: '/static/imgs/light-err.png'//故障
+    1: './static/imgs/light-on.png',//开
+    2: './static/imgs/light-offline.png',//关
+    3: './static/imgs/light-err.png'//故障
 };
 let LoopStatus = {
-    1: '/static/imgs/loop-online.png',//正常
-    2: '/static/imgs/loop-offline.png',//离线
-    3: '/static/imgs/loop-err.png'//故障
+    1: './static/imgs/loop-online.png',//正常
+    2: './static/imgs/loop-offline.png',//离线
+    3: './static/imgs/loop-err.png'//故障
 };
 let StationStatus = {
-    1: '/static/imgs/ap-online.png',//在线
-    online: '/static/imgs/ap-online.png',//在线
-    2: '/static/imgs/ap-offline.png',//离线
-    offline: '/static/imgs/ap-offline.png',//离线
+    1: './static/imgs/ap-online.png',//在线
+    online: './static/imgs/ap-online.png',//在线
+    2: './static/imgs/ap-offline.png',//离线
+    offline: './static/imgs/ap-offline.png',//离线
 };
 let WellStatus = {
-    0: '/static/imgs/well-online.png', //在线
-    1: '/static/imgs/well-offline.png', //离线
-    2: '/static/imgs/well-err.png', //告警
+    0: './static/imgs/well-online.png', //在线
+    1: './static/imgs/well-offline.png', //离线
+    2: './static/imgs/well-err.png', //告警
 }
