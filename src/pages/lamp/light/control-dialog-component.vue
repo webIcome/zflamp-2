@@ -338,6 +338,8 @@
                         data.deviceIds = this.ids.join(',');
                         Service.controlLights(data).then(res => {
                             this.hideModal();
+                            this.resetData();
+                            this.initPaging();
                         });
                     }
                 })
@@ -365,6 +367,9 @@
                 if (!show && this.operData.controltype && this.ids.length) {
                     this.visible = true;
                 }
+            },
+            initPaging() {
+                this.$emit('initPaging')
             },
             hideModal() {
                 this.visible = false;

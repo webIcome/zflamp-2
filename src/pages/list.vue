@@ -73,7 +73,7 @@
                         ename: 'light',
                         modulecode: 'LAMP',
                         children: [
-                            {modulename: '任务管理', modulecode: 'LAMPTASK', url: 'task'},
+                            {modulename: '任务管理', modulecode: 'LAMPCLGL', url: 'task'},
                             {modulename: '灯控器', modulecode: 'LAMPLIGHTCONTROL', url: 'light'},
                             {modulename: '回路控制器', modulecode: 'LAMPLOOPCONTROL', url: 'loop'},
                             {modulename: '灯具&电源', modulecode: 'LAMPSUPPLYLAT', url: 'lamps'},
@@ -90,11 +90,11 @@
                     {
                         modulename: '系统管理',
                         ename: 'system',
-                        modulecode: 'SYSTEMMANAGEMENT',
+                        modulecode: 'XTQX',
                         children: [
-                            {modulename: '项目管理', url: 'organize', modulecode: 'ZZGL'},
-                            {modulename: '用户管理', url: 'user', modulecode: 'YHGL'},
-                            {modulename: '操作日志', url: 'log', modulecode: 'CZRZ'},
+                            {modulename: '项目管理', url: 'organize', modulecode: 'INETLIGHTZZGL'},
+                            {modulename: '用户管理', url: 'user', modulecode: 'INETLIGHTYHGL'},
+                            {modulename: '操作日志', url: 'log', modulecode: 'INETLIGHTCZRZ'},
                         ]
                     },
                 ]
@@ -161,7 +161,7 @@
             },
             getMenus(){
                 let currentHash = window.location.hash.substring(window.location.hash.indexOf('/'));
-                HomeService.getMenus(1).then(list => {
+                HomeService.getMenus().then(list => {
                     this.navs = list.map(item => {
                         this.localNavs.forEach((nav, index) => {
                             if (item.modulecode == nav.modulecode) {

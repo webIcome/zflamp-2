@@ -15,8 +15,8 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds"></control-light-component>
-          <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds"></control-loop-component>
+          <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-light-component>
+          <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-loop-component>
           <oper-component :companies="companies" :moduletype="moduletype" @initPaging="initList"></oper-component>
         </div>
       </div>

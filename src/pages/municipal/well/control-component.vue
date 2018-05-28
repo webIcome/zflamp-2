@@ -86,7 +86,6 @@
                 })
             },
             generate(operateType) {
-                this.resetData();
                 if (operateType) this.operateType = operateType;
                 if (operateType == 2) {
                     this.showSetModal()
@@ -99,7 +98,8 @@
                 if (this.operateType == 4) {
                     Service.pigeonholeWell(this.ids.join(',')).then(res => {
                         this.hideModal();
-                        this.initPaging()
+                        this.initPaging();
+                        this.resetData();
                     })
                     return;
                 }
@@ -107,7 +107,8 @@
                 data.deviceIds = this.ids.join(',');
                 Service.control(data).then(res => {
                     this.hideModal();
-                    this.initPaging()
+                    this.initPaging();
+                    this.resetData();
                 });
             },
             controlSetDevice(formName) {
@@ -118,6 +119,8 @@
                         data.deviceIds = this.ids.join(',');
                         Service.control(data).then(res => {
                             this.hideModal();
+                            this.initPaging();
+                            this.resetData();
                         });
                     }
                 })

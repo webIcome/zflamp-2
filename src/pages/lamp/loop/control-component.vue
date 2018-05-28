@@ -9,11 +9,11 @@
     <template v-if="isSingle">
       <div class="control control-set">
         <span class="control-text">设置</span>
-        <control-dialog-component :ids="ids" :items="setItems" :isGroup="isGroup"></control-dialog-component>
+        <control-dialog-component :ids="ids" :items="setItems" :isGroup="isGroup" @initPaging="initPaging"></control-dialog-component>
       </div>
       <div class="control control-search">
         <span class="control-text">查询</span>
-        <control-dialog-component :ids="ids" :items="searchItems" :isGroup="isGroup"></control-dialog-component>
+        <control-dialog-component :ids="ids" :items="searchItems" :isGroup="isGroup" @initPaging="initPaging"></control-dialog-component>
       </div>
     </template>
     <el-dialog title="确定操作" :visible.sync="visible" center width="450px">
@@ -128,7 +128,6 @@
                 })
             },
             generate(controltype) {
-                this.resetData();
                 this.operData.controltype = controltype;
                 this.showModal();
             },
@@ -145,13 +144,15 @@
                     data.groupids = this.ids.join(',');
                     GroupService.controlLoop(data).then(res => {
                         this.hideModal();
-                        this.initPaging()
+                        this.initPaging();
+                        this.resetData();
                     })
                 } else {
                     data.deviceIds = this.ids.join(',');
                     LoopService.controlLoops(data).then(res => {
                         this.hideModal();
-                        this.initPaging()
+                        this.initPaging();
+                        this.resetData();
                     });
                 }
             },

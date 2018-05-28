@@ -2,7 +2,7 @@
   <div class="form-horizontal detail">
     <div class="form-group">
       <label class="col-md-2 control-label">设备名称：</label>
-      <div class="col-md-2 form-control-static">{{device.wellCoverName}}</div>
+      <div class="col-md-2 form-control-static">{{device.deviceName}}</div>
       <label class="col-md-2 control-label">设备ID：</label>
       <div class="col-md-2 form-control-static">{{device.sn}}</div>
       <label class="col-md-2 control-label">归属项目：</label>
@@ -12,7 +12,7 @@
       <label class="col-md-2 control-label">归属基站ID：</label>
       <div class="col-md-2 form-control-static">{{device.belongApId}}</div>
       <label class="col-md-2 control-label">归属灯控器ID：</label>
-      <div class="col-md-2 form-control-static">{{belongLightId}}</div>
+      <div class="col-md-2 form-control-static">{{device.belongLightId}}</div>
       <label class="col-md-2 control-label">地理位置：</label>
       <div class="col-md-2 form-control-static">{{device.address}}</div>
     </div>

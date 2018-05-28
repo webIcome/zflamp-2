@@ -148,7 +148,7 @@
                 })
             },
             initPaging() {
-                this.$emit('initCurrentPaging')
+                this.$emit('initPaging')
             },
             resetData: function () {
                 this.operData = {

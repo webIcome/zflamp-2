@@ -16,11 +16,11 @@
     <template v-if="isSingle">
       <div class="control control-set">
         <span class="control-text">设置</span>
-        <control-dialog-component :ids="ids" :items="setItems" :isGroup="isGroup"></control-dialog-component>
+        <control-dialog-component :ids="ids" :items="setItems" :isGroup="isGroup" @initPaging="initPaging"></control-dialog-component>
       </div>
       <div class="control control-search">
         <span class="control-text">查询</span>
-        <control-dialog-component :ids="ids" :items="searchItems" :isGroup="isGroup"></control-dialog-component>
+        <control-dialog-component :ids="ids" :items="searchItems" :isGroup="isGroup" @initPaging="initPaging"></control-dialog-component>
       </div>
     </template>
 
@@ -114,7 +114,6 @@
                 })
             },
             generate(controltype) {
-                this.resetData();
                 if (controltype == 3) {
                     this.operData.brightness = this.brightness;
                 }
@@ -128,18 +127,21 @@
                     GroupService.controlLight(data).then(res => {
                         this.hideModal();
                         this.initPaging()
+                        this.resetData()
                     })
                 } else if(this.isArea) {
                     data.deviceIds = this.ids.join(',');
                     AreaService.controlStation(data).then(res => {
                         this.hideModal();
                         this.initPaging()
+                        this.resetData()
                     })
                 } else {
                     data.deviceIds = this.ids.join(',');
                     LightService.controlLights(data).then(res => {
                         this.hideModal();
-                        this.initPaging()
+                        this.initPaging();
+                        this.resetData()
                     });
                 }
             },
@@ -161,7 +163,8 @@
                 this.$emit('initCurrentPaging')
             },
             resetData: function () {
-                this.operData = {}
+                this.operData = {};
+                this.brightness = 0;
             }
 
         }
