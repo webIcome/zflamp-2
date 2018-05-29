@@ -38,7 +38,7 @@
         @selection-change="handleSelectionChange"
         class="my-table"
         :ref="tableRef">
-      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="selection" width="55" :selectable="isSelectable"></el-table-column>
       <el-table-column min-width="100" prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="compName" label="归属项目"></el-table-column>
@@ -75,7 +75,7 @@
       </el-table-column>
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <detail-component :id="scope.row.deviceId"></detail-component>
+          <detail-component :id="scope.row.id"></detail-component>
         </template>
       </el-table-column>
     </el-table>
@@ -160,6 +160,9 @@
                 this.selectionIds = val.map(item => {
                     return item.id;
                 })
+            },
+            isSelectable(row,index) {
+                return row.status != 1
             }
         }
     }

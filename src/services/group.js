@@ -6,10 +6,10 @@ import {Message} from 'element-ui'
 export default {
     findList(params) {
         return HttpClient.get('groupInfo', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },
@@ -51,19 +51,19 @@ export default {
     },
     findLights(params) {
         return HttpClient.get('groupControl/findLightDeviceInfoList', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },
     findLoops(params) {
         return HttpClient.get('groupControl/findLoopDeviceInfoList', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },
@@ -81,19 +81,19 @@ export default {
     },
     findGroupedList(params) {
         return HttpClient.get('groupInfo/getDeviceGroupedList', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },
     findNoGroupedList(params) {
         return HttpClient.get('groupInfo/getDeviceNoGroupedList', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     }

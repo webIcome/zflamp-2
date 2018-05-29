@@ -37,7 +37,7 @@
         @selection-change="handleSelectionChange"
         class="my-table"
         :ref="tableRef">
-      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="selection" width="55" :selectable=isSelectable></el-table-column>
       <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
@@ -156,6 +156,9 @@
                 this.selectionIds = val.map(item => {
                     return item.deviceid;
                 })
+            },
+            isSelectable(row,index) {
+                return row.runningstate != '离线'
             }
         }
     }

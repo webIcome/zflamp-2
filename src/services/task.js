@@ -6,10 +6,10 @@ import {Message} from 'element-ui'
 export default {
     findList(params) {
         return HttpClient.get('task/findTaskInfoPage', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },
@@ -45,19 +45,19 @@ export default {
     },
     getSelectedList(params) {
         return HttpClient.get('singleControl/selectedTimedtask', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {list: []};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {list: []}
             }
         })
     },
     getUnSelectedList(params) {
         return HttpClient.get('singleControl/unselectedTimedtask', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {list: []};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {list: []}
             }
         })
     }

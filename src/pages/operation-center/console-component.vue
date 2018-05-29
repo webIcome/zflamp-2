@@ -2,10 +2,11 @@
   <div class="console-center">
     <div class="console-content">
       <div class="console-scroll" id="console-scroll">
-        <div :ref="test">
-          <template v-for="item in data">
+        <div :ref="test" style="display: inline-block">
+          <template v-for="(item,index) in data">
             <div class="console-item">
-              <span>{{item.id}}、</span>
+              <!--<span>{{item.id}}、</span>-->
+              <span>{{index + 1}}、</span>
               <span>{{item.uptime}}</span>
               <span>,</span>
               <span>{{item.deviceName}}</span>
@@ -74,7 +75,7 @@
         padding: 0 30px;
         height: 80%;
         width: 100%;
-        overflow-y: scroll;
+        overflow: auto;
         &::-webkit-scrollbar {
           width: 5px;
           height: 5px;

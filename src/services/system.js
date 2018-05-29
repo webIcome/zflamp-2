@@ -49,19 +49,19 @@ export default {
     },
     findLogs(params) {
         return HttpClient.get('operationLogs/getList', Object.assign({params: params}, option)).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },
     findUsers(params) {
         return HttpClient.get('user/getList', Object.assign({params: params}, option)).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },

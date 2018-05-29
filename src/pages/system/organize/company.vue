@@ -50,13 +50,22 @@
             initList() {
                 Service.getCompanyList().then(list => {
                     this.list = list;
+                    this.resetData()
                 })
             },
 
             handleCurrentChange(val) {
                 this.currentRow = val;
                 this.$emit('input', val);
-            }
+            },
+            resetData() {
+                if (!this.currentRow.objectid) return;
+                this.list.forEach(item => {
+                    if (item.objectid == this.currentRow.objectid) {
+                        this.currentRow = item;
+                    }
+                })
+            },
         }
     }
 </script>

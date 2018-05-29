@@ -6,10 +6,10 @@ import {Message} from 'element-ui'
 export default {
     findList(params) {
         return HttpClient.get('loopController', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },

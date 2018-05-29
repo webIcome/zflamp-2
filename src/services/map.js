@@ -6,10 +6,10 @@ import {Message} from 'element-ui'
 export default {
     getDevices(params) {
         return HttpClient.get('map/deviceList', {params: params}).then(res => {
-            if (!res.data && !res.data.data) {
-                return [];
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data.list;
+            } else {
+                return [];
             }
         })
     },

@@ -35,7 +35,9 @@
         data() {
             return {
                 visible: false,
-                data: {},
+                data: {
+                    flag: 0
+                },
                 ref: 'edit',
                 companies:[],
                 companyFlag: CommonConstant.companyFlag,
@@ -167,7 +169,9 @@
                     if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = {}
+                    this.data = {
+                        flag: 0
+                    }
                 }
             }
         }

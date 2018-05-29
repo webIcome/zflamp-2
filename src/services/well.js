@@ -9,10 +9,10 @@ const option = {baseURL: Config.WELL_URL_API};
 export default {
     findList(params) {
         return HttpClient.get('wellcover/findWellCoverPage', Object.assign({params: params},option)).then(res => {
-            if (!res.data && !res.data.data) {
-                return {};
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data;
+            } else {
+                return {};
             }
         })
     },

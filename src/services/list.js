@@ -7,10 +7,10 @@ import Config from "../config";
 export default {
     getMenus() {
         return HttpClient.get('permission/getNewModuleListByUserid', {baseURL: Config.URL_API}).then(res => {
-            if (!res.data && !res.data.data) {
-                return [];
-            } else {
+            if (res.data && res.data.data) {
                 return res.data.data.result;
+            } else {
+                return [];
             }
         })
     }

@@ -47,17 +47,24 @@
         },
         methods: {
             refreshPost() {
-                Service.getPosts(this.company.objectid).then(list => {
-                    this.list = list;
-                })
+                this.getPost(this.company.objectid)
             },
             getPost(id) {
                 Service.getPosts(id).then(list => {
                     this.list = list;
+                    this.resetData();
                 })
             },
             handleCurrentChange(val) {
                 this.currentRow = val;
+            },
+            resetData() {
+                if (!this.currentRow.objectid) return;
+                this.list.forEach(item => {
+                    if (item.objectid == this.currentRow.objectid) {
+                        this.currentRow = item;
+                    }
+                })
             }
         },
         watch: {

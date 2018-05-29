@@ -99,7 +99,6 @@
             visible: function (newValue, oldValue) {
                 if (newValue) {
                     this.getDetail();
-                    this.clearValidate();
                 } else {
                     this.data = {}
                 }

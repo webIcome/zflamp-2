@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
           <label>归属项目</label>
-          <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
+          <tree-select-component v-model="searchParams.compId" :list="companies"></tree-select-component>
         </div>
         <div @click="search" class="form-group default-btn">查询</div>
         <div @click="clearSearchParams" class="form-group default-btn">清空</div>

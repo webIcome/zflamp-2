@@ -273,7 +273,7 @@
                     this.data = {
                         taskStatus: 0,
                         taskCmd: 'lightOn',
-                        periodType: 'single'
+                        periodType: 'day'
                     };
                 }
             }

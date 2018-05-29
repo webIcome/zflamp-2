@@ -13,8 +13,6 @@
       <div class="col-md-2 form-control-static">{{device.companyname}}</div>
       <label class="col-md-2 control-label">地理位置：</label>
       <div class="col-md-2 form-control-static">{{device.position}}</div>
-      <label class="col-md-2 control-label">归属组：</label>
-      <div class="col-md-2 form-control-static">{{device.groupname}}</div>
     </div>
   </div>
 </template>

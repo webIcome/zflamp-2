@@ -33,7 +33,9 @@
         data() {
             return {
                 visible: false,
-                data: {},
+                data: {
+                    flag: 0
+                },
                 ref: 'edit',
                 companyFlag: CommonConstant.companyFlag,
                 Rules: {
@@ -119,7 +121,9 @@
                     if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = {}
+                    this.data = {
+                        flag: 0
+                    }
                 }
             }
         }
