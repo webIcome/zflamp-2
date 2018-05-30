@@ -72,8 +72,15 @@
         },
         props: {
             ids: {
-                default: []
+                default: function () {
+                    return []
+                }
             },
+            deviceIds: {
+                default: function () {
+                    return []
+                }
+            }
         },
         computed: {},
         created: function () {
@@ -104,7 +111,7 @@
                     return;
                 }
                 data.operateType = this.operateType;
-                data.deviceIds = this.ids.join(',');
+                data.deviceIds = this.deviceIds.join(',');
                 Service.control(data).then(res => {
                     this.hideModal();
                     this.initPaging();
@@ -116,7 +123,7 @@
                     if (valid) {
                         let data = this.operData;
                         data.operateType = this.operateType;
-                        data.deviceIds = this.ids.join(',');
+                        data.deviceIds = this.deviceIds.join(',');
                         Service.control(data).then(res => {
                             this.hideModal();
                             this.initPaging();

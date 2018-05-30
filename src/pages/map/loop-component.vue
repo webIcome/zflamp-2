@@ -77,7 +77,11 @@
             },
             loopSwitch(loop, switchStatus) {
                 Services.controlLoop(this.detail.deviceid, {controltype: 1, loop: loop, switchtype: switchStatus}).then(res => {
-                    this.$set(this.currentLoopControl, loop-1, switchStatus)
+                    if (switchStatus == 2) {
+                        this.currentLoopControl.splice(this.currentLoopControl.indexOf(loop),1)
+                    } else {
+                        this.currentLoopControl.push(loop)
+                    }
                 })
             },
             currentLoopStatus(loop) {

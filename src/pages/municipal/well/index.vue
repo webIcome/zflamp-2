@@ -26,7 +26,7 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-component :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -116,6 +116,7 @@
                 },
                 list: [],
                 selectionList: [],
+                selectionDeviceIds: [],
                 selectionIds: [],
                 companies: [],
                 tableRef: 'my-table',
@@ -157,9 +158,12 @@
             },
             handleSelectionChange(val) {
                 this.selectionList = val;
-                this.selectionIds = val.map(item => {
-                    return item.id;
-                })
+                this.selectionDeviceIds = [];
+                this.selectionIds = [];
+                val.forEach(item => {
+                    this.selectionDeviceIds.push(item.deviceId);
+                    this.selectionIds.push(item.id)
+                });
             },
             isSelectable(row,index) {
                 return row.status != 1

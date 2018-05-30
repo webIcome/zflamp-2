@@ -69,7 +69,7 @@ function showMessage(res) {
             break;
         case 10001:
         case 422:
-            waringMessage(res.data.errorMap);
+            waringMessage(res.data.errorMap || res.data.msg);
             break;
         case 10002:
             waringMessage(res.data.msg);
@@ -85,6 +85,7 @@ function showMessage(res) {
 
 function gotoLogin() {
     router.push({path: '/login'})
+    throw new Error();
 }
 
 function waringMessage(msg, time) {

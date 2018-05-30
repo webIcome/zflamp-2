@@ -78,7 +78,6 @@
       },
       getVerifyCode: function () {
         this.generateCode();
-        console.log(this.code)
         this.gVerifyCode.refresh(this.code)
       },
 
