@@ -238,6 +238,10 @@
                 })
             },
             showList(list) {
+                if (this.isListShow &&  this.currentList == list) {
+                    this.hidden();
+                    return
+                }
                 this.isListShow = true;
                 this.currentList = list;
             },

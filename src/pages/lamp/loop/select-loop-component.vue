@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button :disabled="!companyid" v-if="!showText" type="primary" @click="showModal">选择</el-button>
+    <el-button :disabled="!companyid || !apId" v-if="!showText" type="primary" @click="showModal">选择</el-button>
     <div v-else class="show-text" @click="showModal">{{showText}}<span class="clear" @click.stop="clearSelect">&times;</span></div>
     <el-dialog title="选择回路控制器" :visible.sync="visible" center :width="'600px'" append-to-body>
       <el-form :inline="true" label-width="170px" :model="searchParams" ref="editGroup">
@@ -65,6 +65,7 @@
                 default: ''
             },
             value: '',
+            apId: ''
         },
         computed: {
             showText: function () {
@@ -128,6 +129,7 @@
                 this.visible = true;
                 this.searchParams = {};
                 this.searchParams.companyid = this.companyid;
+                this.searchParams.apuid = this.apId;
                 this.findList(this.searchParams)
             },
             hideModal() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button :disabled="!companyid" v-if="!showText" type="primary" @click="showModal">选择</el-button>
+    <el-button :disabled="!companyid || !apId" v-if="!showText" type="primary" @click="showModal">选择</el-button>
     <div v-else class="show-text" @click="showModal">{{showText}}</div>
     <!--<el-col :span="18">{{deviceNumber}}个组</el-col>
     <el-input v-model="value" v-show="false"></el-input>
@@ -72,6 +72,9 @@
             },
             max: {
                 default: 5
+            },
+            apId: {
+                default: ''
             }
         },
         computed: {
@@ -99,6 +102,7 @@
                 this.resetData();
                 this.searchParams.companyid = this.companyid;
                 this.searchParams.moduletype = this.moduletype;
+                this.searchParams.apuid = this.apId;
                 this.dialogVisible = true;
                 this.initSelectedList();
                 this.findList(this.searchParams)

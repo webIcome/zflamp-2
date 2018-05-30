@@ -52,7 +52,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="归属回路控制器：" prop="loopcontroller">
-              <select-loop-component v-model="data.loopcontroller" :companyid="data.companyid"></select-loop-component>
+              <select-loop-component v-model="data.loopcontroller" :companyid="data.companyid" :apId="data.apuid"></select-loop-component>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -69,6 +69,7 @@
                                       :groupname="data.groupname"
                                       @name="data.groupname = arguments[0]"
                                       :run="visible"
+                                      :apId="data.apuid"
                                       :moduletype="moduleType.light"></select-group-component>
             </el-form-item>
 

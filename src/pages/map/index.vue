@@ -136,6 +136,8 @@
                             moduletype: this.moduleType.well,
                             sn: item.sn,
                             status: item.status,
+                            deviceName: item.deviceName,
+                            statusName: item.statusName
                         };
                     } else if (item.longitude == 0 || item.longitude == 0) {
                         return {
@@ -145,6 +147,8 @@
                             moduletype: this.moduleType.well,
                             sn: item.sn,
                             status: item.status,
+                            deviceName: item.deviceName,
+                            statusName: item.statusName
                         };
                     }
                 }).filter(item => {

@@ -38,6 +38,7 @@
                                   :groupname="data.groupname"
                                   @name="data.groupname = arguments[0]"
                                   :run="visible"
+                                  :apId="data.apuid"
                                   :moduletype="moduleType.loop"></select-group-component>
         </el-form-item>
         <el-form-item label="地理位置：" prop="position">
