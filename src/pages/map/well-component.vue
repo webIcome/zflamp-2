@@ -47,7 +47,7 @@
                 this.$emit('hide');
             },
             controlStatus() {
-                let data = {operateType: 1, deviceIds: this.detail.id};
+                let data = {operateType: 1, deviceIds: this.detail.deviceId};
                 Services.control(data).then(res => {
                     this.updateDetail({deviceid: this.detail.id, moduletype: this.moduleType.well})
                 })

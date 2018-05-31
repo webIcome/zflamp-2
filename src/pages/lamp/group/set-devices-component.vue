@@ -118,7 +118,7 @@
                 })
             },
             getSelectedList: function () {
-                this.getModuleTypeFn()({groupid: this.group.objectid, apid: this.group.apid}).then(data => {
+                this.getModuleTypeFn()({groupid: this.group.objectid, apuid: this.group.apuid}).then(data => {
                     this.selectDataList = this.transformDataToUse(data.list);
                     this.initSelectDataList();
                 })
@@ -178,7 +178,7 @@
                 this.initSelectDataList();
                 this.moveItems = {};
                 this.searchParams.exceptgroupid = this.group.objectid;
-                this.searchParams.apid = this.group.apid;
+                this.searchParams.apuid = this.group.apuid;
             },
             emitEditEvent() {
                 this.$emit('initCurrentPaging')

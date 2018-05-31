@@ -158,7 +158,7 @@
                 })
             },
             isSelectable(row,index) {
-                return row.runningstate != '离线'
+                return row.lightstatus != 3
             }
         }
     }

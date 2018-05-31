@@ -53,7 +53,7 @@
       <el-table-column prop="currentObliquity" label="井盖倾角"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="belongLightId" label="归属路灯"></el-table-column>
-      <el-table-column prop="belongApId" label="归属基站"></el-table-column>
+      <el-table-column prop="belongApId" label="归属基站ID"></el-table-column>
       <el-table-column label="地理位置">
         <template slot-scope="scope">
           <show-position :device='scope.row'></show-position>

@@ -9,7 +9,7 @@
         <div class="col-md-2 form-control-static">{{device.vendor | vendorNameConverter}}</div>
       </div>
       <div class="form-group">
-        <label class="col-md-2 control-label">归属AP：</label>
+        <label class="col-md-2 control-label">归属基站ID：</label>
         <div class="col-md-2 form-control-static">{{device.apuid}}</div>
         <label class="col-md-2 control-label">归属组：</label>
         <div class="col-md-2 form-control-static">{{device.groupname}}</div>

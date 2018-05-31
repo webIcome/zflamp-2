@@ -22,7 +22,7 @@
       <label class="col-md-2 control-label">当前倾角：</label>
       <div class="col-md-2 form-control-static">{{device.currentObliquity}}</div>
       <label class="col-md-2 control-label">状态：</label>
-      <div class="col-md-2 form-control-static">{{device.status | wellStatusNameConverter}}</div>
+      <div class="col-md-2 form-control-static">{{device.statusName}}</div>
     </div>
     <div class="form-group">
       <label class="col-md-2 control-label">电压：</label>

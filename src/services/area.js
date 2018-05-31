@@ -18,6 +18,11 @@ export default {
             return res.data.data;
         })
     },
+    getDetailBySn(sn) {
+        return HttpClient.get('ap/getDetailsBySn', {params: {sn: sn}}).then(res => {
+            return res.data.data;
+        })
+    },
     add(body) {
         return HttpClient.post('ap', body).then(res => {
             showSuccess(res);

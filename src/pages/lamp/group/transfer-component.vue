@@ -60,7 +60,7 @@
             },
             titles: {
                 default: function () {
-                    return ['灯空器列表', '已选择列表'];
+                    return ['设备列表', '已选择列表'];
                 }
             },
             value: {

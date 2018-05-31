@@ -30,6 +30,7 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="groupname" label="组名称"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
+      <el-table-column prop="apuid" label="归属基站ID"></el-table-column>
       <el-table-column label="设备列表">
         <template slot-scope="scope">
           <set-devices-component @initCurrentPaging="pagingEvent"

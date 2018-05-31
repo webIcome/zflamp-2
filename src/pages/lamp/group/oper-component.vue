@@ -10,8 +10,8 @@
         <el-form-item label="归属项目：" prop="companyid">
           <tree-select-component v-model="data.companyid" :list="companies"></tree-select-component>
         </el-form-item>
-        <el-form-item label="归属基站：" prop="apid">
-          <select-area-component v-if="visible" v-model="data.apid"
+        <el-form-item label="归属基站：" prop="apuid">
+          <select-area-component v-if="visible" v-model="data.apuid"
                                  :companyid="data.companyid"></select-area-component>
         </el-form-item>
       </el-form>
@@ -41,7 +41,7 @@
                     companyid: [
                         {required: true, message: '选择企业'}
                     ],
-                    apid: [
+                    apuid: [
                         {required: true, message: '选择归属基站'}
                     ],
                 },

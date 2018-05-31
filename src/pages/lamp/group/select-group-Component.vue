@@ -83,7 +83,7 @@
             },
             showText: function () {
                 if (this.value) {
-                    return this.value.split(',').length + '个设备';
+                    return this.value.split(',').length + '个组';
                 } else {
                     return 0;
                 }

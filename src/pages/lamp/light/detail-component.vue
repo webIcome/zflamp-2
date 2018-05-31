@@ -11,7 +11,7 @@
       <div class="col-md-2 form-control-static">{{device.groupname}}</div>
       <label class="col-md-2 control-label">设备类型：</label>
       <div class="col-md-2 form-control-static">{{device.lightControllerType | lightControllerTypeNameConverter}}</div>
-      <label class="col-md-2 control-label">归属AP：</label>
+      <label class="col-md-2 control-label">归属基站ID：</label>
       <div class="col-md-2 form-control-static">{{device.apuid}}</div>
       <label class="col-md-2 control-label">归属回路控制器：</label>
       <div class="col-md-2 form-control-static"><template v-if="device.loopcontrollersn">{{device.loopcontrollersn}}-{{device.toloopnum}}</template></div>

@@ -13,6 +13,7 @@
       <div>
         <el-table ref="singleTable" :data="list" border class="table" @row-click="select" highlight-current-row>
           <el-table-column label="名称" prop="devicename" align="center"></el-table-column>
+          <el-table-column label="设备ID" prop="sn" align="center"></el-table-column>
           <el-table-column label="归属项目" prop="companyname" align="center"></el-table-column>
         </el-table>
         <el-row type="flex" justify="end">
@@ -81,7 +82,7 @@
                 })
             },
             getDetail(){
-                AreaService.getDetail(this.value).then(data => {
+                AreaService.getDetailBySn(this.value).then(data => {
                     this.detail = data;
                     this.name = this.detail.devicename
                 })
@@ -92,7 +93,7 @@
             },
             select: function (val) {
                 this.visible = false;
-                this.$emit('input', val.deviceid);
+                this.$emit('input', val.sn);
                 this.name = val.devicename;
             },
             changeSelect: function (val) {
