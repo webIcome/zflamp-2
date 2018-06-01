@@ -253,9 +253,8 @@
             companyid(newVal, oldVal) {
                 if (this.checkList.some(item => item == this.moduleType.well)) {
                     this.searchWell({compIds: newVal})
-                } else {
-                    this.search({companyid: newVal, moduletype: this.checkList});
                 }
+                this.search({companyid: newVal, moduletype: this.checkList});
             },
         }
     }

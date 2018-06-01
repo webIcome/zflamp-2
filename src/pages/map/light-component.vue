@@ -113,6 +113,11 @@
                 this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
             }
         },
+        watch: {
+            detail: function (val) {
+                this.brightness = val.brightness;
+            }
+        }
     }
 </script>
 <style lang="less" scoped>

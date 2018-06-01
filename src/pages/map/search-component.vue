@@ -51,6 +51,7 @@
             findList(value) {
                 this.loading = true;
                 this.list = [];
+                if (!value) return;
                 Services.findDevices(value).then(devices => {
                     this.loading = false;
                     this.list = this.list.concat(this.getTransformList(devices))

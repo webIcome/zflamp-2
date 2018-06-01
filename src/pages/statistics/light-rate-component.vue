@@ -96,7 +96,7 @@
         }
         .normal {
           .icon {
-            background: #5282E6;
+            background: #ffc500;
           }
         }
         .v-fault {

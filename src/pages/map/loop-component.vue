@@ -60,7 +60,7 @@
                 CommonConstant.deviceType.forEach(item => {
                     this.moduleType[item.name] = item.value;
                 })
-                this.currentLoopControl = Array.concat(this.loopControl);
+                this.currentLoopControl = this.loopControl;
             },
             hide() {
                 this.$emit('hide');
@@ -78,7 +78,11 @@
             loopSwitch(loop, switchStatus) {
                 Services.controlLoop(this.detail.deviceid, {controltype: 1, loop: loop, switchtype: switchStatus}).then(res => {
                     if (switchStatus == 2) {
-                        this.currentLoopControl.splice(this.currentLoopControl.indexOf(loop),1)
+                        this.currentLoopControl.forEach((item, index) => {
+                            if (item == loop) {
+                                this.currentLoopControl.splice(index, 1)
+                            }
+                        })
                     } else {
                         this.currentLoopControl.push(loop)
                     }
@@ -96,6 +100,11 @@
                 this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
             }
         },
+        watch: {
+            loopControl: function (val) {
+                this.currentLoopControl = val;
+            }
+        }
     }
 </script>
 <style lang="less" scoped>
