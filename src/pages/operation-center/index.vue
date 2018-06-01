@@ -55,7 +55,7 @@
               test: 'test',
               visible: false,
               data: {},
-              time: 180000,
+              time: 300000,
               timer: '',
               apOnline: [
                   {value: 0, name: '在线'},
