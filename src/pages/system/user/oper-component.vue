@@ -24,7 +24,7 @@
           <el-input :span="12" v-model.trim="data.email" placeholder="请输入邮箱"></el-input>
         </el-form-item>
         <el-form-item label="有效期至：" prop="expiretime">
-          <el-date-picker v-model="data.expiretime" type="datetime" placeholder="选择日期"
+          <el-date-picker v-model="data.expiretime" type="datetime" placeholder="选择日期" value-format="timestamp"
                           :picker-options="endTimeOptions" class="display-block"></el-date-picker>
         </el-form-item>
       </el-form>
@@ -47,7 +47,7 @@
                 visible: false,
                 data: {
                     postid: '',
-                    expiretime: Storage.state.expiretime
+                    expiretime: new Date(Storage.state.expiretime)
                 },
                 ref: 'edit',
                 posts: [],
@@ -139,6 +139,7 @@
             },
             getDetail() {
                 this.data = this.user;
+//                this.data.expiretime = new Date(this.data.expiretime)
             },
             clearValidate() {
                 if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();
@@ -164,7 +165,7 @@
                 } else {
                     this.data = {
                         postid: '',
-                        expiretime: Storage.state.expiretime
+                        expiretime: new Date(Storage.state.expiretime)
                     }
                 }
             },

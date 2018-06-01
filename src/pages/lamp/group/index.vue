@@ -44,7 +44,7 @@
         <template slot-scope="scope">
           <el-row type="flex" justify="space-between">
             <oper-component ref="oper" :group="scope.row" :companies="companies" :edit="true" :moduletype="moduletype" @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>
+            <!--<delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>-->
           </el-row>
         </template>
       </el-table-column>
