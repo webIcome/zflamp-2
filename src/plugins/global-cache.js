@@ -19,6 +19,8 @@ class GlobalCache {
                 } else {
                     return res.data.data.companies;
                 }
+            }).catch(err => {
+                this._companies = null;
             })
         }
         return this._companies;
