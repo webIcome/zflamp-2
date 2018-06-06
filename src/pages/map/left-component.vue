@@ -4,19 +4,19 @@
       <div class="go-home" @click="goToHome">进入列表管理</div>
       <div class="device-items">
         <el-badge class="device-item" :hidden="true">
-          <div class="device-ap" :class="{active: apActive}" @click.self="selectCheck(moduleType.station)"><span class="icon"></span>AP</div>
+          <div class="device-ap" :class="{active: apActive}" @click="selectCheck(moduleType.station)"><span class="icon"></span>AP</div>
           <sup @click="showList(apList)" v-if="apList.length" class="el-badge__content is-fixed">{{apList.length}}</sup>
         </el-badge>
         <el-badge class="device-item" :hidden="true">
-          <div class="device-lamp" :class="{active: lightActive}" @click.self="selectCheck(moduleType.light)"><span class="icon"></span>灯控器</div>
+          <div class="device-lamp" :class="{active: lightActive}" @click="selectCheck(moduleType.light)"><span class="icon"></span>灯控器</div>
           <sup @click="showList(lightList)" v-if="lightList.length" class="el-badge__content is-fixed">{{lightList.length}}</sup>
         </el-badge>
         <el-badge class="device-item" :hidden="true">
-          <div class="device-loop" :class="{active: loopActive}" @click.self="selectCheck(moduleType.loop)"><span class="icon"></span>回路控制器</div>
+          <div class="device-loop" :class="{active: loopActive}" @click="selectCheck(moduleType.loop)"><span class="icon"></span>回路控制器</div>
           <sup @click="showList(loopList)" v-if="loopList.length" class="el-badge__content is-fixed">{{loopList.length}}</sup>
         </el-badge>
         <el-badge class="device-item" :hidden="true">
-          <div class="device-well" :class="{active: wellActive}" @click.self="selectCheck(moduleType.well)"><span class="icon"></span>井盖</div>
+          <div class="device-well" :class="{active: wellActive}" @click="selectCheck(moduleType.well)"><span class="icon"></span>井盖</div>
           <sup @click="showList(wellFaultList)" v-if="wellFaultList.length" class="el-badge__content is-fixed">{{wellFaultList.length}}</sup>
         </el-badge>
       </div>

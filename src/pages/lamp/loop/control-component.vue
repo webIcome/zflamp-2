@@ -59,6 +59,7 @@
     import GroupService from "../../../services/group"
     import CommonContent from "../../../constants/common";
     import controlDialogComponent from "./control-dialog-component.vue"
+    import Config from "../../../config";
     export default {
         name: 'controlLightComponent',
         components: {
@@ -81,6 +82,9 @@
                 },
                 loopRef: 'loop-ref',
                 selectedLoops: [],
+                refreshTimes: Config.REFRESH_TIMES,
+                timer: '',
+                time: Config.REFRESH_INTERVAL
             }
         },
         props: {
@@ -161,7 +165,9 @@
                     data.switchtype = this.selectedLoops.map(item => {
                         return item.switchtype
                     }).join();
-                    data.loop = this.operData.loop;
+                    data.loop = this.selectedLoops.map(item => {
+                        return item.number;
+                    }).join();
                 }
                 return data
             },
@@ -195,13 +201,26 @@
                 this.visible = false;
             },
             initPaging() {
-                this.$emit('initCurrentPaging')
+                this.refreshTimes = Config.REFRESH_TIMES;
+                this.refreshPage();
+            },
+            refreshPage() {
+                this.timer = setTimeout(() => {
+                    if (this.refreshTimes) {
+                        this.$emit('initCurrentPaging');
+                        this.refreshTimes --;
+                        this.refreshPage();
+                    }
+                }, this.time)
             },
             resetData: function () {
                 this.operData = {};
                 this.selectedLoops = []
             }
 
+        },
+        destroyed() {
+            clearInterval(this.timer);
         }
     }
 </script>

@@ -128,7 +128,7 @@
 </script>
 <style scoped lang="less">
   .login-container {
-    background: url("../assets/login/bg.png") no-repeat center;
+    background: url("../assets/login/bg-change.png") no-repeat center;
     background-size: cover;
     height: 100%;
     position: relative;

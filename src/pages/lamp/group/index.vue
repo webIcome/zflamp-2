@@ -49,7 +49,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end">
+    <el-row type="flex" justify="end" v-if="searchParams.pages">
       <el-pagination
           background
           :current-page="searchParams.pageNum"

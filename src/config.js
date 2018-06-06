@@ -12,4 +12,6 @@ export default {
     WELL_URL_API: 'http://192.168.0.115:20004/',
     HOME_PAGE_URL: '/',
     DEFAULT_PAGE_SIZE: 10,
+    REFRESH_TIMES: 10,
+    REFRESH_INTERVAL: 5000,
 }
