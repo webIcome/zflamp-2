@@ -161,7 +161,9 @@
                     data.switchtype = this.selectedLoops.map(item => {
                         return item.switchtype
                     }).join();
-                    data.loop = this.operData.loop;
+                    data.loop = this.selectedLoops.map(item => {
+                        return item.number;
+                    }).join();
                 }
                 return data
             },
