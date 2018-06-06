@@ -1,6 +1,6 @@
 <template>
   <div class="control-panel">
-    <!--<div class="panel-title"><span class="title">设备ID:{{detail.sn}}</span><i class="el-icon-close" @click="hide"></i></div>-->
+    <div class="panel-title"><span class="title">灯控器ID:{{detail.sn}}</span></div>
     <div class="panel-control-body">
       <div class="panel-control-item clearfix">
         <div class="panel-img">
