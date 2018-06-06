@@ -41,6 +41,7 @@
 <script>
     import Service from "../../../services/well";
     import CommonContent from "../../../constants/common";
+    import Config from "../../../config";
     export default {
         name: 'controlWellComponent',
         components: {},
@@ -67,7 +68,10 @@
                     operateValue: [
                         { validator: validateAngle, trigger: 'change' },
                     ]
-                }
+                },
+                refreshTimes: Config.REFRESH_TIMES,
+                timer: '',
+                time: Config.REFRESH_INTERVAL
             }
         },
         props: {
@@ -143,11 +147,24 @@
                 this.setVisible = false;
             },
             initPaging() {
-                this.$emit('initCurrentPaging')
+                this.refreshTimes = Config.REFRESH_TIMES;
+                this.refreshPage();
+            },
+            refreshPage() {
+                this.timer = setTimeout(() => {
+                    if (this.refreshTimes) {
+                        this.$emit('initCurrentPaging');
+                        this.refreshTimes --;
+                        this.refreshPage();
+                    }
+                }, this.time)
             },
             resetData: function () {
                 this.operData = {}
             }
+        },
+        destroyed() {
+            clearInterval(this.timer);
         }
     }
 </script>

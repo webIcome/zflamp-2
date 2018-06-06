@@ -172,17 +172,17 @@
                     if (this.refreshTimes) {
                         this.$emit('initCurrentPaging');
                         this.refreshTimes --;
-                        clearInterval(this.timer);
+                        this.refreshPage();
                     }
                 }, this.time)
             },
             resetData: function () {
                 this.operData = {};
                 this.brightness = 0;
-            },
-            destroyed() {
-                clearInterval(this.timer);
             }
+        },
+        destroyed() {
+            clearInterval(this.timer);
         }
     }
 </script>
