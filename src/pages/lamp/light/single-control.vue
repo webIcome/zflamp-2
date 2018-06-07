@@ -38,7 +38,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55" :selectable=isSelectable></el-table-column>
-      <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
+      <el-table-column prop="devicename" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
@@ -58,6 +58,11 @@
       <el-table-column prop="current" label="电流A"></el-table-column>
       <el-table-column prop="sumpower" label="用电量KW·h"></el-table-column>
       <el-table-column label="地理位置"><template slot-scope="scope"><show-position :device='scope.row'></show-position></template></el-table-column>
+      <el-table-column label="上报时间">
+        <template slot-scope="scope">
+          <template>{{scope.row.uptime | formDate}}</template>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex" justify="space-between">
