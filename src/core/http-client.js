@@ -40,8 +40,10 @@ axios.interceptors.response.use(function (res) {
 }, function (error) {
     console.log(error)
     // loading.close();
-    waringMessage('服务器网络问题，请联系管理员')
-    return Promise.reject(error)
+    if (!(error instanceof axios.Cancel)) {
+        waringMessage('服务器网络问题，请联系管理员')
+        return Promise.reject(error)
+    }
 });
 export default {
     install: function (Vue, Option) {
