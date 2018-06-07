@@ -15,6 +15,7 @@ export default {
     switchStateNameConverter: _switchStateNameConverter,
     strategyStateNameConverter: _strategyStateNameConverter,
     lightControllerTypeNameConverter: _lightControllerTypeNameConverter,
+    loopControllerTypeNameConverter: _loopControllerTypeNameConverter,
     sensortypeNameConverter: _sensortypeNameConverter,
     enableSensorNameConverter: _enableSensorNameConverter,
     signNameConverter: _signNameConverter,
@@ -116,6 +117,15 @@ function _strategyStateNameConverter(value) {
 function _lightControllerTypeNameConverter(value) {
     let name = value;
     Common.lightControllerType.forEach(item => {
+        if (Number(value) == item.value) {
+            name = item.text;
+        }
+    });
+    return name;
+}
+function _loopControllerTypeNameConverter(value) {
+    let name = value;
+    Common.loopControllerType.forEach(item => {
         if (Number(value) == item.value) {
             name = item.text;
         }
