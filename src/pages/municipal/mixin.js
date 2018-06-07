@@ -15,6 +15,7 @@ export default {
             selectionIds: [],
             companies: [],
             tableRef: 'my-table',
+            service: {}
         }
     },
     created() {
@@ -30,8 +31,32 @@ export default {
                 this.companies = companies;
             })
         },
+        findList(params) {
+            this.service.findList(params).then(data => {
+                this.searchParams.pageNum = data.pageNum;
+                this.searchParams.pages = data.pages;
+                this.searchParams.pageSize = data.pageSize;
+                this.searchParams.total = data.total;
+                this.list = data.list;
+            })
+        },
+        refreshPage() {
+            this.service.findList(this.searchParams).then(data => {
+                this.list.forEach(item => {
+                    data.list.forEach(i => {
+                        if (i.sn == item.sn) {
+                            Object.assign(item, i);
+                        }
+                    })
+                })
+            })
+        },
         search: function () {
             this.findList(Object.assign(this.searchParams, this.defaultPaging));
+        },
+        pagingEvent(pageNumber) {
+            if (pageNumber) this.searchParams.pageNum = pageNumber;
+            this.findList(this.searchParams);
         },
         clearSearchParams: function (e) {
             this.searchParams = {};

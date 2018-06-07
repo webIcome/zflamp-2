@@ -113,33 +113,11 @@
         data() {
             return {
                 wellStatus: CommonConstant.wellStatus,
+                service: Service
             }
         },
         methods: {
-            findList(params) {
-                Service.findList(params).then(data => {
-                    this.searchParams.pageNum = data.pageNum;
-                    this.searchParams.pages = data.pages;
-                    this.searchParams.pageSize = data.pageSize;
-                    this.searchParams.total = data.total;
-                    this.list = data.list;
-                })
-            },
-            refreshPage() {
-                Service.findList(this.searchParams).then(data => {
-                    this.list.forEach(item => {
-                        data.list.forEach(i => {
-                            if (i.sn == item.sn) {
-                                Object.assign(item, i);
-                            }
-                        })
-                    })
-                })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
+
         }
     }
 </script>
