@@ -15,8 +15,8 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-light-component>
-          <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-loop-component>
+          <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds" ></control-light-component>
+          <control-loop-component v-else-if="moduletype == moduleType.loop" :isGroup="true" :ids="selectionIds"></control-loop-component>
           <oper-component :companies="companies" :moduletype="moduletype" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -44,7 +44,7 @@
         <template slot-scope="scope">
           <el-row type="flex" justify="space-between">
             <oper-component ref="oper" :group="scope.row" :companies="companies" :edit="true" :moduletype="moduletype" @initCurrentPaging="pagingEvent"></oper-component>
-            <!--<delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>-->
+            <delete-component :id="scope.row.objectid" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
       </el-table-column>
