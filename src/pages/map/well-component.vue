@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="panel-bottom">
-      <div class="control-panel-time">更新时间：{{detail.uptime | formDate}}</div>
+      <div class="control-panel-time">更新时间：{{detail.uploadTime | formDate}}</div>
       <div class="control-panel-status">{{detail.statusName}}</div>
       <div @click="controlStatus" class="control-panel-status">获取状态</div>
     </div>
