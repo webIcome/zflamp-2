@@ -66,7 +66,7 @@
                 operateType: '',
                 Rules: {
                     operateValue: [
-                        { validator: validateAngle, trigger: 'change' },
+                        {validator: validateAngle, trigger:  ['blur', 'change']},
                     ]
                 },
                 refreshTimes: Config.REFRESH_TIMES,

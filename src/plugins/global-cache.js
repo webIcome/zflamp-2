@@ -11,6 +11,11 @@ class GlobalCache {
         this._companies = null;
         return this.companies;
     }
+    clearCache() {
+        Object.keys(this).forEach(key => {
+            this[key] = null;
+        });
+    }
     get companies() {
         if (!this._companies) {
             this._companies = HttpClient.get('company/getTreeInfo', {baseURL: Config.URL_API}).then(res => {
