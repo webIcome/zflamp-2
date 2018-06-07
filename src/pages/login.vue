@@ -64,6 +64,7 @@
             if (this.loginname) {
                 this.savePassword = true;
             }
+            this.$globalCache.clearCache();
         },
       login: function () {
         let access = {loginname: this.loginname, password: this.password};
