@@ -73,14 +73,11 @@ function showMessage(res) {
         case 422:
             waringMessage(res.data.errorMap || res.data.msg);
             break;
-        case 10002:
-            waringMessage(res.data.msg);
+        case 0:
+        case 200:
             break;
-        case 20000:
-            waringMessage('系统内部错误');
-            break;
-        case 500:
-            waringMessage('服务器500错误');
+        default:
+            waringMessage(res.data.msg || res.data.errorMap);
             break;
     }
 }
