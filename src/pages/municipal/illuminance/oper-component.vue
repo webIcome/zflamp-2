@@ -19,16 +19,16 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-       <el-button type="primary" @click="operate">确 定</el-button>
+        <el-button type="primary" @click="operate">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
-    import Service from '../../../services/inundate'
+    import Service from '../../../services/illuminance'
     import CommonConstant from "../../../constants/common";
     export default {
-        name: 'operInundateComponent',
+        name: 'operIlluminanceComponent',
         data() {
             return {
                 visible: false,

@@ -21,6 +21,10 @@
       <div class="col-md-2 form-control-static">{{device.statusName}}</div>
       <label class="col-md-2 control-label">电压/V：</label>
       <div class="col-md-2 form-control-static">{{device.voltage}}</div>
+      <label class="col-md-2 control-label">当前照度/lux：</label>
+      <div class="col-md-2 form-control-static">{{device.voltage}}</div>
+      <label class="col-md-2 control-label">告警阈值：</label>
+      <div class="col-md-2 form-control-static">{{device.voltage}}</div>
       <label class="col-md-2 control-label">上报日期：</label>
       <div class="col-md-2 form-control-static">{{device.uploadTime | formDate}}</div>
       <label class="col-md-2 control-label">心跳包周期/h：</label>
@@ -36,9 +40,9 @@
 </template>
 
 <script>
-    import Service from '../../../services/inundate'
+    import Service from '../../../services/illuminance'
     export default {
-        name: 'detailInundate',
+        name: 'detailIlluminance',
         data() {
             return {
                 device: {}

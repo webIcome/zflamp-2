@@ -26,7 +26,7 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @initCurrentPaging="refreshPage"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -41,6 +41,7 @@
       <el-table-column type="selection" width="55" :selectable="isSelectable"></el-table-column>
       <el-table-column min-width="100" prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
+      <el-table-column prop="sn" label="设备型号"></el-table-column>
       <el-table-column prop="compName" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
         <template slot-scope="scope">
@@ -50,10 +51,11 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="currentObliquity" label="井盖倾角"></el-table-column>
+      <el-table-column prop="voltage" label="当前照度/lux"></el-table-column>
+      <el-table-column prop="voltage" label="告警阈值"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
-      <el-table-column prop="belongLightId" label="归属路灯"></el-table-column>
-      <el-table-column prop="belongApId" label="归属基站ID"></el-table-column>
+      <el-table-column prop="belongLightId" label="归属灯"></el-table-column>
+      <el-table-column prop="belongApId" label="归属基站"></el-table-column>
       <el-table-column label="地理位置">
         <template slot-scope="scope">
           <show-position :device='scope.row'></show-position>
@@ -94,13 +96,12 @@
 </template>
 <script>
     import Config from "../../../config";
-    import Service from "../../../services/well";
+    import Service from "../../../services/illuminance";
     import operComponent from './oper-component.vue'
     import detailComponent from './detail-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control-component.vue"
-    import mixin from '../mixin'
     export default {
         components: {
             operComponent,
@@ -108,14 +109,35 @@
             deleteComponent,
             controlComponent,
         },
-        mixins: [mixin],
-        name: 'wellPage',
+        name: 'illuminancePage',
         data() {
             return {
+                searchParams: {},
+                defaultPaging: {
+                    pageSize: Config.DEFAULT_PAGE_SIZE
+                },
+                list: [],
+                selectionList: [],
+                selectionDeviceIds: [],
+                selectionIds: [],
+                companies: [],
+                tableRef: 'my-table',
                 wellStatus: CommonConstant.wellStatus,
             }
         },
+        created() {
+            this.initList();
+            this.initCompanies();
+        },
         methods: {
+            initList() {
+                this.findList(this.defaultPaging);
+            },
+            initCompanies() {
+                this.$globalCache.companies.then(companies => {
+                    this.companies = companies;
+                })
+            },
             findList(params) {
                 Service.findList(params).then(data => {
                     this.searchParams.pageNum = data.pageNum;
@@ -140,6 +162,25 @@
                 if (pageNumber) this.searchParams.pageNum = pageNumber;
                 this.findList(this.searchParams);
             },
+            search: function () {
+                this.findList(Object.assign(this.searchParams, this.defaultPaging));
+            },
+            clearSearchParams: function (e) {
+                this.searchParams = {};
+                this.initList();
+            },
+            handleSelectionChange(val) {
+                this.selectionList = val;
+                this.selectionDeviceIds = [];
+                this.selectionIds = [];
+                val.forEach(item => {
+                    this.selectionDeviceIds.push(item.deviceId);
+                    this.selectionIds.push(item.id)
+                });
+            },
+            isSelectable(row,index) {
+                return row.status != 1
+            }
         }
     }
 </script>
