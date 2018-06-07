@@ -157,7 +157,7 @@ export default {
 }
 
 function showSuccess(res, msg) {
-    if (res && res.data && res.data.code == 0) {
+    if (res && res.data && (res.data.code == 0 || res.data.code == 200)) {
         msg = msg? msg : '操作成功';
         Message({
             message: msg,
