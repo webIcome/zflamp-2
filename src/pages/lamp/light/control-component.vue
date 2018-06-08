@@ -47,20 +47,19 @@
     import controlDialogComponent from "./control-dialog-component.vue"
     import AreaService from "../../../services/area";
     import Config from "../../../config";
+    import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
         name: 'controlLightComponent',
         components: {
             controlDialogComponent,
         },
+        mixins: [controlTimerMixin],
         data() {
             return {
                 moduleType: {},
                 brightness: 0,
                 visible: false,
                 operData: {},
-                refreshTimes: Config.REFRESH_TIMES,
-                timer: '',
-                time: Config.REFRESH_INTERVAL
             }
         },
         props: {
@@ -162,19 +161,6 @@
             },
             hideModal: function () {
                 this.visible = false;
-            },
-            initPaging() {
-                this.refreshTimes = Config.REFRESH_TIMES;
-                this.refreshPage();
-            },
-            refreshPage() {
-                this.timer = setTimeout(() => {
-                    if (this.refreshTimes) {
-                        this.$emit('initCurrentPaging');
-                        this.refreshTimes --;
-                        this.refreshPage();
-                    }
-                }, this.time)
             },
             resetData: function () {
                 this.operData = {};
