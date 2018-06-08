@@ -93,92 +93,28 @@
 
 </template>
 <script>
-    import Config from "../../../config";
     import Service from "../../../services/inundate";
     import operComponent from './oper-component.vue'
     import detailComponent from './detail-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control-component.vue"
+    import mixin from '../mixin'
     export default {
         components: {
             operComponent,
-            detailComponent,
             deleteComponent,
             controlComponent,
+            detailComponent
         },
+        mixins: [mixin],
         name: 'inundatePage',
         data() {
             return {
-                searchParams: {},
-                defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE
-                },
-                list: [],
-                selectionList: [],
-                selectionDeviceIds: [],
-                selectionIds: [],
-                companies: [],
-                tableRef: 'my-table',
-                wellStatus: CommonConstant.wellStatus,
+                service: Service
             }
-        },
-        created() {
-            this.initList();
-            this.initCompanies();
         },
         methods: {
-            initList() {
-                this.findList(this.defaultPaging);
-            },
-            initCompanies() {
-                this.$globalCache.companies.then(companies => {
-                    this.companies = companies;
-                })
-            },
-            findList(params) {
-                Service.findList(params).then(data => {
-                    this.searchParams.pageNum = data.pageNum;
-                    this.searchParams.pages = data.pages;
-                    this.searchParams.pageSize = data.pageSize;
-                    this.searchParams.total = data.total;
-                    this.list = data.list;
-                })
-            },
-            refreshPage() {
-                Service.findList(this.searchParams).then(data => {
-                    this.list.forEach(item => {
-                        data.list.forEach(i => {
-                            if (i.sn == item.sn) {
-                                Object.assign(item, i);
-                            }
-                        })
-                    })
-                })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
-            search: function () {
-                this.findList(Object.assign(this.searchParams, this.defaultPaging));
-            },
-            clearSearchParams: function (e) {
-                this.searchParams = {};
-                this.initList();
-            },
-            handleSelectionChange(val) {
-                this.selectionList = val;
-                this.selectionDeviceIds = [];
-                this.selectionIds = [];
-                val.forEach(item => {
-                    this.selectionDeviceIds.push(item.deviceId);
-                    this.selectionIds.push(item.id)
-                });
-            },
-            isSelectable(row,index) {
-                return row.status != 1
-            }
         }
     }
 </script>

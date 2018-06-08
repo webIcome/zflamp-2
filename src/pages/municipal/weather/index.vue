@@ -26,7 +26,7 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage(Service)"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -88,7 +88,6 @@
 
 </template>
 <script>
-    import Config from "../../../config";
     import Service from "../../../services/voice";
     import operComponent from './oper-component.vue'
     import deleteComponent from './delete-component.vue'

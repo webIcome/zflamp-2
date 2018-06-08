@@ -93,7 +93,6 @@
 
 </template>
 <script>
-    import Config from "../../../config";
     import Service from "../../../services/well";
     import operComponent from './oper-component.vue'
     import detailComponent from './detail-component.vue'

@@ -5,24 +5,22 @@ import Config from "../config";
 export default {
     data() {
         return {
-            refreshTimes: Config.REFRESH_TIMES,
-            time: Config.REFRESH_INTERVAL,
-            timer: ''
+            REFRESH_TIMES: Config.REFRESH_TIMES,
         }
     },
     methods: {
         initPaging() {
-            this.refreshTimes = Config.REFRESH_TIMES;
+            this.REFRESH_TIMES = Config.REFRESH_TIMES;
             this.refreshPage();
         },
         refreshPage() {
-            this.timer = setTimeout(() => {
-                if (this.refreshTimes) {
+            setTimeout(() => {
+                if (this.REFRESH_TIMES) {
                     this.$emit('refreshPage');
-                    this.refreshTimes --;
+                    this.REFRESH_TIMES --;
                     this.refreshPage();
                 }
-            }, this.time)
+            }, Config.REFRESH_INTERVAL)
         },
     },
 }

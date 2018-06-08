@@ -52,9 +52,11 @@
 <script>
     import Service from "../../../services/door";
     import CommonContent from "../../../constants/common";
+    import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
         name: 'controlWaterLevelComponent',
         components: {},
+        mixins: [controlTimerMixin],
         data() {
             return {
                 visible: false,
@@ -139,9 +141,6 @@
             hideModal: function () {
                 this.visible = false;
                 this.setVisible = false;
-            },
-            initPaging() {
-                this.$emit('initCurrentPaging')
             },
             resetData: function () {
                 this.operData = {}

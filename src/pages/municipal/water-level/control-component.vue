@@ -62,9 +62,11 @@
 <script>
     import Service from "../../../services/well";
     import CommonContent from "../../../constants/common";
+    import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
         name: 'controlWaterLevelComponent',
         components: {},
+        mixins: [controlTimerMixin],
         data() {
             let validateAngle = (rule, value, callback) => {
                 if (!value) {
@@ -180,9 +182,6 @@
             hideModal: function () {
                 this.visible = false;
                 this.setVisible = false;
-            },
-            initPaging() {
-                this.$emit('initCurrentPaging')
             },
             resetData: function () {
                 this.operData = {}
