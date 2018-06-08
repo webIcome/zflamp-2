@@ -59,12 +59,13 @@
     import GroupService from "../../../services/group"
     import CommonContent from "../../../constants/common";
     import controlDialogComponent from "./control-dialog-component.vue"
-    import Config from "../../../config";
+    import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
         name: 'controlLightComponent',
         components: {
             controlDialogComponent,
         },
+        mixins: [controlTimerMixin],
         data() {
             return {
                 moduleType: {},
@@ -82,9 +83,6 @@
                 },
                 loopRef: 'loop-ref',
                 selectedLoops: [],
-                refreshTimes: Config.REFRESH_TIMES,
-                timer: '',
-                time: Config.REFRESH_INTERVAL
             }
         },
         props: {
@@ -200,28 +198,11 @@
             hideModal: function () {
                 this.visible = false;
             },
-            initPaging() {
-                this.refreshTimes = Config.REFRESH_TIMES;
-                this.refreshPage();
-            },
-            refreshPage() {
-                this.timer = setTimeout(() => {
-                    if (this.refreshTimes) {
-                        this.$emit('initCurrentPaging');
-                        this.refreshTimes --;
-                        this.refreshPage();
-                    }
-                }, this.time)
-            },
             resetData: function () {
                 this.operData = {};
                 this.selectedLoops = []
             }
-
         },
-        destroyed() {
-            clearInterval(this.timer);
-        }
     }
 </script>
 

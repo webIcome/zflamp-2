@@ -46,7 +46,6 @@
     import CommonContent from "../../../constants/common";
     import controlDialogComponent from "./control-dialog-component.vue"
     import AreaService from "../../../services/area";
-    import Config from "../../../config";
     import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
         name: 'controlLightComponent',
@@ -167,9 +166,6 @@
                 this.brightness = 0;
             }
         },
-        destroyed() {
-            clearInterval(this.timer);
-        }
     }
 </script>
 

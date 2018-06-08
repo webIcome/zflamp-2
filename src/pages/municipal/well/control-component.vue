@@ -41,10 +41,11 @@
 <script>
     import Service from "../../../services/well";
     import CommonContent from "../../../constants/common";
-    import Config from "../../../config";
+    import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
         name: 'controlWellComponent',
         components: {},
+        mixins: [controlTimerMixin],
         data() {
             let validateAngle = (rule, value, callback) => {
                if (!value) {
@@ -69,9 +70,6 @@
                         {validator: validateAngle, trigger:  ['blur', 'change']},
                     ]
                 },
-                refreshTimes: Config.REFRESH_TIMES,
-                timer: '',
-                time: Config.REFRESH_INTERVAL
             }
         },
         props: {
@@ -146,25 +144,9 @@
                 this.visible = false;
                 this.setVisible = false;
             },
-            initPaging() {
-                this.refreshTimes = Config.REFRESH_TIMES;
-                this.refreshPage();
-            },
-            refreshPage() {
-                this.timer = setTimeout(() => {
-                    if (this.refreshTimes) {
-                        this.$emit('initCurrentPaging');
-                        this.refreshTimes --;
-                        this.refreshPage();
-                    }
-                }, this.time)
-            },
             resetData: function () {
                 this.operData = {}
             }
-        },
-        destroyed() {
-            clearInterval(this.timer);
         }
     }
 </script>

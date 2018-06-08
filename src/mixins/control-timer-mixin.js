@@ -25,7 +25,4 @@ export default {
             }, this.time)
         },
     },
-    destroyed() {
-        clearInterval(this.timer);
-    }
 }

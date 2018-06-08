@@ -25,7 +25,7 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-light-component :isArea="true" :ids="selectionIds" @initCurrentPaging="refreshPage"></control-light-component>
+          <control-light-component :isArea="true" :ids="selectionIds" @refreshPage="refreshPage"></control-light-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
