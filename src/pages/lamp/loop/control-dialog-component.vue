@@ -16,21 +16,22 @@
                                   :moduletype="moduleType.loop"
                                   :ids="ids"></select-tasks-component>
         </el-form-item>
-        <el-form-item v-show="operData.controltype == 6" label="输入心跳包周期" prop="heartperiod">
+        <el-form-item v-else-if="operData.controltype == 6" label="输入心跳包周期" prop="heartperiod">
           <el-input style="width: 200px" type="text" v-model.trim.number="operData.heartperiod"></el-input>
           分钟
 
 
         </el-form-item>
+        <template v-else>
+          <div class="text-center">
+            <div class="dialog-warning"></div>
+          </div>
+          <p v-if="operData.controltype == 3" class="title">您确认要读取电流吗？</p>
+          <p v-else-if="operData.controltype == 4" class="title">您确认要抄表吗？</p>
+          <p v-else-if="operData.controltype == 8" class="title">您确认要查询定时任务吗？</p>
+        </template>
       </el-form>
-      <template v-if="!(operData.controltype == 5 | operData.controltype == 6)">
-        <div class="text-center">
-          <div class="dialog-warning"></div>
-        </div>
-        <p v-if="operData.controltype == 3" class="title">您确认要读取电流吗？</p>
-        <p v-else-if="operData.controltype == 4" class="title">您确认要抄表吗？</p>
-        <p v-else-if="operData.controltype == 8" class="title">您确认要查询定时任务吗？</p>
-      </template>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice('controlDevice')">确 定</el-button>
       </span>
