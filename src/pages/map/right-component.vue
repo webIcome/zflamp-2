@@ -1,10 +1,10 @@
 <template>
   <div class="map-right">
-    <search-component @search="search" @searchWell="searchWell"></search-component>
-    <ap-component v-if="apPanel" :detail="detail"></ap-component>
-    <light-component v-if="lightPanel" :detail="detail" @updateDetail="updateDetail"  @hide="hide"></light-component>
-    <well-component v-if="wellPanel" :detail="detail" @updateDetail="updateDetail" @hide="hide"></well-component>
-    <loop-component v-if="loopPanel" :detail="detail" @updateDetail="updateDetail" @hide="hide"></loop-component>
+    <search-component @search="search" :moduleType="moduleType"></search-component>
+    <ap-component v-if="currentModuleType == moduleType.station" @updateMarker="updateMarker" :moduleType="moduleType" :id="id"></ap-component>
+    <light-component v-else-if="currentModuleType == moduleType.light" @updateMarker="updateMarker"  @hide="hide" :moduleType="moduleType" :id="id"></light-component>
+    <well-component v-else-if="currentModuleType == moduleType.well" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></well-component>
+    <loop-component v-else-if="currentModuleType == moduleType.loop" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></loop-component>
   </div>
 </template>
 <script>
@@ -24,21 +24,20 @@
           }
       },
       props: {
-          lightPanel: false,
-          loopPanel: false,
-          apPanel: false,
-          wellPanel: false,
-          detail: {}
+          currentModuleType: '',
+          moduleType: {
+              default: function () {
+                  return {}
+              }
+          },
+          id: ''
       },
       methods: {
           search(params) {
               this.$emit('search', params);
           },
-          searchWell(id) {
-              this.$emit('searchWell', id);
-          },
-          updateDetail(params) {
-              this.$emit('updateDetail', params)
+          updateMarker(detail) {
+              this.$emit('updateMarker', detail)
           },
           hide() {
               this.$emit('hide')

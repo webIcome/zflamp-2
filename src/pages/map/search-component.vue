@@ -25,16 +25,12 @@
                 id: '',
                 loading: false,
                 list: [],
-                isShowConfirm: false,
-                moduleType: {}
+                detail: {}
             }
         },
         props: {
-            isShow: {
-                default: false
-            },
-            detail: {
-                default: () => {
+            moduleType: {
+                default: function () {
                     return {}
                 }
             }
@@ -44,9 +40,7 @@
         },
         methods: {
             initData(){
-                CommonConstant.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
+
             },
             findList(value) {
                 this.loading = true;
@@ -80,6 +74,7 @@
             getTransformWellList(list) {
                 return list.map(item => {
                     let label = '井盖:' + item.deviceName + "/" + item.sn;
+                    item.moduletype = this.moduleType.well
                     return {value: JSON.stringify(item), label: label}
                 });
             },
@@ -89,12 +84,12 @@
                 } else {
                     value = {}
                 }
-                if (value.moduletype) {
-                    this.$emit('search', {deviceid: value.deviceid, moduletype: value.moduletype})
+                if (value.moduletype < 4) {
+                    this.$emit('search', {id: value.deviceid, moduletype: value.moduletype})
                 } else {
-                    this.$emit('searchWell', value.id)
+                    console.log(value)
+                    this.$emit('search', {id: value.id, moduletype: value.moduletype})
                 }
-
             },
         }
     }

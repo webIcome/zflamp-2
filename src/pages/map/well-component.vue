@@ -23,25 +23,41 @@
         name: 'wellComponent',
         data() {
             return {
-                moduleType: {}
+                detail: {}
             }
         },
         props: {
-            detail: {
-                default: () => {
+            id: '',
+            moduleType: {
+                default: function () {
                     return {}
                 }
             }
         },
         created() {
-            this.initData();
+            this.getDetail();
         },
         methods: {
-            initData(){
-                CommonConstant.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
-                this.moduleType.well = 4
+            getDetail() {
+                Services.getDetail(this.id).then(detail => {
+                    this.detail = detail;
+                    this.updateMarker();
+                });
+            },
+            updateMarker() {
+                this.$emit('updateMarker', this.transformData(this.detail))
+            },
+            transformData(data) {
+                return {
+                    lng: data.longitude,
+                    lat: data.latitude,
+                    id: data.id,
+                    moduletype: this.moduleType.well,
+                    sn: data.sn,
+                    status: data.status,
+                    deviceName: data.deviceName,
+                    statusName: data.statusName
+                }
             },
             hide() {
                 this.$emit('hide');
@@ -49,15 +65,11 @@
             controlStatus() {
                 let data = {operateType: 1, deviceIds: this.detail.deviceId};
                 Services.control(data).then(res => {
-                    this.updateDetail({deviceid: this.detail.id, moduletype: this.moduleType.well})
                 })
             },
             hideShowConfirm() {
                 this.isShowConfirm = false;
             },
-            updateDetail(data) {
-                this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
-            }
         }
     }
 </script>

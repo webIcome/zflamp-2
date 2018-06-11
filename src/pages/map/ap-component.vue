@@ -35,6 +35,7 @@
 </template>
 <script>
     import Services from "../../services/map";
+    import ApServices from "../../services/area"
     import CommonConstant from "../../constants/common";
     export default{
         name: 'apComponent',
@@ -42,24 +43,23 @@
             return {
                 brightness: 0,
                 isShowConfirm: false,
-                moduleType: {}
+                detail: {}
             }
         },
         props: {
-            detail: {
-                default: () => {
+            id: '',
+            moduleType: {
+                default: function () {
                     return {}
                 }
-            }
+            },
         },
         created() {
             this.initData();
         },
         methods: {
             initData(){
-                CommonConstant.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
+               this.getDetail()
             },
             hide() {
                 this.$emit('hide');
@@ -78,23 +78,47 @@
                     data.controltype = 3;
                     data.brightness = this.brightness
                 }
-                Services.controlStation(this.detail.deviceid, data).then(res => {
+                data.deviceIds = this.id;
+                ApServices.controlStation(data).then(res => {
                     this.hideShowConfirm();
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.station})
                 })
             },
             controlLightStatus() {
                 let data = {controltype: 4}
-                Services.controlStation(this.detail.deviceid, data).then(res => {
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.station})
+                data.deviceIds = this.id;
+                Services.controlStation(data).then(res => {
+                    this.getDetail()
                 })
             },
             hideShowConfirm() {
                 this.isShowConfirm = false;
             },
-            updateDetail(data) {
-                this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
-            }
+            getDetail() {
+                Services.getDetail({deviceid: this.id, moduletype: this.moduleType.station}).then(detail => {
+                    this.detail = detail;
+                    this.brightness = this.detail.brightness;
+                    this.updateMarker();
+                });
+            },
+            updateMarker() {
+                this.$emit('updateMarker', this.transformData(this.detail))
+            },
+            transformData(data) {
+                let status = ''
+                if (data.runningstate == 'offline') {
+                    status = 2
+                } else {
+                    status = 1
+                }
+                return {
+                    lng: data.longitude,
+                    lat: data.latitude,
+                    id: data.deviceid,
+                    moduletype: data.moduletype,
+                    sn: data.sn,
+                    status: status,
+                }
+            },
         },
         watch: {
             detail: function (newVal, oldVal) {

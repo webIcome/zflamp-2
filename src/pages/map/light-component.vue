@@ -58,26 +58,21 @@
             return {
                 brightness: 0,
                 isShowConfirm: false,
-                moduleType: {}
+                detail: {}
             }
         },
         props: {
-            detail: {
-                default: () => {
+            id: '',
+            moduleType: {
+                default: function () {
                     return {}
                 }
-            }
+            },
         },
         created() {
-            this.initData();
+            this.getDetail();
         },
         methods: {
-            initData(){
-                CommonConstant.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
-                this.brightness = this.detail.brightness;
-            },
             hide() {
                 this.$emit('hide');
             },
@@ -97,21 +92,45 @@
                 }
                 Services.controlLight(this.detail.deviceid, data).then(res => {
                     this.hideShowConfirm();
-//                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
                 })
             },
             controlLightStatus() {
                 let data = {controltype: 4}
                 Services.controlLight(this.detail.deviceid, data).then(res => {
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.light})
+                    this.getDetail()
                 })
+            },
+            getDetail() {
+                Services.getDetail({moduletype: this.moduleType.light, deviceid: this.id}).then(detail => {
+                    this.detail = detail;
+                    this.brightness = this.detail.brightness;
+                    this.updateMarker();
+                });
+            },
+            updateMarker() {
+                this.$emit('updateMarker', this.transformData(this.detail))
+            },
+            transformData(data) {
+                let status = ''
+                if (data.runningstate != '正常') {
+                    status = 3;
+                } else if (data.switchstate == 2) {
+                    status = 2
+                } else {
+                    status = 1;
+                }
+                return {
+                    lng: data.longitude,
+                    lat: data.latitude,
+                    id: data.deviceid,
+                    moduletype: data.moduletype,
+                    sn: data.sn,
+                    status: status,
+                }
             },
             hideShowConfirm() {
                 this.isShowConfirm = false;
             },
-            updateDetail(data) {
-                this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
-            }
         },
         watch: {
             detail: function (val) {
