@@ -29,6 +29,7 @@
           <p v-if="operData.controltype == 3" class="title">您确认要读取电流吗？</p>
           <p v-else-if="operData.controltype == 4" class="title">您确认要抄表吗？</p>
           <p v-else-if="operData.controltype == 8" class="title">您确认要查询定时任务吗？</p>
+          <p v-else-if="operData.controltype == 7" class="title">您确认要取消定时任务吗？</p>
         </template>
       </el-form>
 
@@ -83,11 +84,6 @@
                         {validator: this.validateTaskNumber, trigger: 'change'}
                     ];
                 }
-                if (this.operData.controltype == 7) {
-                    rules.cancelTaskid = [
-                        {required: true, message: '请选择任务'}
-                    ];
-                }
                 if (this.operData.controltype == 6) {
                     rules.heartperiod = [
                         {required: true, message: '请输入周期'},
@@ -127,8 +123,6 @@
                         data.controltype = this.operData.controltype;
                         if (data.controltype == 5) {
                             data.taskid = this.operData.taskid;
-                        } else if (data.controltype == 7) {
-                            data.taskid = this.operData.cancelTaskid;
                         } else if (data.controltype == 6) {
                             data.heartperiod = this.operData.heartperiod;
                         }

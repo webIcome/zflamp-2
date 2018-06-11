@@ -91,6 +91,7 @@
                 ]
                 if (!this.isGroup) {
                     items.push({value: 5, text: '下发任务'});
+                    items.push({value: 6, text: '取消任务'})
                 }
                 return items;
             },
