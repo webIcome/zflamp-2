@@ -22,8 +22,7 @@
                          :label="status.text"></el-option>
             </el-select>
           </div>
-          <div @click="search" class="form-group default-btn">查询</div>
-          <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+           <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
         </form>
         <div class="control-add-content">
           <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>

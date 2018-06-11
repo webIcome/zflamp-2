@@ -14,10 +14,9 @@
           <label>岗位名称</label>
           <el-input type="text" v-model="searchParams.postname" placeholder="输入岗位名称" clearable/>
         </div>
-        <div @click="search" class="form-group default-btn">查询</div>
-        <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+        <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+        <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </form>
-      <oper-component :companies="companies" @initPaging="initList"></oper-component>
     </div>
     <el-table
         :data="list"

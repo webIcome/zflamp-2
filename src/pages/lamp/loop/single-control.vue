@@ -15,8 +15,7 @@
             <label>归属项目</label>
             <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
           </div>
-          <div @click="search" class="form-group default-btn">查询</div>
-          <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
         </form>
         <div class="control-add-content">
           <control-component :isSingle="true" :ids="selectionIds" @refreshPage="refreshPage"></control-component>

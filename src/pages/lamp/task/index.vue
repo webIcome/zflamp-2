@@ -22,10 +22,10 @@
           <label>归属项目</label>
           <tree-select-component v-model="searchParams.compId" :list="companies"></tree-select-component>
         </div>
-        <div @click="search" class="form-group default-btn">查询</div>
-        <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+        <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+        <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </form>
-      <oper-component :companies="companies" @initPaging="initList"></oper-component>
+
     </div>
     <el-table
         :data="list"

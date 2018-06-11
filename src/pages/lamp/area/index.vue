@@ -21,8 +21,9 @@
               <el-option v-for="status in apState" :key="status.value" :value="status.value" :label="status.text"></el-option>
             </el-select>
           </div>
-          <div @click="search" class="form-group default-btn">查询</div>
-          <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+         <!-- <div @click="search" class="form-group default-btn">查询</div>
+          <div @click="clearSearchParams" class="form-group default-btn">清空</div>-->
         </form>
         <div class="control-add-content">
           <control-light-component :isArea="true" :ids="selectionIds" @refreshPage="refreshPage"></control-light-component>
@@ -83,9 +84,10 @@
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlLightComponent from "../light/control-component.vue"
+    import ListSearchBtnsComponent from "../../../components/list-search-btns";
     export default {
         components: {
-            operComponent,
+            ListSearchBtnsComponent, operComponent,
             detailComponent,
             deleteComponent,
             controlLightComponent
