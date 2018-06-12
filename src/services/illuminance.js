@@ -37,14 +37,87 @@ export default {
             return res;
         })
     },
-    control(params) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds','', Object.assign({params: params},option)).then(res => {
+    controlSearchStatus(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    pigeonholeWell(ids) {
-        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds','', Object.assign({params: {ids: ids}},option)).then(res => {
+    controlSearchHeartPeriod(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSearchAlarmPeriod(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSearchAlarmValue(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSearchRelieveAlarmValue(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSearchAlarmEnabled(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSearchGatherPeriod(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+
+    controlSetHeartPeriod(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetAlarmPeriod(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetAlarmValue(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetRelieveAlarmValue(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetAlarmEnabled(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetGatherPeriod(params) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    pigeonhole(ids) {
+        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds', {ids: ids}, option).then(res => {
             showSuccess(res);
             return res;
         })

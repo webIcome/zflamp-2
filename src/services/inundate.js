@@ -37,14 +37,50 @@ export default {
             return res;
         })
     },
-    control(params) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds','', Object.assign({params: params},option)).then(res => {
+    controlSearchStatus(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',{deviceIds: ids}, option).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    pigeonholeWell(ids) {
-        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds','', Object.assign({params: {ids: ids}},option)).then(res => {
+    controlSearchAlarmPeriod(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',{deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSearchAlarmEnabled(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',{deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSearchGatherPeriod(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',{deviceIds: ids}, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetAlarmPeriod(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetAlarmEnabled(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetGatherPeriod(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    pigeonhole(ids) {
+        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds',{ids: ids}, option).then(res => {
             showSuccess(res);
             return res;
         })

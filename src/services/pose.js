@@ -37,14 +37,26 @@ export default {
             return res;
         })
     },
-    control(params) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds','', Object.assign({params: params},option)).then(res => {
+    controlSearchStatus(ids) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',{deviceIds: ids}, option).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    pigeonholeWell(ids) {
-        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds','', Object.assign({params: {ids: ids}},option)).then(res => {
+    controlSetAlarmAngle(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetStandardAngel(body) {
+        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    pigeonhole(ids) {
+        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds', {ids: ids}, option).then(res => {
             showSuccess(res);
             return res;
         })

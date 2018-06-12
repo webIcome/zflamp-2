@@ -4,7 +4,7 @@
       <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">查询状态</el-button>
     </div>
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">告警归档</el-button>
+      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">告警归档</el-button>
     </div>
     <div class="control">
       <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
@@ -28,9 +28,9 @@
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p v-if="operateType == 1" class="title">您确认要查询状态吗？</p>
-      <p v-else-if="operateType == 3" class="title">您确认要告警归档吗？</p>
-      <p v-else-if="operateType == 4" class="title">您确认要查询门开关状态吗？</p>
+      <p v-if="operData.operateType == 1" class="title">您确认要查询状态吗？</p>
+      <p v-else-if="operData.operateType == 2" class="title">您确认要告警归档吗？</p>
+      <p v-else-if="operData.operateType == 4" class="title">您确认要查询门开关状态吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -64,10 +64,10 @@
                 operData: {},
                 operateType: '',
                 setItems: [
-                    {value: 9, text: '告警阈值'},
+                    {value: 3, text: '告警阈值'},
                 ],
                 searchItems: [
-                    {value: 9, text: '门开关状态'},
+                    {value: 4, text: '门开关状态'},
                 ],
                 Rules: {
                     operateValue: [
@@ -102,18 +102,11 @@
                 this.showModal();
             },
             controlDevice: function () {
-                let data = {};
-                if (this.operData.operateType == 4) {
-                    Service.pigeonholeWell(this.ids.join(',')).then(res => {
-                        this.hideModal();
-                        this.initPaging();
-                        this.resetData();
-                    });
-                    return;
+                let ids = this.deviceIds.join(',');
+                if (this.operData.operateType == 2) {
+                    ids = this.ids.join(',')
                 }
-                data.operateType = this.operData.operateType;
-                data.deviceIds = this.deviceIds.join(',');
-                Service.control(data).then(res => {
+                this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();
                     this.resetData();
@@ -124,13 +117,31 @@
                     if (valid) {
                         let data = this.operData;
                         data.deviceIds = this.deviceIds.join(',');
-                        Service.control(data).then(res => {
+                        this.getControlFn(this.operData.operateType)(data).then(res => {
                             this.hideModal();
                             this.initPaging();
                             this.resetData();
                         });
                     }
                 })
+            },
+            getControlFn(operateType) {
+                let fn = '';
+                switch (operateType) {
+                    case 1:
+                        fn = Service.controlSearchStatus;
+                        break;
+                    case 2:
+                        fn = Service.pigeonhole;
+                        break;
+                    case 3:
+                        fn = Service.controlSetAlarmValue;
+                        break;
+                    case 4:
+                        fn = Service.controlSearchDoorStatus;
+                        break;
+                }
+                return fn
             },
             showModal() {
                 this.visible = true;

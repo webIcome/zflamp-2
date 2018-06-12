@@ -4,17 +4,17 @@
       <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">查询状态</el-button>
     </div>
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">设置静态值</el-button>
+      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">设置静态值</el-button>
     </div>
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">设置上报心跳周期</el-button>
+      <el-button :disabled="!ids.length" @click="generate(3)" class="control-btn">设置上报心跳周期</el-button>
     </div>
 
     <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p v-if="operateType == 1" class="title">您确认要查询状态吗？</p>
+      <p v-if="operData.operateType == 1" class="title">您确认要查询状态吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-    import Service from "../../../services/door";
+    import Service from "../../../services/shake";
     import CommonContent from "../../../constants/common";
     import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
@@ -53,12 +53,6 @@
                 visible: false,
                 setVisible: false,
                 operData: {},
-                Rules: {
-                    operateValue: [
-                        {required: true, message: '请输入设置静态值'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
-                    ]
-                }
             }
         },
         props: {
@@ -73,7 +67,22 @@
                 }
             }
         },
-        computed: {},
+        computed: {
+            Rules: function () {
+                let rules = {};
+                if (this.operData.operateType == 2) {
+                    rules.operateValue = [
+                        {required: true, message: '请输入静态值'},
+                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                    ]
+                } else if (this.operData.operateType == 3) {
+                    rules.operateValue = [
+                        {required: true, message: '请输入上报心跳周期'},
+                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                    ]
+                }
+            }
+        },
         created: function () {
             this.initData()
         },
@@ -83,13 +92,15 @@
             },
             generate(operateType) {
                 if (operateType) this.operData.operateType = operateType;
-                this.showModal();
+                if (operateType != 1) {
+                    this.showSetModal()
+                } else {
+                    this.showModal();
+                }
             },
             controlDevice: function () {
-                let data = {};
-                data.operateType = this.operData.operateType;
-                data.deviceIds = this.deviceIds.join(',');
-                Service.control(data).then(res => {
+                let ids = this.deviceIds.join(',');
+                this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();
                     this.resetData();
@@ -100,13 +111,28 @@
                     if (valid) {
                         let data = this.operData;
                         data.deviceIds = this.deviceIds.join(',');
-                        Service.control(data).then(res => {
+                        this.getControlFn(this.operData.operateType)(data).then(res => {
                             this.hideModal();
                             this.initPaging();
                             this.resetData();
                         });
                     }
                 })
+            },
+            getControlFn(operateType) {
+                let fn = '';
+                switch (operateType) {
+                    case 1:
+                        fn = Service.controlSearchStatus;
+                        break;
+                    case 2:
+                        fn = Service.controlSetValue;
+                        break;
+                    case 3:
+                        fn = Service.controlSetHeartPeriod;
+                        break;
+                }
+                return fn
             },
             showModal() {
                 this.visible = true;

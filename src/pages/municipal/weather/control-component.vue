@@ -26,8 +26,8 @@
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p v-if="operateType == 1" class="title">您确认要查询状态吗？</p>
-      <p v-else-if="operateType == 1" class="title">您确认要查询心跳包周期吗？</p>
+      <p v-if="operData.operateType == 1" class="title">您确认要查询状态吗？</p>
+      <p v-else-if="operData.operateType == 3" class="title">您确认要查询心跳包周期吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-    import Service from "../../../services/voice";
+    import Service from "../../../services/weather";
     import CommonContent from "../../../constants/common";
     import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
@@ -61,14 +61,14 @@
                 setVisible: false,
                 operData: {},
                 setItems: [
-                    {value: 9, text: '心跳包周期'},
+                    {value: 2, text: '心跳包周期'},
                 ],
                 searchItems: [
-                    {value: 9, text: '心跳包周期'},
+                    {value: 3, text: '心跳包周期'},
                 ],
                 Rules: {
                     operateValue: [
-                        {required: true, message: '请输入设置心跳周期'},
+                        {required: true, message: '请输入心跳周期'},
                         {type: 'number', message: '范围0~330', min: 0, max: 330}
                     ]
                 }
@@ -96,13 +96,15 @@
             },
             generate(operateType) {
                 if (operateType) this.operData.operateType = operateType;
-                this.showModal();
+                if (operateType == 2) {
+                    this.showSetModal()
+                } else {
+                    this.showModal();
+                }
             },
             controlDevice: function () {
-                let data = {};
-                data.operateType = this.operData.operateType;
-                data.deviceIds = this.deviceIds.join(',');
-                Service.control(data).then(res => {
+                let ids = this.deviceIds.join(',');
+                this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();
                     this.resetData();
@@ -113,13 +115,28 @@
                     if (valid) {
                         let data = this.operData;
                         data.deviceIds = this.deviceIds.join(',');
-                        Service.control(data).then(res => {
+                        this.getControlFn(this.operData.operateType)(data).then(res => {
                             this.hideModal();
                             this.initPaging();
                             this.resetData();
                         });
                     }
                 })
+            },
+            getControlFn(operateType) {
+                let fn = '';
+                switch (operateType) {
+                    case 1:
+                        fn = Service.controlSearchStatus;
+                        break;
+                    case 2:
+                        fn = Service.controlSetHeartPeriod;
+                        break;
+                    case 3:
+                        fn = Service.controlSearchHeartPeriod;
+                        break;
+                }
+                return fn
             },
             showModal() {
                 this.visible = true;
