@@ -186,11 +186,12 @@
             },
             markerClickEventFn(markerClass) {
                 this.isSearchDevice = false;
-                if (this.isShowPanel()) {
+                let id = markerClass.device.id || markerClass.device.deviceid;
+                if (this.isShowPanel() && this.id == id) {
                     this.hidePanel()
                 } else {
-                    this.getCurrentDeviceId(markerClass.device.id || markerClass.device.deviceid);
-                    this.showPanel(markerClass.device.moduletype);
+                    this.getCurrentDeviceId(id);
+                    this.refreshDetail(markerClass.device.moduletype);
                 }
                 this.marker = markerClass;
             },
@@ -199,9 +200,19 @@
             },
             searchDevice(params) {
                 this.getCurrentDeviceId(params.id);
-                this.showPanel(params.moduletype);
+                if (params.moduletype == this.currentModuleType) {
+                    this.refreshDetail(params.moduletype)
+                } else {
+                    this.showPanel(params.moduletype);
+                }
                 this.isSearchDevice = true;
                 this.removeMarker(this.marker.marker);
+            },
+            refreshDetail(moduletype) {
+                this.hidePanel();
+                this.$nextTick(() => {
+                    this.showPanel(moduletype);
+                })
             },
             addSearchMarker(detail) {
                 if (detail && detail.id) {
