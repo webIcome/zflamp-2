@@ -15,70 +15,48 @@
           <div class="device-loop" :class="{active: loopActive}" @click="selectCheck(moduleType.loop)"><span class="icon"></span>回路控制器</div>
           <sup @click="showList(loopList)" v-if="loopList.length" class="el-badge__content is-fixed">{{loopList.length}}</sup>
         </el-badge>
-        <el-badge class="device-item" :hidden="true">
-          <div class="device-well" :class="{active: wellActive}" @click="selectCheck(moduleType.well)"><span class="icon"></span>井盖</div>
-          <sup @click="showList(wellFaultList)" v-if="wellFaultList.length" class="el-badge__content is-fixed">{{wellFaultList.length}}</sup>
-        </el-badge>
+        <terminal-component @updateList="getTerminalList" :companyid="companyid" @hide="hidden" :moduleType="moduleType"></terminal-component>
       </div>
       <div class="select-items">
         <tree-select-component class="home" v-model="companyid" :list="companies"></tree-select-component>
       </div>
-      <div v-if="isListShow" class="show-err-list">
-        <div @click="hidden" class="close">&times;</div>
-        <div class="list">
-          <table class="table">
-            <thead>
-            <th>设备名称</th>
-            <th>设备ID</th>
-            <th>告警类型</th>
-            </thead>
-            <tbody>
-            <tr v-for="device in currentList">
-              <td>{{device.deviceName}}</td>
-              <td>{{device.sn}}</td>
-              <td>{{device.statusName}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <device-alarm-list-component v-if="isListShow" :list="currentList" @hide="hidden"></device-alarm-list-component>
     </div>
   </div>
 </template>
 <script>
     import CommonContent from "../../constants/common";
     import Config from "../../config";
+    import MapServices from "../../services/map";
+    import DeviceAlarmListComponent from "./device-alarm-list-component";
+    import TerminalComponent from "./terminal/index.vue";
     export default {
+        components: {TerminalComponent, DeviceAlarmListComponent},
         name: 'leftComponent',
         data() {
             return {
-                checkList: [1, 2, 3, 4],
-                moduleType:{},
+                checkList: [1, 2, 3],
                 companies: [],
+                devicesList: [],
+                terminalList: [],
                 companyid: '',
                 apActive: false,
                 lightActive: false,
                 loopActive: false,
-                wellActive: false,
                 currentList: [],
                 isListShow: false,
             }
         },
         props: {
-            list: {
+            moduleType: {
                 default: function () {
-                    return []
-                }
-            },
-            wellList: {
-                default: function () {
-                    return []
+                    return {}
                 }
             }
         },
         computed: {
             lightList: function () {
-               return this.list.filter(item => {
+               return this.devicesList.filter(item => {
                     if (item.status == 3 && item.moduletype == this.moduleType.light){
                         return true;
                     } else {
@@ -99,7 +77,7 @@
                })
             },
             loopList: function () {
-                return this.list.filter(item => {
+                return this.devicesList.filter(item => {
                     if (item.status != 1 && item.moduletype == this.moduleType.loop){
                         return true;
                     } else {
@@ -120,7 +98,7 @@
                 })
             },
             apList: function () {
-                return this.list.filter(item => {
+                return this.devicesList.filter(item => {
                     if (item.status != 1 && item.moduletype == this.moduleType.station){
                         return true;
                     } else {
@@ -140,55 +118,40 @@
                     }
                 })
             },
-            wellFaultList: function () {
-                return this.wellList.filter(item => {
-                    if (item.status != 0){
-                        return true;
-                    } else {
-                        return false
-                    }
-                }).map(item => {
-                    return {
-                        deviceName: item.deviceName,
-                        sn: item.sn,
-                        statusName: item.statusName
-                    }
-                })
-            }
         },
         created() {
             this.initData()
         },
         methods: {
             initData() {
-                CommonContent.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
-                this.moduleType.well = 4;
                 this.initCompanies();
-                this.searchWell({compIds: this.companyid})
-                this.search({companyid: this.companyid, moduletype: this.checkList})
+                this.getDevicesList({companyid: this.companyid, moduletype: this.checkList.join()})
                 this.showActive();
-            },
-            initItems() {
-                this.$globalCache.items.then(data => {
-                    this.items = data;
-                })
             },
             initCompanies() {
                 this.$globalCache.companies.then(companies => {
                     this.companies = companies;
                 })
             },
-            search(params) {
-                if (!params.moduletype) {
-                    params.moduletype = [];
-                }
-                params.moduletype = params.moduletype.join(',');
-                this.$emit('search', params)
+            getDevicesList(params) {
+                MapServices.getDevices(params).then(devices => {
+                    this.devicesList = this.transformDevicesList(devices);
+                })
             },
-            searchWell(params) {
-                this.$emit('searchWell', params);
+            transformDevicesList(devices) {
+                return devices.map(item => {
+                    item.lng = item.longitude;
+                    item.lat = item.latitude;
+                    if (item.lng != 0 || item.lat != 0) {
+                        return item;
+                    }
+                }).filter(item => {
+                    if (item) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
             },
             selectCheck(value) {
                 if (value) {
@@ -202,14 +165,7 @@
                     if (!filter) this.checkList.push(value);
                 }
                 this.showActive();
-                if (this.checkList.some(item => item == this.moduleType.well)) {
-                    this.searchWell({compIds: this.companyid})
-                } else if (value == this.moduleType.well) {
-                    this.searchWell({compIds: this.companyid, clear: true})
-                }
-                if (value != this.moduleType.well){
-                    this.search({companyid: this.companyid, moduletype: this.checkList})
-                }
+                this.getDevicesList({companyid: this.companyid, moduletype: this.checkList.join()})
             },
             goToHome: function () {
                 this.$router.push({path: '/list'})
@@ -218,7 +174,6 @@
                 this.apActive = false;
                 this.lightActive = false;
                 this.loopActive = false;
-                this.wellActive = false;
                 this.checkList.forEach(item => {
                     switch (item) {
                         case this.moduleType.station:
@@ -230,12 +185,16 @@
                         case this.moduleType.loop:
                             this.loopActive = true;
                             break;
-                        case this.moduleType.well:
-                            this.wellActive = true;
                         default:
                             break;
                     }
                 })
+            },
+            getTerminalList(list) {
+                this.terminalList = list;
+            },
+            updateList(list) {
+                this.$emit('updateList', list)
             },
             showList(list) {
                 if (this.isListShow &&  this.currentList == list) {
@@ -251,11 +210,14 @@
         },
         watch: {
             companyid(newVal, oldVal) {
-                if (this.checkList.some(item => item == this.moduleType.well)) {
-                    this.searchWell({compIds: newVal})
-                }
-                this.search({companyid: newVal, moduletype: this.checkList});
+                this.getDevicesList({companyid: this.companyid, moduletype: this.checkList.join()})
             },
+            devicesList(newVal) {
+                this.updateList(newVal.concat(this.terminalList))
+            },
+            terminalList(newVal) {
+                this.updateList(newVal.concat(this.devicesList))
+            }
         }
     }
 </script>
@@ -281,19 +243,17 @@
       }
       .device-items {
         position: absolute;
-        /*top: 157px;*/
+        top: 100px;
         width: 100px;
         font-size: 14px;
         .device-item{
           position: relative;
-          top: 51px;
         }
         .device-ap,
         .device-lamp,
         .device-loop,
         .device-well{
           position: relative;
-          /*top: 51px;*/
           display: flex;
           align-items: center;
           width: 128px;
@@ -387,38 +347,6 @@
         left: 223px;
         top: 0px;
         width: 250px;
-      }
-      .show-err-list {
-        background: #fff;
-        position: absolute;
-        left: 180px;
-        top: 100px;
-        width: 400px;
-        height: 300px;
-        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-        border-radius: 4px;
-        padding: 10px;
-        .close {
-          font-size: 25px;
-        }
-        .table {
-          td {
-            border: none !important;
-          }
-          th {
-            padding: 8px !important;
-          }
-          tbody {
-            display:block;
-            height:210px;
-            overflow-y:auto;
-          }
-          thead, tbody tr {
-            display:table;
-            width:100%;
-            table-layout:fixed;
-          }
-        }
       }
     }
   }

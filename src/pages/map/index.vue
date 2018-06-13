@@ -1,7 +1,7 @@
 <template>
   <div class="map">
     <div class="my-map" :ref="ref"></div>
-    <left-component @search="getDevices" @searchWell="getWellList" :list="devices" :wellList="wellList"></left-component>
+    <left-component @updateList="updateList" :moduleType="moduleType"></left-component>
     <right-component @hide="hidePanel"
                      @updateMarker="updateMarker"
                      @search="searchDevice"
@@ -28,8 +28,7 @@
             return {
                 ref: 'my-map',
                 map: '',
-                devices: [],
-                wellList: [],
+                list: [],
                 isSearchWell: false,
                 isSearchDevices: false,
                 deviceDetail: {},
@@ -94,74 +93,8 @@
                 this.mapZoom = options.zoom;
                 this.map.centerAndZoom(options.center, options.zoom);
             },
-            getDevices(params) {
-                this.isSearchDevices = true;
-                MapServices.getDevices(params).then(devices => {
-                    this.devices = this.transformDevices(devices);
-                    this.isSearchDevices = false;
-                })
-            },
-            getWellList(params) {
-                this.isSearchWell = true;
-                if (params.clear) {
-                    this.$nextTick(() => {
-                        this.wellList = [];
-                        this.isSearchWell = false;
-                    })
-                } else {
-                    WellServices.getList(params).then(devices => {
-                        this.wellList = this.transformWellList(devices);
-                        this.isSearchWell = false;
-                    })
-                }
-            },
-            transformDevices(devices) {
-                return devices.map(item => {
-                    item.lng = item.longitude;
-                    item.lat = item.latitude;
-                    if (item.lng != 0 || item.lat != 0) {
-                        return item;
-                    }
-                }).filter(item => {
-                    if (item) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                })
-            },
-            transformWellList(list) {
-                return list.map(item => {
-                    if (item.longitude && item.latitude) {
-                        return {
-                            lng: item.longitude,
-                            lat: item.latitude,
-                            id: item.id,
-                            moduletype: this.moduleType.well,
-                            sn: item.sn,
-                            status: item.status,
-                            deviceName: item.deviceName,
-                            statusName: item.statusName
-                        };
-                    } else if (item.longitude == 0 || item.longitude == 0) {
-                        return {
-                            lng: item.longitude,
-                            lat: item.latitude,
-                            id: item.id,
-                            moduletype: this.moduleType.well,
-                            sn: item.sn,
-                            status: item.status,
-                            deviceName: item.deviceName,
-                            statusName: item.statusName
-                        };
-                    }
-                }).filter(item => {
-                    if (item) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                })
+            updateList(list) {
+                this.list = list;
             },
             addClusterer() {
                 let markers = this.getMarkers();
@@ -177,7 +110,7 @@
             },
             getMarkers() {
                 let markers = [];
-                this.devices.concat(this.wellList).forEach(item => {
+                this.list.forEach(item => {
                     let markerClass = new MapMarkerClass(item);
                     markerClass.listen('click', this.markerClickEventFn);
                     markers.push(markerClass.marker);
@@ -248,15 +181,9 @@
             }
         },
         watch: {
-           /* devices: function (newVal, oldVal) {
-                this.moveMap(this.getViewPort(newVal))
+            list: function (newVal) {
+                this.moveMap(this.getViewPort(newVal));
                 this.addClusterer()
-            },*/
-            isSearch: function (newVal) {
-                if (!newVal) {
-                    this.moveMap(this.getViewPort(this.devices.concat(this.wellList)));
-                    this.addClusterer()
-                }
             }
         }
     }
