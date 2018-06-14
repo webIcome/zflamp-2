@@ -25,7 +25,7 @@
            <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
         </form>
         <div class="control-add-content">
-          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>

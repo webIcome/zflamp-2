@@ -7,7 +7,7 @@ import Config from "../config";
 const option = {baseURL: Config.WELL_URL_API};
 export default {
     findList(params) {
-        return HttpClient.get('wellcover/findWellCoverPage', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('doortrip/findPage', Object.assign({params: params},option)).then(res => {
             if (res.data && res.data.data) {
                 return res.data.data;
             } else {
@@ -16,47 +16,41 @@ export default {
         })
     },
     getList(params) {
-        return HttpClient.get('wellcover/findWellCoverList', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('doortrip/findWellCoverList', Object.assign({params: params},option)).then(res => {
             return res.data.data;
         })
     },
     getDetail(id) {
-        return HttpClient.get('wellcover/findWellCoverInfoById/' + id, option).then(res => {
+        return HttpClient.get('doortrip/findInfoByDeviceId/' + id, option).then(res => {
             return res.data.data;
         })
     },
     operate(body) {
-        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body,option).then(res => {
+        return HttpClient.post('doortrip/saveOrUpdate', body,option).then(res => {
             showSuccess(res);
             return res;
         })
     },
     deleteDevice(ids) {
-        return HttpClient.post('wellcover/removeBatchWellCoverInfoByIds','', Object.assign({params: {ids: ids}},option)).then(res => {
+        return HttpClient.post('doortrip/removeBatchByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
     controlSearchStatus(ids) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
-            showSuccess(res);
-            return res;
-        })
-    },
-    controlSearchDoorStatus(ids) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', {deviceIds: ids}, option).then(res => {
+        return HttpClient.post('doortrip/batchSearchStatusByDeviceIds', '', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
     controlSetAlarmValue(params) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds','', Object.assign({params: params},option)).then(res => {
+        return HttpClient.post('doortrip/batchSetThresholdByDeviceIds','', Object.assign({params: params},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
     pigeonhole(ids) {
-        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds', {ids: ids}, option).then(res => {
+        return HttpClient.post('doortrip/batchToNormalByDeviceIds', '', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })

@@ -5,7 +5,7 @@
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p class="title">您确认要删除此浸水检测吗？</p>
+      <p class="title">您确认要删除此光照度检测吗？</p>
       <p class="text-center">请慎重操作，您的操作一旦确认，将无法恢复，并被系统记录在日志当中！</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="deleteDevice">确认删除</el-button>
@@ -14,9 +14,9 @@
   </div>
 </template>
 <script>
-    import Service from '../../../services/inundate'
+    import Service from '../../../services/illuminance'
     export default {
-        name: 'deleteInundateComponent',
+        name: 'deleteIlluminanceComponent',
         data() {
             return {
                 visible: false

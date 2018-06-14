@@ -65,10 +65,8 @@ export default {
         handleSelectionChange(val) {
             this.selectionList = val;
             this.selectionDeviceIds = [];
-            this.selectionIds = [];
             val.forEach(item => {
                 this.selectionDeviceIds.push(item.deviceId);
-                this.selectionIds.push(item.id)
             });
         },
         isSelectable(row,index) {

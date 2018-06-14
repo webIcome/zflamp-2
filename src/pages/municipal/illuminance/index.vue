@@ -25,7 +25,7 @@
            <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
         </form>
         <div class="control-add-content">
-          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -40,7 +40,7 @@
       <el-table-column type="selection" width="55" :selectable="isSelectable"></el-table-column>
       <el-table-column min-width="100" prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
-      <el-table-column prop="sn" label="设备型号"></el-table-column>
+      <el-table-column prop="deviceModel" label="设备型号"></el-table-column>
       <el-table-column prop="compName" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
         <template slot-scope="scope">
@@ -50,8 +50,8 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="voltage" label="当前照度/lux"></el-table-column>
-      <el-table-column prop="voltage" label="告警阈值"></el-table-column>
+      <el-table-column prop="currentBrightness" label="当前照度/lux"></el-table-column>
+      <el-table-column prop="alarmThreshold" label="告警阈值"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="belongLightId" label="归属灯"></el-table-column>
       <el-table-column prop="belongApId" label="归属基站"></el-table-column>
@@ -68,15 +68,15 @@
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex">
-            <oper-component ref="oper" :id="scope.row.id" :companies="companies" :edit="true"
+            <oper-component ref="oper" :id="scope.row.deviceId" :companies="companies" :edit="true"
                             @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.id" @initCurrentPaging="pagingEvent"></delete-component>
+            <delete-component :id="scope.row.deviceId" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <detail-component :id="scope.row.id"></detail-component>
+          <detail-component :id="scope.row.deviceId"></detail-component>
         </template>
       </el-table-column>
     </el-table>
@@ -112,7 +112,8 @@
         name: 'illuminancePage',
         data() {
             return {
-                service: Service
+                service: Service,
+                wellStatus: CommonConstant.wellStatus
             }
         },
         methods: {

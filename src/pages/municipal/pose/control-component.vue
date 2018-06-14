@@ -61,11 +61,6 @@
             }
         },
         props: {
-            ids: {
-                default: function () {
-                    return []
-                }
-            },
             deviceIds: {
                 default: function () {
                     return []
@@ -90,9 +85,6 @@
             },
             controlDevice: function () {
                 let ids = this.deviceIds.join(',');
-                if (this.operData.operateType == 2) {
-                    ids = this.ids.join(',')
-                }
                 this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();

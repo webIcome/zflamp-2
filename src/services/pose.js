@@ -7,7 +7,7 @@ import Config from "../config";
 const option = {baseURL: Config.WELL_URL_API};
 export default {
     findList(params) {
-        return HttpClient.get('wellcover/findWellCoverPage', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('gestureInductor/findPage', Object.assign({params: params},option)).then(res => {
             if (res.data && res.data.data) {
                 return res.data.data;
             } else {
@@ -16,47 +16,47 @@ export default {
         })
     },
     getList(params) {
-        return HttpClient.get('wellcover/findWellCoverList', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('gestureInductor/findWellCoverList', Object.assign({params: params},option)).then(res => {
             return res.data.data;
         })
     },
     getDetail(id) {
-        return HttpClient.get('wellcover/findWellCoverInfoById/' + id, option).then(res => {
+        return HttpClient.get('gestureInductor/findInfoByDeviceId/' + id, option).then(res => {
             return res.data.data;
         })
     },
     operate(body) {
-        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body,option).then(res => {
+        return HttpClient.post('gestureInductor/saveOrUpdate', body,option).then(res => {
             showSuccess(res);
             return res;
         })
     },
     deleteDevice(ids) {
-        return HttpClient.post('wellcover/removeBatchWellCoverInfoByIds','', Object.assign({params: {ids: ids}},option)).then(res => {
+        return HttpClient.post('gestureInductor/removeBatchByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
     controlSearchStatus(ids) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds',{deviceIds: ids}, option).then(res => {
+        return HttpClient.post('gestureInductor/batchSearchStatusByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    controlSetAlarmAngle(body) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+    controlSetAlarmAngle(params) {
+        return HttpClient.post('gestureInductor/batchSetThresholdByDeviceIds','', Object.assign({params: params},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    controlSetStandardAngel(body) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds', body, option).then(res => {
+    controlSetStandardAngel(params) {
+        return HttpClient.post('gestureInductor/batchAdjusttByDeviceIds','', Object.assign({params: params},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
     pigeonhole(ids) {
-        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds', {ids: ids}, option).then(res => {
+        return HttpClient.post('gestureInductor/batchToNormalByDeviceIds', '', Object.assign({params: params},option)).then(res => {
             showSuccess(res);
             return res;
         })

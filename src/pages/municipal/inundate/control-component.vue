@@ -8,7 +8,7 @@
     </div>
     <div class="control control-set">
       <span class="control-text">设置</span>
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
         <el-option v-for="item in setItems"
                    :label="item.text"
                    :value="item.value"
@@ -17,7 +17,7 @@
     </div>
     <div class="control control-search">
       <span class="control-text">查询</span>
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModal" clearable>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModal" clearable>
         <el-option v-for="item in searchItems"
                    :label="item.text"
                    :value="item.value"
@@ -81,11 +81,6 @@
                 setVisible: false,
                 operData: {},
                 operateType: '',
-                Rules: {
-                    operateValue: [
-                        {required: true, trigger: 'change' },
-                    ]
-                },
                 setItems: [
                     {value: 3, text: '设置告警周期'},
                     {value: 4, text: '设置告警使能'},
@@ -99,18 +94,33 @@
             }
         },
         props: {
-            ids: {
-                default: function () {
-                    return []
-                }
-            },
             deviceIds: {
                 default: function () {
                     return []
                 }
             }
         },
-        computed: {},
+        computed: {
+            Rules: function () {
+                let rules = {};
+                if (this.operData.operateType == 3) {
+                    rules.operateValue = [
+                        {required: true, message: '请输入告警周期'},
+                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                    ]
+                } else if (this.operData.operateType == 4) {
+                    rules.operateValue = [
+                        {required: true, message: '请输入告警使能'},
+                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                    ]
+                } else if (this.operData.operateType == 5) {
+                    rules.operateValue = [
+                        {required: true, message: '请输入采集周期'},
+                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                    ]
+                }
+            }
+        },
         created: function () {
             this.initData()
         },
@@ -126,9 +136,6 @@
             },
             controlDevice: function () {
                 let ids = this.deviceIds.join(',');
-                if (this.operData.operateType == 2) {
-                    ids = this.ids.join(',')
-                }
                 this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();

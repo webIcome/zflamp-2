@@ -56,11 +56,6 @@
             }
         },
         props: {
-            ids: {
-                default: function () {
-                    return []
-                }
-            },
             deviceIds: {
                 default: function () {
                     return []

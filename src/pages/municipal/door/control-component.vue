@@ -6,23 +6,15 @@
     <div class="control">
       <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">告警归档</el-button>
     </div>
-    <div class="control">
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
+    <div class="control control-set">
+      <span class="control-text">设置</span>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
         <el-option v-for="item in setItems"
                    :label="item.text"
                    :value="item.value"
                    :key="item.value"></el-option>
       </el-select>
     </div>
-    <div class="control">
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModel" clearable>
-        <el-option v-for="item in searchItems"
-                   :label="item.text"
-                   :value="item.value"
-                   :key="item.value"></el-option>
-      </el-select>
-    </div>
-
 
     <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
       <div class="text-center">
@@ -30,7 +22,6 @@
       </div>
       <p v-if="operData.operateType == 1" class="title">您确认要查询状态吗？</p>
       <p v-else-if="operData.operateType == 2" class="title">您确认要告警归档吗？</p>
-      <p v-else-if="operData.operateType == 4" class="title">您确认要查询门开关状态吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -54,7 +45,7 @@
     import CommonContent from "../../../constants/common";
     import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
-        name: 'controlWaterLevelComponent',
+        name: 'controlDoorComponent',
         components: {},
         mixins: [controlTimerMixin],
         data() {
@@ -66,9 +57,6 @@
                 setItems: [
                     {value: 3, text: '告警阈值'},
                 ],
-                searchItems: [
-                    {value: 4, text: '门开关状态'},
-                ],
                 Rules: {
                     operateValue: [
                         {required: true, message: '请输入告警阈值'},
@@ -78,11 +66,6 @@
             }
         },
         props: {
-            ids: {
-                default: function () {
-                    return []
-                }
-            },
             deviceIds: {
                 default: function () {
                     return []
@@ -103,9 +86,6 @@
             },
             controlDevice: function () {
                 let ids = this.deviceIds.join(',');
-                if (this.operData.operateType == 2) {
-                    ids = this.ids.join(',')
-                }
                 this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();
@@ -136,9 +116,6 @@
                         break;
                     case 3:
                         fn = Service.controlSetAlarmValue;
-                        break;
-                    case 4:
-                        fn = Service.controlSearchDoorStatus;
                         break;
                 }
                 return fn

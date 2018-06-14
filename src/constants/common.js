@@ -110,6 +110,19 @@ const CommonConstant = {
         {value: 1, text: '开'},
         {value: 2, text: '关'},
         {value: 3, text: '故障'},
+    ],
+    alarmDuty: [
+        {value: 1, text: '开启'},
+        {value: 0, text: '关闭'},
+    ],
+    doorModel: [
+        {value: 'DMZ1ZT', text: 'DMZ1ZT'}
+    ],
+    illuminanceModel: [
+        {value: 'OPZ1ZT', text: 'OPZ1ZT'}
+    ],
+    inundateModel: [
+        {value: 'WDZ1ZT', text: 'WDZ1ZT'}
     ]
 };
 
