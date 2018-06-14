@@ -108,6 +108,7 @@
                 this.findList(this.searchParams)
             },
             pagingEvent: function (pageNumber) {
+                this.getSelectDataList();
                 this.searchParams.pageNum = pageNumber;
                 this.findList(this.searchParams);
             },
@@ -131,6 +132,17 @@
                     return filter;
                 });
                 return list.concat(this.selectDataList);
+            },
+            getSelectDataList() {
+                this.selectDataList = this.list.filter(item => {
+                    let filter = false;
+                    this.selectedList.forEach(selectItem => {
+                        if (selectItem == item.objectid) {
+                            filter = true
+                        }
+                    });
+                    return filter;
+                })
             },
             getSelectedList: function () {
                 this.initSelectedList();
