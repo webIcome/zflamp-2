@@ -7,17 +7,6 @@ export default {
             ref: 'edit',
             visible: false,
             data: {},
-            Rules: {
-                deviceName: [
-                    {required: true, message: '请输入名称'}
-                ],
-                compId: [
-                    {required: true, message: '请选择企业'}
-                ],
-                sn: [
-                    {required: true, message: '请输入设备ID'}
-                ],
-            }
         }
     },
     props: {
@@ -39,6 +28,26 @@ export default {
                 return '创建'
             }
         },
+        Rules: function () {
+            let rules = {
+                deviceName: [
+                    {required: true, message: '请输入名称'}
+                ],
+                compId: [
+                    {required: true, message: '请选择企业'}
+                ],
+                sn: [
+                    {required: true, message: '请输入设备ID', trigger: 'blur'},
+                    {pattern: /^[0-9A-Fa-f]{8}$/, message: 'ID必须为8位16进制字符'}
+                ],
+            };
+            if (this.deviceModel) {
+                rules.deviceModel = [
+                    {required: true, message: '请选择设备型号'}
+                ]
+            }
+            return rules
+        }
     },
     methods: {
         operate() {
@@ -104,6 +113,9 @@ export default {
         },
         hideModal() {
             this.visible = false;
+        },
+        resetData() {
+            this.data = {}
         }
     },
     watch: {
@@ -112,7 +124,7 @@ export default {
                 if (this.edit) this.getDetail();
                 this.clearValidate();
             } else {
-                this.data = {}
+                this.resetData()
             }
         }
     }

@@ -16,7 +16,7 @@ export default {
         }
     },
     created() {
-        this.getDetail();
+        // this.getDetail();
     },
     methods: {
         getDetail() {
@@ -42,6 +42,10 @@ export default {
         },
         hide() {
             this.$emit('hide');
+        },
+        controlStatus() {
+            this.service.controlSearchStatus(this.detail.deviceId).then(res => {
+            })
         },
     }
 }

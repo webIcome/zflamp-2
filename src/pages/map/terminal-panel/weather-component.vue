@@ -1,12 +1,11 @@
 <template>
   <div class="control-panel">
-    <div class="panel-title"><span class="title">井盖ID:{{detail.sn}}</span></div>
+    <div class="panel-title"><span class="title">气象监测ID:{{detail.sn}}</span></div>
     <div class="panel-control-body">
       <div class="panel-control-item clearfix">
         <div class="panel-img">
           <img src="../../../assets/map/well-right.png">
         </div>
-        <div class="panel-text"><span>井盖被打开({{detail.currentObliquity}}°)</span></div>
       </div>
     </div>
     <div class="panel-bottom">
@@ -17,11 +16,11 @@
   </div>
 </template>
 <script>
-    import Service from "../../../services/well";
+    import Service from "../../../services/weather";
     import CommonConstant from "../../../constants/common";
     import panelMixin from "./panel-mixin"
     export default{
-        name: 'wellComponent',
+        name: 'weatherPanelComponent',
         mixins: [panelMixin],
         data() {
             return {
@@ -30,7 +29,7 @@
         },
         computed: {
             type: function() {
-               return this.moduleType.well
+                return this.moduleType.weather
             }
         },
         methods: {

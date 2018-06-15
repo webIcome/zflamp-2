@@ -42,31 +42,12 @@
                     deviceModel: 'MLZ1ZT'
                 },
                 deviceModel: CommonConstant.weatherModel,
-                Rules: {
-                    deviceName: [
-                        {required: true, message: '请输入名称'}
-                    ],
-                    deviceModel: [
-                        {required: true, message: '请选择设备型号'}
-                    ],
-                    compId: [
-                        {required: true, message: '请选择企业'}
-                    ],
-                    sn: [
-                        {required: true, message: '请输入设备ID'}
-                    ],
-                }
             }
         },
-        watch: {
-            visible: function (newValue, oldValue) {
-                if (newValue) {
-                    if (this.edit) this.getDetail();
-                    this.clearValidate();
-                } else {
-                    this.data = {
-                        deviceModel: 'MLZ1ZT'
-                    }
+        methods: {
+            resetData() {
+                this.data = {
+                    deviceModel: 'MLZ1ZT'
                 }
             }
         }
