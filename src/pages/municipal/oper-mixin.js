@@ -1,7 +1,6 @@
 /**
  * Created by spring on 2018/6/14.
  */
-import Config from "../../config";
 export default {
     data() {
         return {

@@ -7,7 +7,7 @@
         <el-form-item label="设备名称：" prop="deviceName">
           <el-input v-model.trim="data.deviceName" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="设备ID：" prop="deviceName">
+        <el-form-item label="设备ID：" prop="sn">
           <el-input v-if="!edit" type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
           <div v-else>{{data.sn}}</div>
         </el-form-item>
@@ -19,8 +19,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="edit" type="primary" @click="editDevice">确 定</el-button>
-        <el-button v-else type="primary" @click="add">确 定</el-button>
+        <el-button type="primary" @click="operate">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -28,129 +27,9 @@
 <script>
     import Service from '../../../services/well'
     import CommonConstant from "../../../constants/common";
+    import operMixin from "../oper-mixin"
     export default {
         name: 'operWellComponent',
-        data() {
-            return {
-                visible: false,
-                data: {},
-                ref: 'edit',
-                Rules: {
-                    deviceName: [
-                        {required: true, message: '请输入名称'}
-                    ],
-                    compId: [
-                        {required: true, message: '请选择企业'}
-                    ],
-                    sn: [
-                        {required: true, message: '请输入设备ID'}
-                    ],
-                }
-            }
-        },
-        props: {
-            companies: {
-                default: []
-            },
-            id: {
-                default: ''
-            },
-            edit: {
-                default: false
-            }
-        },
-        created() {
-            this.initData()
-        },
-        computed: {
-            title: function () {
-                if (this.edit) {
-                    return '编辑井盖';
-                } else {
-                    return '创建井盖'
-                }
-            },
-        },
-        methods: {
-            initData() {
-            },
-            add() {
-                this.$refs[this.ref].validate(valid => {
-                    if (valid) {
-                        Service.add(this.getTransformDataToSend(this.data)).then(res => {
-                            this.emitAddEvent();
-                            this.hideModal();
-                        });
-                    }
-                })
-            },
-            getDetail() {
-                Service.getDetail(this.id).then(data => {
-                    this.data = this.getTransformDataToUse(data);
-                })
-            },
-            editDevice() {
-                this.$refs[this.ref].validate(valid => {
-                    if (valid) {
-                        Service.edit(this.getTransformDataToSend(this.data)).then(res => {
-                            this.emitEditEvent();
-                            this.hideModal();
-                        });
-                    }
-                })
-            },
-            getTransformDataToSend(data) {
-                data = this.$common.copyObj(data);
-                let position = data.address;
-                delete data.address;
-                data = Object.assign(data, position)
-                data.address = data.position;
-                delete data.position;
-                data.longitude = data.lng;
-                data.latitude = data.lat;
-                delete data.lng;
-                delete data.lat;
-                return data;
-            },
-            getTransformDataToUse(data) {
-                data.address = this.getPosition(data);
-                return data;
-            },
-            getPosition(position){
-                return {
-                    position: position.address,
-                    lng: position.longitude,
-                    lat: position.latitude,
-                    province: position.province,
-                    city: position.city,
-                    district: position.district
-                };
-            },
-            clearValidate() {
-                if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();
-            },
-            emitAddEvent() {
-                this.$emit('initPaging')
-            },
-            emitEditEvent() {
-                this.$emit('initCurrentPaging')
-            },
-            showModal() {
-                this.visible = true;
-            },
-            hideModal() {
-                this.visible = false;
-            }
-        },
-        watch: {
-            visible: function (newValue, oldValue) {
-                if (newValue) {
-                    if (this.edit) this.getDetail();
-                    this.clearValidate();
-                } else {
-                    this.data = {}
-                }
-            }
-        }
+        mixins: [operMixin],
     }
 </script>

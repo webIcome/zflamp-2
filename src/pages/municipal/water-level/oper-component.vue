@@ -7,9 +7,14 @@
         <el-form-item label="设备名称：" prop="deviceName">
           <el-input v-model.trim="data.deviceName" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="设备ID：" prop="deviceName">
+        <el-form-item label="设备ID：" prop="sn">
           <el-input v-if="!edit" type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
           <div v-else>{{data.sn}}</div>
+        </el-form-item>
+        <el-form-item label="设备型号：" prop="deviceModel">
+          <el-select v-model="data.deviceModel" placeholder="选择设备型号" clearable style="width: 100%;">
+            <el-option v-for="type in deviceModel" :value="type.value" :key="type.value" :label="type.text"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="归属项目：" prop="compId">
           <tree-select-component v-model="data.compId" :list="companies"></tree-select-component>
@@ -19,7 +24,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="operate">确 定</el-button>
+       <el-button type="primary" @click="operate">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -27,16 +32,22 @@
 <script>
     import Service from '../../../services/water-level'
     import CommonConstant from "../../../constants/common";
+    import operMixin from "../oper-mixin"
     export default {
-        name: 'operWaterLevelComponent',
+        name: 'operWeatherComponent',
+        mixins: [operMixin],
         data() {
             return {
-                visible: false,
-                data: {},
-                ref: 'edit',
+                data: {
+                    deviceModel: 'WLL2ZT'
+                },
+                deviceModel: CommonConstant.waterLevel,
                 Rules: {
                     deviceName: [
                         {required: true, message: '请输入名称'}
+                    ],
+                    deviceModel: [
+                        {required: true, message: '请选择设备型号'}
                     ],
                     compId: [
                         {required: true, message: '请选择企业'}
@@ -47,104 +58,15 @@
                 }
             }
         },
-        props: {
-            companies: {
-                default: []
-            },
-            id: {
-                default: ''
-            },
-            edit: {
-                default: false
-            }
-        },
-        created() {
-            this.initData()
-        },
-        computed: {
-            title: function () {
-                if (this.edit) {
-                    return '编辑井盖';
-                } else {
-                    return '创建井盖'
-                }
-            },
-        },
-        methods: {
-            initData() {
-            },
-            operate() {
-                this.$refs[this.ref].validate(valid => {
-                    if (valid) {
-                        Service.operate(this.getTransformDataToSend(this.data)).then(res => {
-                            this.emitEvent();
-                            this.hideModal();
-                        });
-                    }
-                })
-            },
-            getDetail() {
-                Service.getDetail(this.id).then(data => {
-                    this.data = this.getTransformDataToUse(data);
-                })
-            },
-            getTransformDataToSend(data) {
-                data = this.$common.copyObj(data);
-                let position = data.address;
-                delete data.address;
-                data = Object.assign(data, position)
-                data.address = data.position;
-                delete data.position;
-                data.longitude = data.lng;
-                data.latitude = data.lat;
-                delete data.lng;
-                delete data.lat;
-                return data;
-            },
-            getTransformDataToUse(data) {
-                data.address = this.getPosition(data);
-                return data;
-            },
-            getPosition(position){
-                return {
-                    position: position.address,
-                    lng: position.longitude,
-                    lat: position.latitude,
-                    province: position.province,
-                    city: position.city,
-                    district: position.district
-                };
-            },
-            clearValidate() {
-                if (this.$refs[this.ref]) this.$refs[this.ref].clearValidate();
-            },
-            emitEvent() {
-                if (this.edit) {
-                    this.emitEditEvent()
-                } else {
-                    this.emitAddEvent();
-                }
-            },
-            emitAddEvent() {
-                this.$emit('initPaging')
-            },
-            emitEditEvent() {
-                this.$emit('initCurrentPaging')
-            },
-            showModal() {
-                this.visible = true;
-            },
-            hideModal() {
-                this.visible = false;
-            }
-        },
         watch: {
             visible: function (newValue, oldValue) {
                 if (newValue) {
                     if (this.edit) this.getDetail();
                     this.clearValidate();
                 } else {
-                    this.data = {}
+                    this.data = {
+                        deviceModel: 'WLL2ZT'
+                    }
                 }
             }
         }

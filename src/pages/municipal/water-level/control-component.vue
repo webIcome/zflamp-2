@@ -1,13 +1,13 @@
 <template>
   <div class="control-items">
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">查询状态</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(1)" class="control-btn">查询状态</el-button>
     </div>
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">告警归档</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(2)" class="control-btn">告警归档</el-button>
     </div>
     <div class="control">
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
         <el-option v-for="item in setItems"
                    :label="item.text"
                    :value="item.value"
@@ -15,7 +15,7 @@
       </el-select>
     </div>
     <div class="control">
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModel" clearable>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModel" clearable>
         <el-option v-for="item in searchItems"
                    :label="item.text"
                    :value="item.value"
@@ -132,11 +132,6 @@
             }
         },
         props: {
-            ids: {
-                default: function () {
-                    return []
-                }
-            },
             deviceIds: {
                 default: function () {
                     return []
@@ -198,9 +193,6 @@
             },
             controlDevice: function () {
                 let ids = this.deviceIds.join(',');
-                if (this.operData.operateType == 2) {
-                    ids = this.ids.join(',')
-                }
                 this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();

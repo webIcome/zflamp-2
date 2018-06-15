@@ -123,6 +123,12 @@ const CommonConstant = {
     ],
     inundateModel: [
         {value: 'WDZ1ZT', text: 'WDZ1ZT'}
+    ],
+    weatherModel: [
+        {value: 'MLZ1ZT', text: 'MLZ1ZT'}
+    ],
+    waterLevel: [
+        {value: 'WLL2ZT', text: 'WLL2ZT'}
     ]
 };
 

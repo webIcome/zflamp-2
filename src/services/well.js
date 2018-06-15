@@ -8,7 +8,7 @@ import Config from "../config";
 const option = {baseURL: Config.WELL_URL_API};
 export default {
     findList(params) {
-        return HttpClient.get('wellcover/findWellCoverPage', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('wellid/findPage', Object.assign({params: params},option)).then(res => {
             if (res.data && res.data.data) {
                 return res.data.data;
             } else {
@@ -22,36 +22,42 @@ export default {
         })
     },
     getDetail(id) {
-        return HttpClient.get('wellcover/findWellCoverInfoById/' + id, option).then(res => {
+        return HttpClient.get('wellid/findInfoByDeviceId/' + id, option).then(res => {
             return res.data.data;
         })
     },
-    add(body) {
-        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body,option).then(res => {
-            showSuccess(res);
-            return res;
-        })
-    },
-    edit(body) {
-        return HttpClient.post('wellcover/saveOrUpdateTaskInfo', body,option).then(res => {
+    operate(body) {
+        return HttpClient.post('wellid/saveOrUpdate', body,option).then(res => {
             showSuccess(res);
             return res;
         })
     },
     deleteDevice(ids) {
-        return HttpClient.post('wellcover/removeBatchWellCoverInfoByIds','', Object.assign({params: {ids: ids}},option)).then(res => {
+        return HttpClient.post('wellid/removeBatchByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    control(params) {
-        return HttpClient.post('wellcover/batchOperateWellCoverInfoByDeviceIds','', Object.assign({params: params},option)).then(res => {
+    controlSearchStatus(ids) {
+        return HttpClient.post('wellid/batchSearchStatusByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })
     },
-    pigeonholeWell(ids) {
-        return HttpClient.post('wellcover/batchToNormalWellCoverInfoByIds','', Object.assign({params: {ids: ids}},option)).then(res => {
+    controlAdjust(ids) {
+        return HttpClient.post('wellid/batchAdjustByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    controlSetThreshold(body) {
+        return HttpClient.post('wellid/batchSetThresholdByDeviceIds', '', Object.assign({params: body},option)).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
+    pigeonhole(ids) {
+        return HttpClient.post('wellid/batchToNormalByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })

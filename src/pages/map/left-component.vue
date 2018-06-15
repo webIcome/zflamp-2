@@ -29,7 +29,7 @@
     import Config from "../../config";
     import MapServices from "../../services/map";
     import DeviceAlarmListComponent from "./device-alarm-list-component";
-    import TerminalComponent from "./terminal/index.vue";
+    import TerminalComponent from "./terminal-list/index.vue";
     export default {
         components: {TerminalComponent, DeviceAlarmListComponent},
         name: 'leftComponent',

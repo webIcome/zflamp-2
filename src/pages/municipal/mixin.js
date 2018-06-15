@@ -2,6 +2,7 @@
  * Created by spring on 2018/6/7.
  */
 import Config from "../../config";
+import CommonConstant from "../../constants/common";
 export default {
     data() {
         return {
@@ -15,7 +16,8 @@ export default {
             selectionIds: [],
             companies: [],
             tableRef: 'my-table',
-            service: {}
+            service: {},
+            runningState: CommonConstant.wellStatus,
         }
     },
     created() {

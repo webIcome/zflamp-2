@@ -25,7 +25,7 @@
            <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
         </form>
         <div class="control-add-content">
-          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -49,20 +49,17 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="currentSpeed" label="当前加速度"></el-table-column>
-      <el-table-column prop="voltage" label="电压V"></el-table-column>
-      <el-table-column prop="belongLightId" label="归属灯ID"></el-table-column>
-      <el-table-column prop="belongApId" label="归属基站ID"></el-table-column>
-      <el-table-column label="地理位置">
-        <template slot-scope="scope">
-          <show-position :device='scope.row'></show-position>
-        </template>
-      </el-table-column>
-      <el-table-column label="上报时间">
-        <template slot-scope="scope">
-          <template>{{scope.row.uploadTime | formDate}}</template>
-        </template>
-      </el-table-column>
+      <el-table-column prop="currentSpeed" label="风向 °"></el-table-column>
+      <el-table-column prop="currentSpeed" label="风速 m/s"></el-table-column>
+      <el-table-column prop="currentSpeed" label="温度/℃"></el-table-column>
+      <el-table-column prop="currentSpeed" label="湿度/%RH"></el-table-column>
+      <el-table-column prop="currentSpeed" label="气压/hPa"></el-table-column>
+      <el-table-column prop="currentSpeed" label="雨量/mm"></el-table-column>
+      <el-table-column prop="currentSpeed" label="总辐射 W/㎡"></el-table-column>
+      <el-table-column prop="currentSpeed" label="紫外强度"></el-table-column>
+      <el-table-column prop="currentSpeed" label="噪声/dB"></el-table-column>
+      <el-table-column prop="currentSpeed" label="PM2.5 ug/m³"></el-table-column>
+      <el-table-column prop="currentSpeed" label="PM10 ug/m³"></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex">
@@ -70,6 +67,11 @@
                             @initCurrentPaging="pagingEvent"></oper-component>
             <delete-component :id="scope.row.deviceId" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
+        </template>
+      </el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          <detail-component :id="scope.row.deviceId"></detail-component>
         </template>
       </el-table-column>
     </el-table>
@@ -87,7 +89,7 @@
 
 </template>
 <script>
-    import Service from "../../../services/voice";
+    import Service from "../../../services/weather";
     import operComponent from './oper-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
@@ -105,7 +107,6 @@
         name: 'weatherPage',
         data() {
             return {
-                runningState: CommonConstant.wellStatus,
                 service: Service
             }
         },

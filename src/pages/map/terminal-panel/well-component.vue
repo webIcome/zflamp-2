@@ -4,7 +4,7 @@
     <div class="panel-control-body">
       <div class="panel-control-item clearfix">
         <div class="panel-img">
-          <img src="../../assets/map/well-right.png">
+          <img src="../../../assets/map/well-right.png">
         </div>
         <div class="panel-text"><span>井盖被打开({{detail.currentObliquity}}°)</span></div>
       </div>
@@ -17,58 +17,26 @@
   </div>
 </template>
 <script>
-    import Services from "../../services/well";
-    import CommonConstant from "../../constants/common";
+    import Service from "../../../services/well";
+    import CommonConstant from "../../../constants/common";
+    import panelMixin from "./panel-mixin"
     export default{
         name: 'wellComponent',
+        mixins: [panelMixin],
         data() {
             return {
-                detail: {}
+                service: Service
             }
         },
-        props: {
-            id: '',
-            moduleType: {
-                default: function () {
-                    return {}
-                }
+        computed: {
+            type: function() {
+               return this.moduleType.well
             }
-        },
-        created() {
-            this.getDetail();
         },
         methods: {
-            getDetail() {
-                Services.getDetail(this.id).then(detail => {
-                    this.detail = detail;
-                    this.updateMarker();
-                });
-            },
-            updateMarker() {
-                this.$emit('updateMarker', this.transformData(this.detail))
-            },
-            transformData(data) {
-                return {
-                    lng: data.longitude,
-                    lat: data.latitude,
-                    id: data.id,
-                    moduletype: this.moduleType.well,
-                    sn: data.sn,
-                    status: data.status,
-                    deviceName: data.deviceName,
-                    statusName: data.statusName
-                }
-            },
-            hide() {
-                this.$emit('hide');
-            },
             controlStatus() {
-                let data = {operateType: 1, deviceIds: this.detail.deviceId};
-                Services.control(data).then(res => {
+                Service.controlSearchStatus(this.detail.deviceId).then(res => {
                 })
-            },
-            hideShowConfirm() {
-                this.isShowConfirm = false;
             },
         }
     }

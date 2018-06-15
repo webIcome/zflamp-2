@@ -3,20 +3,20 @@
     <search-component @search="search" :moduleType="moduleType"></search-component>
     <ap-component v-if="currentModuleType == moduleType.station" @updateMarker="updateMarker" :moduleType="moduleType" :id="id"></ap-component>
     <light-component v-else-if="currentModuleType == moduleType.light" @updateMarker="updateMarker"  @hide="hide" :moduleType="moduleType" :id="id"></light-component>
-    <well-component v-else-if="currentModuleType == moduleType.well" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></well-component>
     <loop-component v-else-if="currentModuleType == moduleType.loop" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></loop-component>
+    <terminal-panel-component v-else @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id" :currentModuleType="currentModuleType"></terminal-panel-component>
   </div>
 </template>
 <script>
   import searchComponent from './search-component.vue'
   import ApComponent from "./ap-component";
   import LightComponent from "./light-component";
-  import WellComponent from "./well-component";
   import LoopComponent from "./loop-component";
+  import TerminalPanelComponent from "./terminal-panel/index";
   export default {
       name: 'rightComponent',
       components: {
-          LoopComponent, WellComponent, LightComponent, ApComponent, searchComponent,
+          TerminalPanelComponent, LoopComponent, LightComponent, ApComponent, searchComponent,
       },
       data() {
           return{

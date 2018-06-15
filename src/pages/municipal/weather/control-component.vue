@@ -5,7 +5,7 @@
     </div>
     <div class="control control-set">
       <span class="control-text">设置</span>
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
         <el-option v-for="item in setItems"
                    :label="item.text"
                    :value="item.value"
@@ -14,7 +14,7 @@
     </div>
     <div class="control control-search">
       <span class="control-text">查询</span>
-      <el-select :disabled="!ids.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModal" clearable>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModal" clearable>
         <el-option v-for="item in searchItems"
                    :label="item.text"
                    :value="item.value"
@@ -75,11 +75,6 @@
             }
         },
         props: {
-            ids: {
-                default: function () {
-                    return []
-                }
-            },
             deviceIds: {
                 default: function () {
                     return []

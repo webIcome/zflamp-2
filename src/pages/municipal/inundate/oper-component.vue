@@ -7,11 +7,11 @@
         <el-form-item label="设备名称：" prop="deviceName">
           <el-input v-model.trim="data.deviceName" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="设备ID：" prop="deviceName">
+        <el-form-item label="设备ID：" prop="sn">
           <el-input v-if="!edit" type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
           <div v-else>{{data.sn}}</div>
         </el-form-item>
-        <el-form-item label="设备型号：" prop="deviceName">
+        <el-form-item label="设备型号：" prop="deviceModel">
           <el-select v-model="data.deviceModel" placeholder="选择设备型号" clearable style="width: 100%;">
             <el-option v-for="type in deviceModel" :value="type.value" :key="type.value" :label="type.text"></el-option>
           </el-select>

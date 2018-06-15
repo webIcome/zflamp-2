@@ -25,7 +25,7 @@
            <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
         </form>
         <div class="control-add-content">
-          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -49,7 +49,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="currentObliquity" label="识别声音"></el-table-column>
+      <el-table-column prop="voiceType" label="识别声音"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="belongLightId" label="归属灯ID"></el-table-column>
       <el-table-column prop="belongApId" label="归属基站ID"></el-table-column>
@@ -66,9 +66,9 @@
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex">
-            <oper-component ref="oper" :id="scope.row.id" :companies="companies" :edit="true"
+            <oper-component ref="oper" :id="scope.row.deviceId" :companies="companies" :edit="true"
                             @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.id" @initCurrentPaging="pagingEvent"></delete-component>
+            <delete-component :id="scope.row.deviceId" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
       </el-table-column>
@@ -103,7 +103,7 @@
         name: 'voicePage',
         data() {
             return {
-                service: Service
+                service: Service,
             }
         },
         methods: {

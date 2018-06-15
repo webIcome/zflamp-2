@@ -18,7 +18,7 @@
           <div class="form-group">
             <label>状态</label>
             <el-select v-model="searchParams.status" placeholder="请选择" clearable>
-              <el-option v-for="status in wellStatus" :key="status.value" :value="status.value"
+              <el-option v-for="status in runningState" :key="status.value" :value="status.value"
                          :label="status.text"></el-option>
             </el-select>
           </div>
@@ -66,15 +66,15 @@
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex">
-            <oper-component ref="oper" :id="scope.row.id" :companies="companies" :edit="true"
+            <oper-component ref="oper" :id="scope.row.deviceId" :companies="companies" :edit="true"
                             @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.id" @initCurrentPaging="pagingEvent"></delete-component>
+            <delete-component :id="scope.row.deviceId" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <detail-component :id="scope.row.id"></detail-component>
+          <detail-component :id="scope.row.deviceId"></detail-component>
         </template>
       </el-table-column>
     </el-table>
@@ -110,7 +110,6 @@
         name: 'wellPage',
         data() {
             return {
-                wellStatus: CommonConstant.wellStatus,
                 service: Service
             }
         },

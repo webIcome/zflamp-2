@@ -7,7 +7,7 @@
         <el-form-item label="设备名称：" prop="deviceName">
           <el-input v-model.trim="data.deviceName" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="设备ID：" prop="deviceName">
+        <el-form-item label="设备ID：" prop="sn">
           <el-input v-if="!edit" type="text" v-model.trim="data.sn" placeholder="请输入设备ID"/>
           <div v-else>{{data.sn}}</div>
         </el-form-item>

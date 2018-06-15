@@ -18,7 +18,7 @@
           <div class="form-group">
             <label>状态</label>
             <el-select v-model="searchParams.status" placeholder="请选择" clearable>
-              <el-option v-for="status in wellStatus" :key="status.value" :value="status.value"
+              <el-option v-for="status in runningState" :key="status.value" :value="status.value"
                          :label="status.text"></el-option>
             </el-select>
           </div>
@@ -111,7 +111,6 @@
         data() {
             return {
                 service: Service,
-                wellStatus: CommonConstant.wellStatus
             }
         },
         methods: {
