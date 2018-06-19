@@ -4,7 +4,7 @@
     <div class="panel-control-body">
       <div class="panel-control-item clearfix">
         <div class="panel-img">
-          <img src="../../../assets/map/well-right.png">
+          <img src="../../../assets/map/pose-right.png">
         </div>
       </div>
     </div>

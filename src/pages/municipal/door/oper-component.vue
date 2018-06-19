@@ -42,6 +42,7 @@
                     deviceModel: 'DMZ1ZT'
                 },
                 deviceModel: CommonConstant.doorModel,
+                service: Service
             }
         },
         methods: {

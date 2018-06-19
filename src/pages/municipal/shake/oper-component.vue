@@ -31,5 +31,10 @@
     export default {
         name: 'operShakeComponent',
         mixins: [operMixin],
+        data() {
+            return {
+                service: Service
+            }
+        }
     }
 </script>

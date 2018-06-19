@@ -16,7 +16,7 @@ export default {
         }
     },
     created() {
-        // this.getDetail();
+        this.getDetail();
     },
     methods: {
         getDetail() {
@@ -47,5 +47,10 @@ export default {
             this.service.controlSearchStatus(this.detail.deviceId).then(res => {
             })
         },
+    },
+    watch: {
+        id: function (newVal) {
+            this.getDetail();
+        }
     }
 }

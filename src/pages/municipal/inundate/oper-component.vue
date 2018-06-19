@@ -42,6 +42,7 @@
                     deviceModel: 'WDZ1ZT'
                 },
                 deviceModel: CommonConstant.inundateModel,
+                service: Service
             }
         },
         methods: {

@@ -31,5 +31,10 @@
     export default {
         name: 'operWellComponent',
         mixins: [operMixin],
+        data() {
+            return {
+                service: Service
+            }
+        }
     }
 </script>

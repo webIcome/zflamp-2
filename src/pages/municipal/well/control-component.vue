@@ -147,31 +147,4 @@
         }
     }
 </script>
-
-<style scoped lang="less">
-
-  .control-brightness {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    .el-slider {
-      flex: 1;
-      margin-left: 20px;
-    }
-  }
-
-  .control-status {
-    .control-icon {
-      background: url("../../../assets/control/reflesh.png") no-repeat;
-      background-size: contain;
-    }
-  }
-
-  .control-search,
-  .control-set {
-    display: flex;
-    align-items: center;
-  }
-
-</style>
+<style src="../control.less" lang="less" scoped></style>

@@ -1,17 +1,17 @@
 <template>
   <div class="terminal-class">
-    <div class="device-parent" @click="showChild"><span class="icon"></span>终端</div>
+    <div class="device-parent" :class="{active: active}" @click="showChild"><span class="icon"></span>终端</div>
     <div class="device-child" v-show="isChildShow">
-      <door-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getDoorList" @show="showList" @hidden="hiddenList"></door-component>
-      <illuminance-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getIlluminanceList" @show="showList" @hidden="hiddenList"></illuminance-component>
-      <inundate-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getInundateList" @show="showList" @hidden="hiddenList"></inundate-component>
-      <pose-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getPoseList" @show="showList" @hidden="hiddenList"></pose-component>
-      <shake-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getShakeList" @show="showList" @hidden="hiddenList"></shake-component>
-      <voice-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getVoiceList" @show="showList" @hidden="hiddenList"></voice-component>
-      <weather-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWeatherList" @show="showList" @hidden="hiddenList"></weather-component>
-      <water-level-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWaterLevelList" @show="showList" @hidden="hiddenList"></water-level-component>
-      <well-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWellList" @show="showList" @hidden="hiddenList"></well-component>
-      <device-alarm-list-component v-if="isListShow" :currentList="currentList" :list="currentList" :isShow="isListShow" @hide="hiddenList"></device-alarm-list-component>
+      <door-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getDoorList" @show="showList" @hidden="hiddenList" @active="generateActive"></door-component>
+      <illuminance-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getIlluminanceList" @show="showList" @hidden="hiddenList" @active="generateActive"></illuminance-component>
+      <inundate-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getInundateList" @show="showList" @hidden="hiddenList" @active="generateActive"></inundate-component>
+      <pose-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getPoseList" @show="showList" @hidden="hiddenList" @active="generateActive"></pose-component>
+      <shake-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getShakeList" @show="showList" @hidden="hiddenList" @active="generateActive"></shake-component>
+      <voice-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getVoiceList" @show="showList" @hidden="hiddenList" @active="generateActive"></voice-component>
+      <weather-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWeatherList" @show="showList" @hidden="hiddenList" @active="generateActive"></weather-component>
+      <water-level-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWaterLevelList" @show="showList" @hidden="hiddenList" @active="generateActive"></water-level-component>
+      <well-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWellList" @show="showList" @hidden="hiddenList" @active="generateActive"></well-component>
+      <device-alarm-list-component v-if="isListShow" :currentList="currentList" :list="currentList" @hide="hiddenList"></device-alarm-list-component>
     </div>
   </div>
 </template>
@@ -48,6 +48,15 @@
                 currentList: [],
                 isChildShow: false,
                 isListShow: false,
+                doorActive: false,
+                illuminanceActive: false,
+                inundateActive: false,
+                poseActive: false,
+                shakeActive: false,
+                voiceActive: false,
+                waterLevelActive: false,
+                weatherActive: false,
+                wellActive: false,
             }
         },
         props: {
@@ -58,7 +67,11 @@
             },
             companyid: '',
         },
-        computed: {},
+        computed: {
+            active: function () {
+                return this.doorActive || this.illuminanceActive || this.inundateActive || this.poseActive || this.shakeActive || this.voiceActive || this.waterLevelActive || this.weatherActive || this.wellActive
+            },
+        },
         created() {
         },
         methods: {
@@ -115,6 +128,37 @@
             },
             hiddenList() {
                 this.isListShow = false
+            },
+            generateActive(obj) {
+                switch (obj.type) {
+                    case this.moduleType.door:
+                        this.doorActive = obj.active;
+                        break;
+                    case this.moduleType.illuminance:
+                        this.illuminanceActive = obj.active;
+                        break;
+                    case this.moduleType.inundate:
+                        this.inundateActive = obj.active;
+                        break;
+                    case this.moduleType.pose:
+                        this.poseActive = obj.active;
+                        break;
+                    case this.moduleType.shake:
+                        this.shakeActive = obj.active;
+                        break;
+                    case this.moduleType.voice:
+                        this.voiceActive = obj.active;
+                        break;
+                    case this.moduleType.waterLevel:
+                        this.waterLevelActive = obj.active;
+                        break;
+                    case this.moduleType.weather:
+                        this.weatherActive = obj.active;
+                        break;
+                    case this.moduleType.well:
+                        this.wellActive = obj.active;
+                        break;
+                }
             }
         },
     }
@@ -131,7 +175,7 @@
     text-align: center;
     line-height: 60px;
     background: #fff;
-    color: #4689d7;
+    color: #7c8196;
     border-radius: 2px;
     cursor: pointer;
     &:hover{
@@ -143,8 +187,15 @@
       height: 100%;
       margin-left: 14px;
       margin-right: 7px;
-      background: url("../../../assets/map/ap-avtive.png") no-repeat center;
+      background: url("../../../assets/map/terminal-off.png") no-repeat center;
       background-size: contain;
+    }
+    &.active{
+      .icon {
+        background: url("../../../assets/map/terminal-active.png") no-repeat center;
+        background-size: contain;
+      }
+      color: #4689d7;
     }
   }
   .device-child {

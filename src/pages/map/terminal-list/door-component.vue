@@ -42,18 +42,18 @@
     &.active {
       color: #4689d7;
       .icon{
-        background: url("../../../assets/map/ap-avtive.png") no-repeat center;
+        background: url("../../../assets/map/door-active.png") no-repeat center;
         background-size: contain;
       }
     }
     &:hover,
     &:active{
       transform: scale(1.02);
-      color: #4689d7;
+      /*!*color: #4689d7;*!
       .icon{
-        background: url("../../../assets/map/ap-avtive.png") no-repeat center;
-        background-size: contain;
-      }
+        !*background: url("../../../assets/map/door-active.png") no-repeat center;*!
+        !*background-size: contain;*!
+      }*/
     }
     .icon {
       display: inline-block;
@@ -61,7 +61,7 @@
       height: 100%;
       margin-left: 14px;
       margin-right: 7px;
-      background: url("../../../assets/map/ap-off.png") no-repeat center;
+      background: url("../../../assets/map/door-off.png") no-repeat center;
       background-size: contain;
     }
   }

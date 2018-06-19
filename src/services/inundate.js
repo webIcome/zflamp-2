@@ -16,7 +16,7 @@ export default {
         })
     },
     getList(params) {
-        return HttpClient.get('inundateCheck/findWellCoverList', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('inundateCheck/findList', Object.assign({params: params},option)).then(res => {
             return res.data.data;
         })
     },

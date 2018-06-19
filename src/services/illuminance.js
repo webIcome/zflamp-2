@@ -16,12 +16,12 @@ export default {
         })
     },
     getList(params) {
-        return HttpClient.get('illuminanceCheck/findWellCoverList', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('illuminanceCheck/findList', Object.assign({params: params},option)).then(res => {
             return res.data.data;
         })
     },
     getDetail(id) {
-        return HttpClient.get('illuminanceCheck/findInfoByDeviceIds/' + id, option).then(res => {
+        return HttpClient.get('illuminanceCheck/findInfoByDeviceId/' + id, option).then(res => {
             return res.data.data;
         })
     },

@@ -16,7 +16,7 @@ export default {
         })
     },
     getList(params) {
-        return HttpClient.get('gestureInductor/findWellCoverList', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('gestureInductor/findList', Object.assign({params: params},option)).then(res => {
             return res.data.data;
         })
     },

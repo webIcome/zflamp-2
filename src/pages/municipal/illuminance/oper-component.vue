@@ -42,6 +42,7 @@
                     deviceModel: 'OPZ1ZT'
                 },
                 deviceModel: CommonConstant.illuminanceModel,
+                service: Service
             }
         },
         methods: {

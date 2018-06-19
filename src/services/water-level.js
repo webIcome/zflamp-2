@@ -17,7 +17,7 @@ export default {
         })
     },
     getList(params) {
-        return HttpClient.get('waterLevel/findWellCoverList', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('waterLevel/findList', Object.assign({params: params},option)).then(res => {
             return res.data.data;
         })
     },

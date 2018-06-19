@@ -31,5 +31,10 @@
     export default {
         name: 'operPoseComponent',
         mixins: [operMixin],
+        data() {
+            return {
+                service: Service
+            }
+        }
     }
 </script>

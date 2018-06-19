@@ -6,7 +6,8 @@
     <div class="control">
       <el-button :disabled="!deviceIds.length" @click="generate(2)" class="control-btn">告警归档</el-button>
     </div>
-    <div class="control">
+    <div class="control control-set">
+      <span class="control-text">设置</span>
       <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showSetModal" clearable>
         <el-option v-for="item in setItems"
                    :label="item.text"
@@ -14,8 +15,9 @@
                    :key="item.value"></el-option>
       </el-select>
     </div>
-    <div class="control">
-      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModel" clearable>
+    <div class="control control-search">
+      <span class="control-text">查询</span>
+      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModal" clearable>
         <el-option v-for="item in searchItems"
                    :label="item.text"
                    :value="item.value"
@@ -285,15 +287,4 @@
         }
     }
 </script>
-
-<style scoped lang="less">
-
-
-  .control-status {
-    .control-icon {
-      background: url("../../../assets/control/reflesh.png") no-repeat;
-      background-size: contain;
-    }
-  }
-
-</style>
+<style src="../control.less" lang="less" scoped></style>

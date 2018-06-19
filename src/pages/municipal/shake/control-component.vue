@@ -1,13 +1,13 @@
 <template>
   <div class="control-items">
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">查询状态</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(1)" class="control-btn">查询状态</el-button>
     </div>
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">设置静态值</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(2)" class="control-btn">设置静态值</el-button>
     </div>
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(3)" class="control-btn">设置上报心跳周期</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(3)" class="control-btn">设置上报心跳周期</el-button>
     </div>
 
     <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
@@ -145,3 +145,4 @@
         }
     }
 </script>
+<style src="../control.less" lang="less" scoped></style>

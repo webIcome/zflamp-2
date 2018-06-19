@@ -272,7 +272,7 @@
           &:hover,
           &:active{
             transform: scale(1.02);
-            color: #4689d7;
+            /*color: #4689d7;*/
           }
           .icon {
             display: inline-block;
@@ -294,7 +294,7 @@
             background: url("../../assets/map/ap-off.png") no-repeat center;
             background-size: contain;
           }
-          &:hover,
+          /*&:hover,*/
           &.active {
             .icon {
               background: url("../../assets/map/ap-avtive.png") no-repeat center;
@@ -307,7 +307,7 @@
             background: url("../../assets/map/light-off.png") no-repeat center;
             background-size: contain;
           }
-          &:hover,
+          /*&:hover,*/
           &.active {
             .icon {
               background: url("../../assets/map/light-active.png") no-repeat center;
@@ -320,7 +320,7 @@
             background: url("../../assets/map/loop-off.png") no-repeat center;
             background-size: contain;
           }
-          &:hover,
+          /*&:hover,*/
           &.active {
             .icon {
               background: url("../../assets/map/loop-active.png") no-repeat center;
@@ -333,7 +333,7 @@
             background: url("../../assets/map/well-off.png") no-repeat center;
             background-size: contain;
           }
-          &:hover,
+          /*&:hover,*/
           &.active {
             .icon {
               background: url("../../assets/map/well-active.png") no-repeat center;

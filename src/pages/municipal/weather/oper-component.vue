@@ -42,6 +42,7 @@
                     deviceModel: 'MLZ1ZT'
                 },
                 deviceModel: CommonConstant.weatherModel,
+                service: Service
             }
         },
         methods: {

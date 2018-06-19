@@ -51,7 +51,10 @@ export default {
         getList() {
             if (this.active) {
                 this.active = false;
-                this.list = []
+                if (this.isListShow && this.currentList == this.faultList) {
+                    this.hidden();
+                }
+                this.list = [];
             } else {
                 this.service.getList({compIds: this.companyid}).then(list => {
                     this.list = this.transformList(list, this.type);
@@ -78,7 +81,7 @@ export default {
                     return {
                         lng: item.longitude,
                         lat: item.latitude,
-                        id: item.id,
+                        id: item.deviceId,
                         moduletype: moduletype,
                         sn: item.sn,
                         status: item.status,
@@ -102,5 +105,8 @@ export default {
         list(newVal) {
             this.updateList()
         },
+        active(newVal) {
+            this.$emit('active', {type: this.type, active: newVal})
+        }
     }
 }

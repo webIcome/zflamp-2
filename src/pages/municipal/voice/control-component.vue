@@ -124,3 +124,4 @@
         }
     }
 </script>
+<style src="../control.less" lang="less" scoped></style>

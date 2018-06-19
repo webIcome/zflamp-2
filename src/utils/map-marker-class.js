@@ -34,6 +34,38 @@ export default class MapMarkerClass {
                 imgUrl = WellStatus[device.status];
                 if (!imgUrl) imgUrl = WellStatus[0];
                 break;
+            case 5:
+                imgUrl = WaterLevelStatus[device.status];
+                if (!imgUrl) imgUrl = WaterLevelStatus[0];
+                break;
+            case 6:
+                imgUrl = DoorStatus[device.status];
+                if (!imgUrl) imgUrl = DoorStatus[0];
+                break;
+            case 7:
+                imgUrl = PoseStatus[device.status];
+                if (!imgUrl) imgUrl = PoseStatus[0];
+                break;
+            case 8:
+                imgUrl = ShakeStatus[device.status];
+                if (!imgUrl) imgUrl = ShakeStatus[0];
+                break;
+            case 9:
+                imgUrl = VoiceStatus[device.status];
+                if (!imgUrl) imgUrl = VoiceStatus[0];
+                break;
+            case 10:
+                imgUrl = WeatherStatus[device.status];
+                if (!imgUrl) imgUrl = WeatherStatus[0];
+                break;
+            case 11:
+                imgUrl = InundateStatus[device.status];
+                if (!imgUrl) imgUrl = InundateStatus[0];
+                break;
+            case 12:
+                imgUrl = IlluminanceStatus[device.status];
+                if (!imgUrl) imgUrl = IlluminanceStatus[0];
+                break;
             default:
                 imgUrl = LightStatus[1];
                 break;
@@ -86,4 +118,44 @@ let WellStatus = {
     0: './static/imgs/well-online.png', //在线
     1: './static/imgs/well-offline.png', //离线
     2: './static/imgs/well-err.png', //告警
+};
+let WaterLevelStatus = {
+    0: './static/imgs/water-level-online.png', //在线
+    1: './static/imgs/water-level-offline.png', //离线
+    2: './static/imgs/water-level-err.png', //告警
 }
+let DoorStatus = {
+    0: './static/imgs/door-online.png', //在线
+    1: './static/imgs/door-offline.png', //离线
+    2: './static/imgs/door-err.png', //告警
+};
+let PoseStatus = {
+    0: './static/imgs/pose-online.png', //在线
+    1: './static/imgs/pose-offline.png', //离线
+    2: './static/imgs/pose-err.png', //告警
+};
+let ShakeStatus = {
+    0: './static/imgs/shake-online.png', //在线
+    1: './static/imgs/shake-offline.png', //离线
+    2: './static/imgs/shake-err.png', //告警
+};
+let VoiceStatus = {
+    0: './static/imgs/voice-online.png', //在线
+    1: './static/imgs/voice-offline.png', //离线
+    2: './static/imgs/voice-err.png', //告警
+};
+let WeatherStatus = {
+    0: './static/imgs/weather-online.png', //在线
+    1: './static/imgs/weather-offline.png', //离线
+    2: './static/imgs/weather-err.png', //告警
+};
+let InundateStatus = {
+    0: './static/imgs/inundate-online.png', //在线
+    1: './static/imgs/inundate-offline.png', //离线
+    2: './static/imgs/inundate-err.png', //告警
+};
+let IlluminanceStatus = {
+    0: './static/imgs/illuminance-online.png', //在线
+    1: './static/imgs/illuminance-offline.png', //离线
+    2: './static/imgs/illuminance-err.png', //告警
+};

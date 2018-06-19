@@ -1,10 +1,10 @@
 <template>
   <div class="control-items">
     <div class="control control-on">
-      <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">查询状态</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(1)" class="control-btn">查询状态</el-button>
     </div>
     <div class="control control-status">
-      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">告警归档</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(2)" class="control-btn">告警归档</el-button>
     </div>
     <div class="control control-set">
       <span class="control-text">设置</span>
@@ -264,30 +264,4 @@
     }
 </script>
 
-<style scoped lang="less">
-
-  .control-brightness {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    .el-slider {
-      flex: 1;
-      margin-left: 20px;
-    }
-  }
-
-  .control-status {
-    .control-icon {
-      background: url("../../../assets/control/reflesh.png") no-repeat;
-      background-size: contain;
-    }
-  }
-
-  .control-search,
-  .control-set {
-    display: flex;
-    align-items: center;
-  }
-
-</style>
+<style src="../control.less" lang="less" scoped></style>

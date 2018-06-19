@@ -42,6 +42,7 @@
                     deviceModel: 'WLL2ZT'
                 },
                 deviceModel: CommonConstant.waterLevel,
+                service: Service
             }
         },
         methods: {

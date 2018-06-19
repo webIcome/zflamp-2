@@ -1,7 +1,7 @@
 <template>
   <div class="control-items">
     <div class="control">
-      <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">查询状态</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(1)" class="control-btn">查询状态</el-button>
     </div>
     <div class="control control-set">
       <span class="control-text">设置</span>
@@ -149,3 +149,4 @@
         }
     }
 </script>
+<style src="../control.less" lang="less" scoped></style>

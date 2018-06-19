@@ -16,7 +16,7 @@ export default {
         })
     },
     getList(params) {
-        return HttpClient.get('meteorologicaMonitoring/findWellCoverList', Object.assign({params: params},option)).then(res => {
+        return HttpClient.get('meteorologicaMonitoring/findList', Object.assign({params: params},option)).then(res => {
             return res.data.data;
         })
     },
