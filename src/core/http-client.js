@@ -12,8 +12,13 @@ let cancelToken = axios.CancelToken
 let removePending = config => {
     for(let p in pending){
         if(pending[p].u === config.url + '&' + config.method + '&' + JSON.stringify(config.params)) { //当当前请求在数组中存在时执行函数体
-            pending[p].f(); //执行取消操作
-            pending.splice(p, 1); //把这条记录从数组中移除
+            if(config.method.toLowerCase() == 'get') {
+                pending[p].f(); //执行取消操作
+                pending.splice(p, 1); //把这条记录从数组中移除
+            } else {
+                pending.splice(p, 1)
+                throw new Error('重复的请求')
+            }
         }
     }
 }
@@ -40,9 +45,10 @@ axios.interceptors.response.use(function (res) {
 }, function (error) {
     console.log(error)
     // loading.close();
-    if (!(error instanceof axios.Cancel)) {
+    if (!(error instanceof axios.Cancel || error.message == '重复的请求')) {
         waringMessage('服务器网络问题，请联系管理员')
-        return Promise.reject(error)
+    } else {
+        throw new Error(error)
     }
 });
 export default {

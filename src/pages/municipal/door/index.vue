@@ -93,7 +93,7 @@
     import operComponent from './oper-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
-    import controlComponent from "./control-component.vue"
+    import controlComponent from "./control/index.vue"
     import mixin from '../mixin'
     export default {
         components: {

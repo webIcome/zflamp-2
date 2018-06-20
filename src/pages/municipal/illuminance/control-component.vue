@@ -17,7 +17,7 @@
     </div>
     <div class="control control-search">
       <span class="control-text">查询</span>
-      <el-select :disabled="!deviceIds.length" v-model='operData.operateType' placeholder="请选择" @visible-change="showModal" clearable>
+      <el-select :disabled="!deviceIds.length" v-model='operateType' placeholder="请选择" @visible-change="showModal" clearable>
         <el-option v-for="item in searchItems"
                    :label="item.text"
                    :value="item.value"
@@ -29,14 +29,14 @@
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p v-if="operData.operateType == 1" class="title">您确认要查询状态吗？</p>
-      <p v-else-if="operData.operateType == 2" class="title">您确认要归档这些设备吗？</p>
-      <p v-else-if="operData.operateType == 9" class="title">您确认要查询心跳包周期吗？</p>
-      <p v-else-if="operData.operateType == 10" class="title">您确认要查询告警周期吗？</p>
-      <p v-else-if="operData.operateType == 11" class="title">您确认要查询告警阈值吗？</p>
-      <p v-else-if="operData.operateType == 12" class="title">您确认要解除告警阈值吗？</p>
-      <p v-else-if="operData.operateType == 13" class="title">您确认要查询告警使能吗？</p>
-      <p v-else-if="operData.operateType == 14" class="title">您确认要查询采集周期吗？</p>
+      <p v-if="operateType == 1" class="title">您确认要查询状态吗？</p>
+      <p v-else-if="operateType == 2" class="title">您确认要归档这些设备吗？</p>
+      <p v-else-if="operateType == 9" class="title">您确认要查询心跳包周期吗？</p>
+      <p v-else-if="operateType == 10" class="title">您确认要查询告警周期吗？</p>
+      <p v-else-if="operateType == 11" class="title">您确认要查询告警阈值吗？</p>
+      <p v-else-if="operateType == 12" class="title">您确认要解除告警阈值吗？</p>
+      <p v-else-if="operateType == 13" class="title">您确认要查询告警使能吗？</p>
+      <p v-else-if="operateType == 14" class="title">您确认要查询采集周期吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -44,12 +44,12 @@
     <el-dialog title="控制" :visible.sync="setVisible" center width="400px">
       <el-form label-width="100px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
         <template v-if="operData.operateType == 3">
-          <el-form-item label="心跳包周期：" prop="operateValue">
+          <el-form-item label="心跳包周期/h：" prop="operateValue">
             <el-input type="text" v-model.trim="operData.operateValue"></el-input>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 4">
-          <el-form-item label="告警周期：" prop="operateValue">
+          <el-form-item label="告警周期/分钟：" prop="operateValue">
             <el-input type="text" v-model.trim="operData.operateValue"></el-input>
           </el-form-item>
         </template>
@@ -59,17 +59,18 @@
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 6">
-          <el-form-item label="解除告警阈值：" prop="operateValue">
+          <el-form-item label="解除告警阈值/lux：" prop="operateValue">
             <el-input type="text" v-model.trim="operData.operateValue"></el-input>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 7">
           <el-form-item label="告警使能：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+            <el-radio v-model="operData.operateValue" :label='0'>开启</el-radio>
+            <el-radio v-model="operData.operateValue" :label='1'>关闭</el-radio>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 8">
-          <el-form-item label="采集周期：" prop="operateValue">
+          <el-form-item label="采集周期/s：" prop="operateValue">
             <el-input type="text" v-model.trim="operData.operateValue"></el-input>
           </el-form-item>
         </template>
@@ -99,11 +100,6 @@
                 setVisible: false,
                 operData: {},
                 operateType: '',
-                Rules: {
-                    operateValue: [
-                        {required: true, trigger: 'change' },
-                    ]
-                },
                 setItems: [
                     {value: 3, text: '设置心跳包周期'},
                     {value: 4, text: '设置告警周期'},
@@ -135,32 +131,36 @@
                 if (this.operData.operateType == 3) {
                     rules.operateValue = [
                         {required: true, message: '请输入心跳包周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围1~24', min: 1, max: 24},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 4) {
                     rules.operateValue = [
                         {required: true, message: '请输入告警周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~255', min: 0, max: 255},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 5) {
                     rules.operateValue = [
                         {required: true, message: '请输入告警阈值'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~255', min: 0, max: 255},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 6) {
                     rules.operateValue = [
                         {required: true, message: '请输入解除告警阈值'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~255', min: 0, max: 255},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 7) {
                     rules.operateValue = [
-                        {required: true, message: '请输入告警使能'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {required: true, message: '请选择告警使能'},
                     ]
                 } else if (this.operData.operateType == 8) {
                     rules.operateValue = [
                         {required: true, message: '请输入采集周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~65536', min: 0, max: 65536},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }
             }
@@ -175,12 +175,12 @@
                 })
             },
             generate(operateType) {
-                if (operateType) this.operData.operateType = operateType;
+                if (operateType) this.operateType = operateType;
                 this.showModal();
             },
             controlDevice: function () {
                 let ids = this.deviceIds.join(',');
-                this.getControlFn(this.operData.operateType)(ids).then(res => {
+                this.getControlFn(this.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();
                     this.resetData();
@@ -247,11 +247,15 @@
                 }
                 return fn
             },
-            showModal() {
-                this.visible = true;
+            showModal(show) {
+                if (!show && this.operData.controltype && this.deviceIds.length) {
+                    this.visible = true;
+                }
             },
-            showSetModal() {
-                this.setVisible = true;
+            showSetModal(show) {
+                if (!show && this.operData.controltype && this.deviceIds.length) {
+                    this.setVisible = true;
+                }
             },
             hideModal: function () {
                 this.visible = false;
