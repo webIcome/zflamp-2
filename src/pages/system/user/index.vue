@@ -14,7 +14,7 @@
           <label>岗位名称</label>
           <el-input type="text" v-model="searchParams.postname" placeholder="输入岗位名称" clearable/>
         </div>
-        <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+        <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
         <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </form>
     </div>
@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end" v-if="searchParams.pages">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"

@@ -22,7 +22,7 @@
                          :label="status.text"></el-option>
             </el-select>
           </div>
-          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
         </form>
         <div class="control-add-content">
           <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
@@ -78,7 +78,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end" v-if="searchParams.pages">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -98,7 +98,7 @@
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control-component.vue"
-    import mixin from '../mixin'
+    import mixin from '../../../mixins/paging-mixin'
     export default {
         components: {
             operComponent,

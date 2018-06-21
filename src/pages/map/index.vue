@@ -29,8 +29,6 @@
                 ref: 'my-map',
                 map: '',
                 list: [],
-                isSearchWell: false,
-                isSearchDevices: false,
                 deviceDetail: {},
                 moduleType: {},
                 mapZoom: 5,
@@ -41,23 +39,16 @@
             }
         },
         computed: {
-            isSearch: function () {
-                return this.isSearchWell || this.isSearchDevices;
-            }
+
         },
         created() {
             CommonConstant.deviceType.forEach(item => {
                 this.moduleType[item.name] = item.value;
             });
-            this.moduleType.well = 4;
-            this.moduleType.waterLevel = 5;
-            this.moduleType.door = 6;
-            this.moduleType.pose = 7;
-            this.moduleType.shake = 8;
-            this.moduleType.voice = 9;
-            this.moduleType.weather = 10;
-            this.moduleType.inundate = 11;
-            this.moduleType.illuminance = 12;
+            let length = CommonConstant.deviceType.length;
+            CommonConstant.terminalType.forEach(item => {
+                this.moduleType[item.name] = item.value + length;
+            });
         },
         mounted() {
             this.initData()
@@ -149,7 +140,7 @@
             },
             addSearchMarker(detail) {
                 if (detail && detail.id) {
-                    this.showPanel(detail.moduletype);
+//                    this.showPanel(detail.moduletype);
                     let markerClass = new MapMarkerClass(detail);
                     markerClass.listen('click',this.markerClickEventFn);
                     this.addMarker(markerClass);

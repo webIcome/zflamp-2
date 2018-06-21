@@ -9,41 +9,45 @@
                    :key="item.value"></el-option>
       </el-select>
     </div>
-    <el-dialog title="控制" :visible.sync="visible" center width="400px">
-      <el-form label-width="140px" :model="operData" :ref="ref" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
+    <el-dialog title="控制" :visible.sync="visible" center width="500px">
+      <el-form label-width="170px" :model="operData" :ref="ref" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
         <template v-if="operData.operateType == 3">
-          <el-form-item label="心跳包周期：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="心跳包周期/h：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 4">
-          <el-form-item label="告警周期：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="告警周期/分钟：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 5">
-          <el-form-item label="告警阈值：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="告警阈值上限/cm：" prop="operateValueMin">
+            <el-input type="text" v-model.trim.number="operData.operateValueMin" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="告警阈值上限/cm：" prop="operateValueMax">
+            <el-input type="text" v-model.trim.number="operData.operateValueMax" clearable></el-input>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 8">
-          <el-form-item label="解除告警阈值：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="解除告警阈值/cm：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 8">
           <el-form-item label="告警使能：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+            <el-radio v-model="operData.operateValue" :label='1'>开启</el-radio>
+            <el-radio v-model="operData.operateValue" :label='0'>关闭</el-radio>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 8">
-          <el-form-item label="采集周期：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="采集周期/s：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
         <template v-if="operData.operateType == 9">
-          <el-form-item label="量程：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="量程/m：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
       </el-form>
@@ -78,38 +82,48 @@
                 if (this.operData.operateType == 3) {
                     rules.operateValue = [
                         {required: true, message: '请输入心跳包周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围1~24', min: 1, max: 24},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 4) {
                     rules.operateValue = [
                         {required: true, message: '请输入告警周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~255', min: 0, max: 255},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 5) {
-                    rules.operateValue = [
-                        {required: true, message: '请输入告警阈值'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                    rules.operateValueMin = [
+                        {required: true, message: '请输入告警阈值下限'},
+                        {type: 'number', message: '范围0~告警阈值上限', min: 0, max: this.operData.operateValueMax},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
+                    ]
+                    rules.operateValueMax = [
+                        {required: true, message: '请输入告警阈值上限'},
+                        {type: 'number', message: '范围 告警阈值下限~65536', min: this.operData.operateValueMin, max: 65536},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 6) {
                     rules.operateValue = [
                         {required: true, message: '请输入解除告警阈值'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~255', min: 0, max: 255},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 7) {
                     rules.operateValue = [
-                        {required: true, message: '请输入告警使能'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {required: true, message: '请选择告警使能'},
                     ]
                 } else if (this.operData.operateType == 8) {
                     rules.operateValue = [
                         {required: true, message: '请输入采集周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~65536', min: 0, max: 65536},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }
                 else if (this.operData.operateType == 9) {
                     rules.operateValue = [
                         {required: true, message: '请输入量程'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~255', min: 0, max: 255},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }
                 return rules;

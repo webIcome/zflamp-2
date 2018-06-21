@@ -1,14 +1,15 @@
 /**
  * Created by spring on 2018/6/7.
  */
-import Config from "../../config";
-import CommonConstant from "../../constants/common";
+import Config from "../config";
+import CommonConstant from "../constants/common";
 export default {
     data() {
         return {
             searchParams: {},
             defaultPaging: {
-                pageSize: Config.DEFAULT_PAGE_SIZE
+                pageSize: Config.DEFAULT_PAGE_SIZE,
+                pageNum: 1
             },
             list: [],
             selectionList: [],
@@ -18,6 +19,7 @@ export default {
             tableRef: 'my-table',
             service: {},
             runningState: CommonConstant.wellStatus,
+            paginationShow: false,
         }
     },
     created() {
@@ -35,6 +37,10 @@ export default {
         },
         findList(params) {
             this.service.findList(params).then(data => {
+                this.paginationShow = false;
+                this.$nextTick(() => {
+                    this.paginationShow = true
+                });
                 this.searchParams.pageNum = data.pageNum;
                 this.searchParams.pages = data.pages;
                 this.searchParams.pageSize = data.pageSize;

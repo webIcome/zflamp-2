@@ -1,6 +1,15 @@
 /**
  * Created by spring on 2018/5/3.
  */
+let moduleType = {};
+import CommonConstant from "../constants/common";
+CommonConstant.deviceType.forEach(item => {
+    moduleType[item.name] = item.value;
+});
+let length = CommonConstant.deviceType.length;
+CommonConstant.terminalType.forEach(item => {
+    moduleType[item.name] = item.value + length;
+});
 export default class MapMarkerClass {
     constructor(device) {
         this._device = device;
@@ -18,51 +27,51 @@ export default class MapMarkerClass {
     generateMarker(device, width=35, height=38) {
         let imgUrl;
         switch (device.moduletype) {
-            case 1:
+            case moduleType.light:
                 imgUrl = LightStatus[device.status];
                 if (!imgUrl) imgUrl = LightStatus[1];
                 break;
-            case 2:
+            case moduleType.loop:
                 imgUrl = LoopStatus[device.status];
                 if (!imgUrl) imgUrl = LoopStatus[1];
                 break;
-            case 3:
+            case moduleType.station:
                 imgUrl = StationStatus[device.status];
                 if (!imgUrl) imgUrl = StationStatus[1];
                 break;
-            case 4:
+            case moduleType.well:
                 imgUrl = WellStatus[device.status];
                 if (!imgUrl) imgUrl = WellStatus[0];
                 break;
-            case 5:
+            case moduleType.waterLevel:
                 imgUrl = WaterLevelStatus[device.status];
                 if (!imgUrl) imgUrl = WaterLevelStatus[0];
                 break;
-            case 6:
+            case moduleType.door:
                 imgUrl = DoorStatus[device.status];
                 if (!imgUrl) imgUrl = DoorStatus[0];
                 break;
-            case 7:
+            case moduleType.pose:
                 imgUrl = PoseStatus[device.status];
                 if (!imgUrl) imgUrl = PoseStatus[0];
                 break;
-            case 8:
+            case moduleType.shake:
                 imgUrl = ShakeStatus[device.status];
                 if (!imgUrl) imgUrl = ShakeStatus[0];
                 break;
-            case 9:
+            case moduleType.voice:
                 imgUrl = VoiceStatus[device.status];
                 if (!imgUrl) imgUrl = VoiceStatus[0];
                 break;
-            case 10:
+            case moduleType.weather:
                 imgUrl = WeatherStatus[device.status];
                 if (!imgUrl) imgUrl = WeatherStatus[0];
                 break;
-            case 11:
+            case moduleType.inundate:
                 imgUrl = InundateStatus[device.status];
                 if (!imgUrl) imgUrl = InundateStatus[0];
                 break;
-            case 12:
+            case moduleType.illuminance:
                 imgUrl = IlluminanceStatus[device.status];
                 if (!imgUrl) imgUrl = IlluminanceStatus[0];
                 break;

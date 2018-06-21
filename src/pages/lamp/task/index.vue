@@ -22,7 +22,7 @@
           <label>归属项目</label>
           <tree-select-component v-model="searchParams.compId" :list="companies"></tree-select-component>
         </div>
-        <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+        <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
         <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </form>
 
@@ -56,7 +56,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end" v-if="searchParams.pages">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -76,62 +76,25 @@
     import detailComponent from './detail-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
+    import mixin from '../../../mixins/paging-mixin'
     export default {
         components: {
             operComponent,
             detailComponent,
             deleteComponent,
         },
+        mixins: [mixin],
         name: 'taskPage',
         data() {
             return {
-                searchParams: {},
-                defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE
-                },
-                list: [],
-                selectionList: [],
-                companies: [],
-                tableRef: 'my-table',
+                service: Service,
                 taskCmd: CommonConstant.taskCmd,
                 taskStatus: CommonConstant.taskStatus,
                 periodType: CommonConstant.taskPeriodType,
                 deviceType: CommonConstant.deviceType.slice(0,2),
             }
         },
-        created() {
-            this.initList();
-            this.initCompanies();
-        },
         methods: {
-            initList() {
-                this.findList(this.defaultPaging);
-            },
-            initCompanies() {
-                this.$globalCache.companies.then(companies => {
-                    this.companies = companies;
-                })
-            },
-            findList(params) {
-                Service.findList(params).then(data => {
-                    this.searchParams.pageNum = data.pageNum;
-                    this.searchParams.pages = data.pages;
-                    this.searchParams.pageSize = data.pageSize;
-                    this.searchParams.total = data.total;
-                    this.list = data.list;
-                })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
-            search: function () {
-                this.findList(Object.assign(this.searchParams, this.defaultPaging));
-            },
-            clearSearchParams: function (e) {
-                this.searchParams = {};
-                this.initList();
-            },
             handleSelectionChange(val) {
                 this.selectionList = val;
             }

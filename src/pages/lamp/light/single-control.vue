@@ -21,7 +21,7 @@
               <el-option v-for="status in switchState" :key="status.value" :value="status.value" :label="status.text"></el-option>
             </el-select>
           </div>
-          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
         </form>
         <div class="control-add-content">
           <control-component :isSingle="true" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
@@ -49,7 +49,7 @@
       </el-table-column>
       <!--<el-table-column label="开关状态"><template slot-scope="scope">{{scope.row.switchstate | switchStateNameConverter}}</template></el-table-column>-->
       <el-table-column label="开关状态"><template slot-scope="scope">
-        <span :class="{'light-on': scope.row.switchstate == 1, 'light-off': scope.row.switchstate == 2}"></span>
+        <span :class="{'light-on': scope.row.switchstate == 1, 'light-off': scope.row.switchstate != 1}"></span>
       </template>
       </el-table-column>
       <el-table-column label="亮度"><template slot-scope="scope">{{scope.row.brightness == 255 ? '控制异常' : scope.row.brightness + '%'}}</template></el-table-column>
@@ -76,7 +76,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end" v-if="searchParams.pages">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -97,6 +97,7 @@
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control-component.vue"
+    import mixin from '../../../mixins/paging-mixin'
     export default {
         components: {
             operComponent,
@@ -104,68 +105,17 @@
             deleteComponent,
             controlComponent,
         },
+        mixins: [mixin],
         name: 'singlePage',
         data() {
             return {
-                searchParams: {},
-                defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE
-                },
-                list: [],
-                selectionList: [],
-                selectionIds: [],
-                companies: [],
-                tableRef: 'my-table',
-                timedtasktotal: 0,
+                service: Service,
                 switchState:  CommonConstant.switchState,
                 lightControllerType: CommonConstant.lightControllerType,
                 sensorType: CommonConstant.sensorType,
             }
         },
-        created() {
-            this.initList();
-            this.initCompanies();
-        },
         methods: {
-            initList() {
-                this.findList(this.defaultPaging);
-            },
-            initCompanies() {
-                this.$globalCache.companies.then(companies => {
-                    this.companies = companies;
-                })
-            },
-            findList(params) {
-                Service.findList(params).then(data => {
-                    this.searchParams.pageNum = data.pageNum;
-                    this.searchParams.pages = data.pages;
-                    this.searchParams.pageSize = data.pageSize;
-                    this.searchParams.total = data.total;
-                    this.list = data.list;
-                })
-            },
-            refreshPage() {
-                Service.findList(this.searchParams).then(data => {
-                    this.list.forEach(item => {
-                        data.list.forEach(i => {
-                            if (i.sn == item.sn) {
-                                Object.assign(item, i);
-                            }
-                        })
-                    })
-                })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
-            search: function () {
-                this.findList(Object.assign(this.searchParams, this.defaultPaging));
-            },
-            clearSearchParams: function (e) {
-                this.searchParams = {};
-                this.initList();
-            },
             handleSelectionChange(val) {
                 this.selectionList = val;
                 this.selectionIds = val.map(item => {

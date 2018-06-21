@@ -11,7 +11,7 @@
             <label>归属项目</label>
             <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
           </div>
-          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams"></list-search-btns-component>
+          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
         </form>
         <div class="control-add-content">
           <control-light-component v-if="moduletype == moduleType.light" :isGroup="true" :ids="selectionIds" ></control-light-component>
@@ -48,7 +48,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end" v-if="searchParams.pages">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -70,6 +70,7 @@
     import CommonConstant from "../../../constants/common";
     import controlLoopComponent from "../loop/control-component.vue"
     import SetDevicesComponent from './set-devices-component.vue'
+    import mixin from '../../../mixins/paging-mixin'
     export default {
         components: {
             operComponent,
@@ -78,18 +79,11 @@
             controlLoopComponent,
             SetDevicesComponent
         },
+        mixins: [mixin],
         name: 'groupPage',
         data() {
             return {
-                searchParams: {},
-                defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE,
-                },
-                list: [],
-                selectionList: [],
-                selectionIds: [],
-                companies: [],
-                tableRef: 'my-table',
+                service: Service,
                 moduleType: {}
             }
         },
@@ -99,39 +93,16 @@
             }
         },
         created() {
-            this.initList();
-            this.initCompanies();
             this.initCommonData();
         },
         methods: {
             initList() {
                 this.findList(Object.assign(this.searchParams,this.defaultPaging, {moduletype: this.moduletype}));
             },
-            initCompanies() {
-                this.$globalCache.companies.then(companies => {
-                    this.companies = companies;
-                })
-            },
             initCommonData: function () {
                 CommonConstant.deviceType.forEach(item => {
                     this.moduleType[item.name] = item.value;
                 })
-            },
-            findList(params) {
-                Service.findList(params).then(data => {
-                    this.searchParams.pageNum = data.pageNum;
-                    this.searchParams.pages = data.pages;
-                    this.searchParams.pageSize = data.pageSize;
-                    this.searchParams.total = data.total;
-                    this.list = data.list;
-                })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
-            search: function () {
-                this.findList(Object.assign(this.searchParams, this.defaultPaging));
             },
             clearSearchParams: function (e) {
                 this.searchParams = {};

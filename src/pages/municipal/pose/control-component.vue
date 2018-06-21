@@ -26,8 +26,8 @@
     </el-dialog>
     <el-dialog title="控制井盖" :visible.sync="setVisible" center width="600px">
       <el-form label-width="100px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
-          <el-form-item label="告警阈值：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="告警阈值/°：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -55,7 +55,7 @@
                 Rules: {
                     operateValue: [
                         {required: true, message: '请输入告警阈值'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~360', min: 0, max: 360}
                     ]
                 }
             }

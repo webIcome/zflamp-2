@@ -9,8 +9,8 @@
                    :key="item.value"></el-option>
       </el-select>
     </div>
-    <el-dialog title="控制" :visible.sync="visible" center width="400px">
-      <el-form label-width="140px" :model="operData" :ref="ref" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
+    <el-dialog title="控制" :visible.sync="visible" center width="500px">
+      <el-form label-width="170px" :model="operData" :ref="ref" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
         <template v-if="operData.operateType == 3">
           <el-form-item label="心跳包周期/h：" prop="operateValue">
             <el-input type="text" v-model.trim.number="operData.operateValue" clearable></el-input>
@@ -22,19 +22,22 @@
           </el-form-item>
         </template>
         <template v-else-if="operData.operateType ==5">
-          <el-form-item label="告警阈值：" prop="operateValue">
-            <el-input type="text" v-model.trim.number="operData.operateValue" clearable></el-input>
+          <el-form-item label="告警阈值上限/0.1lux：" prop="operateValueMin">
+            <el-input type="text" v-model.trim.number="operData.operateValueMin" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="告警阈值上限/0.1lux：" prop="operateValueMax">
+            <el-input type="text" v-model.trim.number="operData.operateValueMax" clearable></el-input>
           </el-form-item>
         </template>
         <template v-else-if="operData.operateType == 6">
-          <el-form-item label="解除告警阈值/lux：" prop="operateValue">
+          <el-form-item label="解除告警阈值/0.1lux：" prop="operateValue">
             <el-input type="text" v-model.trim.number="operData.operateValue" clearable></el-input>
           </el-form-item>
         </template>
         <template v-else-if="operData.operateType == 7">
           <el-form-item label="告警使能：" prop="operateValue">
-            <el-radio v-model="operData.operateValue" :label='0'>开启</el-radio>
-            <el-radio v-model="operData.operateValue" :label='1'>关闭</el-radio>
+            <el-radio v-model="operData.operateValue" :label='1'>开启</el-radio>
+            <el-radio v-model="operData.operateValue" :label='0'>关闭</el-radio>
           </el-form-item>
         </template>
         <template v-else-if="operData.operateType == 8">
@@ -83,9 +86,14 @@
                         {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 5) {
-                    rules.operateValue = [
-                        {required: true, message: '请输入告警阈值'},
-                        {type: 'number', message: '范围0~255', min: 0, max: 255},
+                    rules.operateValueMin = [
+                        {required: true, message: '请输入告警阈值下限'},
+                        {type: 'number', message: '范围0~告警阈值上限', min: 0, max: this.operData.operateValueMax},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
+                    ]
+                    rules.operateValueMax = [
+                        {required: true, message: '请输入告警阈值上限'},
+                        {type: 'number', message: '范围 告警阈值下限~16777215', min: this.operData.operateValueMin, max: 16777215},
                         {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 6) {

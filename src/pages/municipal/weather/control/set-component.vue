@@ -37,10 +37,11 @@
         computed: {
             Rules: function () {
                 let rules = {};
-                if (this.operData.operateType == 3) {
+                if (this.operData.operateType == 2) {
                     rules.operateValue = [
                         {required: true, message: '请输入心跳包周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围1~24', min: 1, max: 24},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }
                 return rules;

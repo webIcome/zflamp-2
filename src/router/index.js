@@ -25,8 +25,9 @@ const voicePage = () => import(/* webpackChunkName: "terminal" */'../pages/munic
 const waterLevelPage = () => import(/* webpackChunkName: "terminal" */'../pages/municipal/water-level/index.vue');
 const weatherPage = () => import(/* webpackChunkName: "terminal" */'../pages/municipal/weather/index.vue');
 Vue.use(Router);
+import StoreUser from "../store/user"
 
-export default new Router({
+let router = new Router({
     routes: [
         {path: '/login', name: 'login', component: login},
         {path: '/', name: 'map', component: map},
@@ -52,3 +53,16 @@ export default new Router({
         ]},
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.query.loginname && to.query.password) {
+        StoreUser.login(to.query).then(res => {
+            next(to.path)
+        }).catch(err => {
+            next('login')
+        })
+    } else {
+        next()
+    }
+})
+export default router

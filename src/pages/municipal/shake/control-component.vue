@@ -22,13 +22,13 @@
     <el-dialog title="控制井盖" :visible.sync="setVisible" center width="600px">
       <el-form label-width="100px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default" :validate-on-rule-change="false">
         <template v-if="operData.operateType == 2">
-          <el-form-item label="设置静态值：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="设置静态值/0.001g：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
         <template v-else-if="operData.operateType == 3">
-          <el-form-item label="设置心跳周期：" prop="operateValue">
-            <el-input type="text" v-model.trim="operData.operateValue"></el-input>
+          <el-form-item label="设置心跳周期/分钟：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
       </el-form>
@@ -73,7 +73,8 @@
                 } else if (this.operData.operateType == 3) {
                     rules.operateValue = [
                         {required: true, message: '请输入上报心跳周期'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
+                        {type: 'number', message: '范围0~65536', min: 0, max: 65536},
+                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }
             }
