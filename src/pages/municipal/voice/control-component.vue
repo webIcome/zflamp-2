@@ -7,7 +7,7 @@
       <el-button :disabled="!deviceIds.length" @click="generate(2)" class="control-btn">设置上报心跳周期</el-button>
     </div>
 
-    <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
+    <el-dialog title="控制" :visible.sync="visible" center width="600px">
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
@@ -16,8 +16,8 @@
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="控制" :visible.sync="setVisible" center width="600px">
-      <el-form label-width="100px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default"
+    <el-dialog title="控制" :visible.sync="setVisible" center width="500px">
+      <el-form label-width="140px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default"
                :validate-on-rule-change="false">
         <el-form-item label="设置心跳周期：" prop="operateValue">
           <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>

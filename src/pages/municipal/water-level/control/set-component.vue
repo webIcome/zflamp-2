@@ -29,12 +29,12 @@
             <el-input type="text" v-model.trim.number="operData.operateValueMax" clearable></el-input>
           </el-form-item>
         </template>
-        <template v-if="operData.operateType == 8">
+        <template v-if="operData.operateType == 6">
           <el-form-item label="解除告警阈值/cm：" prop="operateValue">
             <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
-        <template v-if="operData.operateType == 8">
+        <template v-if="operData.operateType == 7">
           <el-form-item label="告警使能：" prop="operateValue">
             <el-radio v-model="operData.operateValue" :label='1'>开启</el-radio>
             <el-radio v-model="operData.operateValue" :label='0'>关闭</el-radio>

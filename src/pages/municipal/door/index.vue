@@ -50,7 +50,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="currentDoorState" label="当前门状态"></el-table-column>
+      <el-table-column prop="currentDoorStateName" label="当前门状态"></el-table-column>
       <el-table-column prop="alarmTime" label="告警时间"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="belongLightId" label="归属灯ID"></el-table-column>

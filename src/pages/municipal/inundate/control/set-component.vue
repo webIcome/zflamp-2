@@ -61,7 +61,6 @@
                 } else if (this.operData.operateType == 4) {
                     rules.operateValue = [
                         {required: true, message: '请输入告警使能'},
-                        {type: 'number', message: '范围0~330', min: 0, max: 330}
                     ]
                 } else if (this.operData.operateType == 5) {
                     rules.operateValue = [

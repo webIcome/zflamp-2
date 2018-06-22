@@ -18,8 +18,8 @@
         <div class="dialog-warning"></div>
       </div>
       <p v-if="operData.operateType == 1" class="title">您确认要查询状态吗？</p>
-      <p v-else-if="operData.operateType == 3" class="title">您确认要校准角度吗？</p>
-      <p v-else-if="operData.operateType == 4" class="title">您确认要归档这些设备吗？</p>
+      <p v-else-if="operData.operateType == 4" class="title">您确认要校准角度吗？</p>
+      <p v-else-if="operData.operateType == 2" class="title">您确认要归档这些设备吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
