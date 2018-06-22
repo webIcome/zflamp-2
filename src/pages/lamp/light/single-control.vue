@@ -25,7 +25,7 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-component :isSingle="true" :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-component>
+          <control-component :isSingle="true" :ids="selectionIds" @initCurrentPaging="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -38,7 +38,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55" :selectable=isSelectable></el-table-column>
-      <el-table-column min-width="100" prop="devicename" label="设备名称"></el-table-column>
+      <el-table-column prop="devicename" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
@@ -58,6 +58,11 @@
       <el-table-column prop="current" label="电流A"></el-table-column>
       <el-table-column prop="sumpower" label="用电量KW·h"></el-table-column>
       <el-table-column label="地理位置"><template slot-scope="scope"><show-position :device='scope.row'></show-position></template></el-table-column>
+      <el-table-column label="上报时间">
+        <template slot-scope="scope">
+          <template>{{scope.row.uptime | formDate}}</template>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex" justify="space-between">
@@ -72,7 +77,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end">
+    <el-row type="flex" justify="end" v-if="searchParams.pages">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -138,6 +143,17 @@
                     this.searchParams.pageSize = data.pageSize;
                     this.searchParams.total = data.total;
                     this.list = data.list;
+                })
+            },
+            refreshPage() {
+                Service.findList(this.searchParams).then(data => {
+                    this.list.forEach(item => {
+                        data.list.forEach(i => {
+                            if (i.sn == item.sn) {
+                                Object.assign(item, i);
+                            }
+                        })
+                    })
                 })
             },
             pagingEvent(pageNumber) {

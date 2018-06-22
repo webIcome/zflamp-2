@@ -13,4 +13,6 @@ export default {
     WELL_URL_API: 'http://www.zeta-alliance.com:20004/',
     HOME_PAGE_URL: '/',
     DEFAULT_PAGE_SIZE: 10,
+    REFRESH_TIMES: 10,
+    REFRESH_INTERVAL: 5000,
 }

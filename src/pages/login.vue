@@ -13,7 +13,10 @@
         </div>
         <div class="login-password">
           <input :type="showPassword? 'text': 'password'" class="login-input" id="password" name="password" v-model="password" placeholder="密码">
-          <span class="password-img"></span>
+          <span @click="toggleDelPassword(false)" v-if="savePassword" class="password-img" title="记住密码"></span>
+          <span @click="toggleDelPassword(true)" v-else class="del-password-img" title="删除密码"></span>
+          <span @click="toggleShowPassword(false)" v-if="showPassword"  class="show-password-img"></span>
+          <span  @click="toggleShowPassword(true)"v-else  class="hide-password-img"></span>
         </div>
         <div class="login-verify">
           <input type="text" class="login-input" id="verifyCode" name="verifyCode" v-model="verifyCode" placeholder="验证码">
@@ -39,7 +42,11 @@
         code: '',
         showPassword: false,
         gVerifyCode: null,
+          savePassword: false,
       }
+    },
+    created(){
+        this.initData();
     },
     computed: {
       disabled: function () {
@@ -51,6 +58,14 @@
       this.getVerifyCode();
     },
     methods: {
+        initData() {
+            this.loginname = this.getCookie('loginname');
+            this.password = this.getCookie('password');
+            if (this.loginname) {
+                this.savePassword = true;
+            }
+            this.$globalCache.clearCache();
+        },
       login: function () {
         let access = {loginname: this.loginname, password: this.password};
         if (this.verifyCode) access.code = this.verifyCode;
@@ -61,11 +76,21 @@
           });
         }
         User.login(access).then((user) => {
+            if (this.savePassword) {
+                this.setCookie('loginname', this.loginname, 365);
+                this.setCookie('password', this.password, 365);
+            } else {
+                this.delCookie('loginname');
+                this.delCookie('password');
+            }
           this.$router.push('/')
-        }).catch(err => {})
+        }).catch(err => { console.log(err)})
       },
-      toggleShowPassword: function () {
-        this.showPassword = !this.showPassword;
+      toggleShowPassword(val) {
+        this.showPassword = val;
+      },
+      toggleDelPassword(val) {
+          this.savePassword = val
       },
       generateCode: function () {
         this.code = '';
@@ -80,6 +105,23 @@
         this.generateCode();
         this.gVerifyCode.refresh(this.code)
       },
+        getCookie(name) {
+            let reg = RegExp(name+'=([^;]+)');
+            let arr = document.cookie.match(reg);
+            if(arr){
+                return arr[1];
+            }else{
+                return '';
+            }
+        },
+        setCookie(name, value, day) {
+            let date = new Date();
+            date.setDate(date.getDate() + day);
+            document.cookie = name + '=' + value + ';expires='+ date;
+        },
+        delCookie(name) {
+          this.setCookie(name, null,-1);
+        }
 
     }
 
@@ -87,7 +129,7 @@
 </script>
 <style scoped lang="less">
   .login-container {
-    background: url("../assets/login/bg.png") no-repeat center;
+    background: url("../assets/login/bg-change.png") no-repeat center;
     background-size: cover;
     height: 100%;
     position: relative;
@@ -161,6 +203,41 @@
           background: url("../assets/login/password.png");
           width: 17px;
           height: 21px;
+          cursor: pointer;
+        }
+        .del-password-img {
+          position: absolute;
+          top: 50%;
+          margin-top: -10px;
+          left: 80px;
+          display: inline-block;
+          background: url("../assets/login/del-password.png");
+          width: 17px;
+          height: 21px;
+          cursor: pointer;
+        }
+        .show-password-img {
+          position: absolute;
+          top: 50%;
+          margin-top: -7.5px;
+          right: 80px;
+          display: inline-block;
+          background: url("../assets/login/show-password.png") no-repeat center;
+          width: 22px;
+          height: 15px;
+          cursor: pointer;
+        }
+        .hide-password-img {
+          position: absolute;
+          top: 50%;
+          margin-top: -5px;
+          right: 80px;
+          display: inline-block;
+          background: url("../assets/login/hide-password.png") no-repeat center;
+          background-size: contain;
+          width: 22px;
+          height: 10px;
+          cursor: pointer;
         }
       }
       .login-verify {

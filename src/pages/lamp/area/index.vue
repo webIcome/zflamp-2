@@ -25,7 +25,7 @@
           <div @click="clearSearchParams" class="form-group default-btn">清空</div>
         </form>
         <div class="control-add-content">
-          <control-light-component :isArea="true" :ids="selectionIds" @initCurrentPaging="pagingEvent"></control-light-component>
+          <control-light-component :isArea="true" :ids="selectionIds" @initCurrentPaging="refreshPage"></control-light-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -62,7 +62,7 @@
         </template>
       </el-table-column>-->
     </el-table>
-    <el-row type="flex" justify="end">
+    <el-row type="flex" justify="end" v-if="searchParams.pages">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -125,6 +125,17 @@
                     this.searchParams.pageSize = data.pageSize;
                     this.searchParams.total = data.total;
                     this.list = data.list;
+                })
+            },
+            refreshPage() {
+                Service.findList(this.searchParams).then(data => {
+                    this.list.forEach(item => {
+                        data.list.forEach(i => {
+                            if (i.sn == item.sn) {
+                                Object.assign(item, i);
+                            }
+                        })
+                    })
                 })
             },
             pagingEvent(pageNumber) {

@@ -132,7 +132,7 @@
                         return {
                             lng: item.longitude,
                             lat: item.latitude,
-                            deviceid: item.id,
+                            id: item.id,
                             moduletype: this.moduleType.well,
                             sn: item.sn,
                             status: item.status,
@@ -143,7 +143,7 @@
                         return {
                             lng: item.longitude,
                             lat: item.latitude,
-                            deviceid: item.id,
+                            id: item.id,
                             moduletype: this.moduleType.well,
                             sn: item.sn,
                             status: item.status,
@@ -186,7 +186,7 @@
                 } else {
                     switch (markerClass.device.moduletype) {
                         case this.moduleType.well:
-                            WellServices.getDetail(markerClass.device.deviceid).then(device => {
+                            WellServices.getDetail(markerClass.device.id).then(device => {
                                 this.resetMarker(markerClass, device)
                             });
                             break;
