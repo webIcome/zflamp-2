@@ -30,6 +30,7 @@ export default {
     wellStatusNameConverter: _wellStatusNameConverter,
     loopStatusNameConverter:_loopStatusNameConverter,
     companyFlagNameConverter:_companyFlagNameConverter,
+    alarmDutyNameConverter: _alarmDutyNameConverter,
 }
 function _formDate(date, pattern) {
     if (!date) return;
@@ -258,6 +259,15 @@ function _loopStatusNameConverter(value) {
 function _companyFlagNameConverter(value) {
     let name = value;
     Common.companyFlag.forEach(item => {
+        if (value == item.value) {
+            name = item.text;
+        }
+    });
+    return name
+}
+function _alarmDutyNameConverter(value) {
+    let name = value;
+    Common.alarmDuty.forEach(item => {
         if (value == item.value) {
             name = item.text;
         }

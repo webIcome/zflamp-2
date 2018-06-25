@@ -1,22 +1,22 @@
 <template>
   <div class="map-right">
-    <search-component @search="search" @searchWell="searchWell"></search-component>
-    <ap-component v-if="apPanel" :detail="detail"></ap-component>
-    <light-component v-if="lightPanel" :detail="detail" @updateDetail="updateDetail"  @hide="hide"></light-component>
-    <well-component v-if="wellPanel" :detail="detail" @updateDetail="updateDetail" @hide="hide"></well-component>
-    <loop-component v-if="loopPanel" :detail="detail" @updateDetail="updateDetail" @hide="hide"></loop-component>
+    <search-component @search="search" :moduleType="moduleType"></search-component>
+    <ap-component v-if="currentModuleType == moduleType.station" @updateMarker="updateMarker" :moduleType="moduleType" :id="id"></ap-component>
+    <light-component v-else-if="currentModuleType == moduleType.light" @updateMarker="updateMarker"  @hide="hide" :moduleType="moduleType" :id="id"></light-component>
+    <loop-component v-else-if="currentModuleType == moduleType.loop" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></loop-component>
+    <terminal-panel-component v-else @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id" :currentModuleType="currentModuleType"></terminal-panel-component>
   </div>
 </template>
 <script>
   import searchComponent from './search-component.vue'
   import ApComponent from "./ap-component";
   import LightComponent from "./light-component";
-  import WellComponent from "./well-component";
   import LoopComponent from "./loop-component";
+  import TerminalPanelComponent from "./terminal-panel/index";
   export default {
       name: 'rightComponent',
       components: {
-          LoopComponent, WellComponent, LightComponent, ApComponent, searchComponent,
+          TerminalPanelComponent, LoopComponent, LightComponent, ApComponent, searchComponent,
       },
       data() {
           return{
@@ -24,21 +24,20 @@
           }
       },
       props: {
-          lightPanel: false,
-          loopPanel: false,
-          apPanel: false,
-          wellPanel: false,
-          detail: {}
+          currentModuleType: '',
+          moduleType: {
+              default: function () {
+                  return {}
+              }
+          },
+          id: ''
       },
       methods: {
           search(params) {
               this.$emit('search', params);
           },
-          searchWell(id) {
-              this.$emit('searchWell', id);
-          },
-          updateDetail(params) {
-              this.$emit('updateDetail', params)
+          updateMarker(detail) {
+              this.$emit('updateMarker', detail)
           },
           hide() {
               this.$emit('hide')

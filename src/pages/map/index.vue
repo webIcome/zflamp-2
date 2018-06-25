@@ -1,16 +1,13 @@
 <template>
   <div class="map">
     <div class="my-map" :ref="ref"></div>
-    <left-component @search="getDevices" @searchWell="getWellList" :list="devices" :wellList="wellList"></left-component>
-    <right-component @search="getDetail"
-                     @searchWell="getWellDetail"
-                     @hide="hidePanel"
-                     @updateDetail="updateDetail"
-                     :apPanel="apPanel"
-                     :lightPanel="lightPanel"
-                     :wellPanel="wellPanel"
-                     :loopPanel="loopPanel"
-                     :detail="deviceDetail"></right-component>
+    <left-component @updateList="updateList" :moduleType="moduleType"></left-component>
+    <right-component @hide="hidePanel"
+                     @updateMarker="updateMarker"
+                     @search="searchDevice"
+                     :id="id"
+                     :moduleType="moduleType"
+                     :currentModuleType="currentModuleType"></right-component>
   </div>
 </template>
 
@@ -31,30 +28,27 @@
             return {
                 ref: 'my-map',
                 map: '',
-                devices: [],
-                wellList: [],
-                isSearchWell: false,
-                isSearchDevices: false,
+                list: [],
                 deviceDetail: {},
                 moduleType: {},
                 mapZoom: 5,
-                lightPanel: false,
-                loopPanel: false,
-                apPanel: false,
-                wellPanel: false,
-                marker: ''
+                marker: '',
+                currentModuleType: '',
+                isSearchDevice: false,
+                id: ''
             }
         },
         computed: {
-            isSearch: function () {
-                return this.isSearchWell || this.isSearchDevices;
-            }
+
         },
         created() {
             CommonConstant.deviceType.forEach(item => {
                 this.moduleType[item.name] = item.value;
-            })
-            this.moduleType.well = 4;
+            });
+            let length = CommonConstant.deviceType.length;
+            CommonConstant.terminalType.forEach(item => {
+                this.moduleType[item.name] = item.value + length;
+            });
         },
         mounted() {
             this.initData()
@@ -90,74 +84,8 @@
                 this.mapZoom = options.zoom;
                 this.map.centerAndZoom(options.center, options.zoom);
             },
-            getDevices(params) {
-                this.isSearchDevices = true;
-                MapServices.getDevices(params).then(devices => {
-                    this.devices = this.transformDevices(devices);
-                    this.isSearchDevices = false;
-                })
-            },
-            getWellList(params) {
-                this.isSearchWell = true;
-                if (params.clear) {
-                    this.$nextTick(() => {
-                        this.wellList = [];
-                        this.isSearchWell = false;
-                    })
-                } else {
-                    WellServices.getList(params).then(devices => {
-                        this.wellList = this.transformWellList(devices);
-                        this.isSearchWell = false;
-                    })
-                }
-            },
-            transformDevices(devices) {
-                return devices.map(item => {
-                    item.lng = item.longitude;
-                    item.lat = item.latitude;
-                    if (item.lng != 0 || item.lat != 0) {
-                        return item;
-                    }
-                }).filter(item => {
-                    if (item) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                })
-            },
-            transformWellList(list) {
-                return list.map(item => {
-                    if (item.longitude && item.latitude) {
-                        return {
-                            lng: item.longitude,
-                            lat: item.latitude,
-                            id: item.id,
-                            moduletype: this.moduleType.well,
-                            sn: item.sn,
-                            status: item.status,
-                            deviceName: item.deviceName,
-                            statusName: item.statusName
-                        };
-                    } else if (item.longitude == 0 || item.longitude == 0) {
-                        return {
-                            lng: item.longitude,
-                            lat: item.latitude,
-                            id: item.id,
-                            moduletype: this.moduleType.well,
-                            sn: item.sn,
-                            status: item.status,
-                            deviceName: item.deviceName,
-                            statusName: item.statusName
-                        };
-                    }
-                }).filter(item => {
-                    if (item) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                })
+            updateList(list) {
+                this.list = list;
             },
             addClusterer() {
                 let markers = this.getMarkers();
@@ -173,7 +101,7 @@
             },
             getMarkers() {
                 let markers = [];
-                this.devices.concat(this.wellList).forEach(item => {
+                this.list.forEach(item => {
                     let markerClass = new MapMarkerClass(item);
                     markerClass.listen('click', this.markerClickEventFn);
                     markers.push(markerClass.marker);
@@ -181,199 +109,72 @@
                 return markers;
             },
             markerClickEventFn(markerClass) {
-                if (this.isShowPanel()) {
+                this.isSearchDevice = false;
+                let id = markerClass.device.id || markerClass.device.deviceid;
+                if (this.isShowPanel() && this.id == id) {
                     this.hidePanel()
                 } else {
-                    switch (markerClass.device.moduletype) {
-                        case this.moduleType.well:
-                            WellServices.getDetail(markerClass.device.id).then(device => {
-                                this.resetMarker(markerClass, device)
-                            });
-                            break;
-                        default:
-                            MapServices.getDetail({
-                                moduletype: markerClass.device.moduletype,
-                                deviceid: markerClass.device.deviceid
-                            }).then(device => {
-                                this.resetMarker(markerClass, device)
-                            })
-                            break
+                    this.getCurrentDeviceId(id);
+                    this.refreshDetail(markerClass.device.moduletype);
+                }
+                this.marker = markerClass;
+            },
+            getCurrentDeviceId(id) {
+                this.id = id;
+            },
+            searchDevice(params) {
+                this.getCurrentDeviceId(params.id);
+                if (params.moduletype == this.currentModuleType) {
+                    this.refreshDetail(params.moduletype)
+                } else {
+                    this.showPanel(params.moduletype);
+                }
+                this.isSearchDevice = true;
+                this.removeMarker(this.marker.marker);
+            },
+            refreshDetail(moduletype) {
+                this.hidePanel();
+                this.$nextTick(() => {
+                    this.showPanel(moduletype);
+                })
+            },
+            addSearchMarker(detail) {
+                if (detail && detail.id) {
+//                    this.showPanel(detail.moduletype);
+                    let markerClass = new MapMarkerClass(detail);
+                    markerClass.listen('click',this.markerClickEventFn);
+                    this.addMarker(markerClass);
+                    this.moveMap({center: (new BMap.Point(detail.lng, detail.lat)), zoom:  16});
+                    this.marker = markerClass;
+                }
+            },
+            updateMarker(device) {
+                if (this.isSearchDevice) {
+                    this.addSearchMarker(device)
+                } else {
+                    if (device.status != this.marker.device.status) {
+                        this.marker.device.status = device.status;
+                        this.removeMarker(this.marker.marker);
+                        this.marker.redraw();
+                        this.marker.listen('click',this.markerClickEventFn);
+                        this.addMarker(this.marker)
                     }
                 }
             },
-            resetMarker(markerClass, device) {
-                this.deviceDetail = device;
-                this.addStatus(markerClass.device.moduletype, this.deviceDetail);
-                if (this.deviceDetail.status != markerClass.device.status) {
-                    markerClass.device.status = this.deviceDetail.status;
-                    this.removeMarker(markerClass.marker);
-                    markerClass.redraw();
-                    markerClass.listen('click', this.markerClickEventFn);
-                    this.addMarker(markerClass)
-                }
-                this.showPanel(markerClass.device.moduletype);
-                this.marker = markerClass;
-            },
-            getDetail (params) {
-                this.hidePanel();
-                if (!params.deviceid) {
-                    this.removeMarker(this.marker.marker);
-                    return;
-                }
-                MapServices.getDetail(params).then(detail => {
-                    this.transformDetail(detail, params.moduletype)
-                })
-            },
-            getWellDetail(id) {
-                this.hidePanel();
-                if (!id) {
-                    this.removeMarker(this.marker.marker);
-                    return;
-                }
-                WellServices.getDetail(id).then(detail => {
-                    this.transformDetail(detail, this.moduleType.well)
-                });
-            },
-            transformDetail(detail, moduletype) {
-                this.deviceDetail = detail;
-                this.addStatus(moduletype, this.deviceDetail);
-                this.showPanel(moduletype);
-                let markerClass = new MapMarkerClass(this.deviceDetail);
-                markerClass.listen('click',this.markerClickEventFn);
-                this.removeMarker(this.marker.marker)
-                this.addMarker(markerClass);
-                this.moveMap({center: (new BMap.Point(detail.longitude, detail.latitude)), zoom:  16});
-                this.marker = markerClass;
-            },
-            updateDetail(params) {
-                switch (params.moduletype) {
-                    case this.moduleType.well:
-                        WellServices.getDetail(params.deviceid).then(detail => {
-                            this.deviceDetail = detail;
-                            this.updateMarker(detail, params.moduletype)
-                        });
-                        break;
-                    default:
-                        MapServices.getDetail(params).then(detail => {
-                            this.deviceDetail = detail;
-                            this.updateMarker(detail, params.moduletype)
-                        });
-                        break
-                }
-            },
-            updateMarker(device, moduletype) {
-                this.addStatus(moduletype, device);
-                if (device.status != this.marker.device.status) {
-                    this.marker.device.status = device.status;
-                    this.removeMarker(this.marker.marker);
-                    this.marker.redraw();
-                    this.marker.listen('click',this.markerClickEventFn);
-                    this.addMarker(this.marker)
-                }
-            },
-            addLightStatus(data) {
-                if (data.status) return;
-                if (data.runningstate != '正常') {
-                    data.status = 3;
-                } else if (data.switchstate == 2) {
-                    data.status = 2
-                } else {
-                    data.status = 1;
-                }
-            },
-            addStationStatus(data) {
-                data.status = data.runningstate;
-                if (data.runningstate == 'offline') {
-                    data.status = 2
-                } else {
-                    data.status = 1
-                }
-            },
-            addWellStatus(data) {
-                if (data.status) return;
-            },
-            addStatus(moduleType, data) {
-                switch (moduleType) {
-                    case this.moduleType.light:
-                        this.addLightStatus(data);
-                        break;
-                    case this.moduleType.loop:
-                        break;
-                    case this.moduleType.station:
-                        this.addStationStatus(data);
-                        break;
-                    case this.moduleType.well:
-                        this.addWellStatus(data);
-                        break;
-                    default:
-                        break;
-                }
-                data.lng = data.longitude;
-                data.lat = data.latitude;
-                data.moduletype = moduleType;
-            },
-            isShowPanel() {
-                return this.lightPanel || this.loopPanel || this.apPanel || this.wellPanel
-            },
             hidePanel() {
-                this.hideLightPanel();
-                this.hideLoopPanel();
-                this.hideStationPanel();
-                this.hideWellPanel();
+                this.currentModuleType = '';
             },
-            showPanel(moduleType) {
-                switch (moduleType) {
-                    case this.moduleType.light:
-                        this.showLightPanel();
-                        break;
-                    case this.moduleType.loop:
-                        this.showLoopPanel();
-                        break;
-                    case this.moduleType.station:
-                        this.showStationPanel();
-                        break;
-                    case this.moduleType.well:
-                        this.showWellPanel();
-                        break;
-                    default:
-                        break;
-                }
+            showPanel(type) {
+                this.currentModuleType = type;
             },
-            hideWellPanel() {
-                this.wellPanel = false;
-            },
-            hideLightPanel() {
-                this.lightPanel = false;
-            },
-            hideLoopPanel() {
-                this.loopPanel = false;
-            },
-            hideStationPanel() {
-                this.apPanel = false;
-            },
-            showLightPanel() {
-                this.lightPanel = true;
-            },
-            showLoopPanel() {
-                this.loopPanel = true;
-            },
-            showStationPanel() {
-                this.apPanel = true;
-            },
-            showWellPanel() {
-                this.wellPanel = true;
+            isShowPanel () {
+                return this.currentModuleType;
             }
         },
         watch: {
-           /* devices: function (newVal, oldVal) {
-                this.moveMap(this.getViewPort(newVal))
+            list: function (newVal) {
+                this.moveMap(this.getViewPort(newVal));
                 this.addClusterer()
-            },*/
-            isSearch: function (newVal) {
-                if (!newVal) {
-                    this.moveMap(this.getViewPort(this.devices.concat(this.wellList)));
-                    this.addClusterer()
-                }
             }
         }
     }

@@ -1,25 +1,25 @@
 <template>
   <div class="control-items">
     <div class="control control-on">
-      <el-button :disabled="!ids.length" @click="generate(1)" class="control-btn">查询状态</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(1)" class="control-btn">查询状态</el-button>
     </div>
     <div class="control control-off">
-      <el-button :disabled="!ids.length" @click="generate(2)" class="control-btn">设置告警角度</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(3)" class="control-btn">设置告警角度</el-button>
     </div>
     <div class="control control-status">
-      <el-button :disabled="!ids.length" @click="generate(3)" class="control-btn">校准角度</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(4)" class="control-btn">校准角度</el-button>
     </div>
     <div class="control control-status">
-      <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">告警归档</el-button>
+      <el-button :disabled="!deviceIds.length" @click="generate(2)" class="control-btn">告警归档</el-button>
     </div>
 
     <el-dialog title="确定操作" :visible.sync="visible" center width="600px">
       <div class="text-center">
         <div class="dialog-warning"></div>
       </div>
-      <p v-if="operateType == 1" class="title">您确认要查询状态吗？</p>
-      <p v-else-if="operateType == 3" class="title">您确认要校准角度吗？</p>
-      <p v-else-if="operateType == 4" class="title">您确认要归档这些设备吗？</p>
+      <p v-if="operData.operateType == 1" class="title">您确认要查询状态吗？</p>
+      <p v-else-if="operData.operateType == 4" class="title">您确认要校准角度吗？</p>
+      <p v-else-if="operData.operateType == 2" class="title">您确认要归档这些设备吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -41,10 +41,11 @@
 <script>
     import Service from "../../../services/well";
     import CommonContent from "../../../constants/common";
-    import Config from "../../../config";
+    import controlTimerMixin from '../../../mixins/control-timer-mixin'
     export default {
         name: 'controlWellComponent',
         components: {},
+        mixins: [controlTimerMixin],
         data() {
             let validateAngle = (rule, value, callback) => {
                if (!value) {
@@ -58,28 +59,18 @@
                }
             };
             return {
-                moduleType: {},
                 brightness: 0,
                 visible: false,
                 setVisible: false,
                 operData: {},
-                operateType: '',
                 Rules: {
                     operateValue: [
                         {validator: validateAngle, trigger:  ['blur', 'change']},
                     ]
                 },
-                refreshTimes: Config.REFRESH_TIMES,
-                timer: '',
-                time: Config.REFRESH_INTERVAL
             }
         },
         props: {
-            ids: {
-                default: function () {
-                    return []
-                }
-            },
             deviceIds: {
                 default: function () {
                     return []
@@ -92,31 +83,18 @@
         },
         methods: {
             initData: function () {
-                CommonContent.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
             },
             generate(operateType) {
-                if (operateType) this.operateType = operateType;
-                if (operateType == 2) {
+                if (operateType) this.operData.operateType = operateType;
+                if (operateType == 3) {
                     this.showSetModal()
                 } else {
                     this.showModal();
                 }
             },
             controlDevice: function () {
-                let data = {};
-                if (this.operateType == 4) {
-                    Service.pigeonholeWell(this.ids.join(',')).then(res => {
-                        this.hideModal();
-                        this.initPaging();
-                        this.resetData();
-                    })
-                    return;
-                }
-                data.operateType = this.operateType;
-                data.deviceIds = this.deviceIds.join(',');
-                Service.control(data).then(res => {
+                let ids = this.deviceIds.join(',');
+                this.getControlFn(this.operData.operateType)(ids).then(res => {
                     this.hideModal();
                     this.initPaging();
                     this.resetData();
@@ -126,15 +104,32 @@
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         let data = this.operData;
-                        data.operateType = this.operateType;
                         data.deviceIds = this.deviceIds.join(',');
-                        Service.control(data).then(res => {
+                        this.getControlFn(this.operData.operateType)(data).then(res => {
                             this.hideModal();
                             this.initPaging();
                             this.resetData();
                         });
                     }
                 })
+            },
+            getControlFn(operateType) {
+                let fn = '';
+                switch (operateType) {
+                    case 1:
+                        fn = Service.controlSearchStatus;
+                        break;
+                    case 2:
+                        fn = Service.pigeonhole;
+                        break;
+                    case 3:
+                        fn = Service.controlSetThreshold;
+                        break;
+                    case 4:
+                        fn = Service.controlAdjust;
+                        break;
+                }
+                return fn
             },
             showModal() {
                 this.visible = true;
@@ -146,53 +141,10 @@
                 this.visible = false;
                 this.setVisible = false;
             },
-            initPaging() {
-                this.refreshTimes = Config.REFRESH_TIMES;
-                this.refreshPage();
-            },
-            refreshPage() {
-                this.timer = setTimeout(() => {
-                    if (this.refreshTimes) {
-                        this.$emit('initCurrentPaging');
-                        this.refreshTimes --;
-                        this.refreshPage();
-                    }
-                }, this.time)
-            },
             resetData: function () {
                 this.operData = {}
             }
-        },
-        destroyed() {
-            clearInterval(this.timer);
         }
     }
 </script>
-
-<style scoped lang="less">
-
-  .control-brightness {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    .el-slider {
-      flex: 1;
-      margin-left: 20px;
-    }
-  }
-
-  .control-status {
-    .control-icon {
-      background: url("../../../assets/control/reflesh.png") no-repeat;
-      background-size: contain;
-    }
-  }
-
-  .control-search,
-  .control-set {
-    display: flex;
-    align-items: center;
-  }
-
-</style>
+<style src="../control.less" lang="less" scoped></style>

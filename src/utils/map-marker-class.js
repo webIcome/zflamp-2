@@ -1,6 +1,15 @@
 /**
  * Created by spring on 2018/5/3.
  */
+let moduleType = {};
+import CommonConstant from "../constants/common";
+CommonConstant.deviceType.forEach(item => {
+    moduleType[item.name] = item.value;
+});
+let length = CommonConstant.deviceType.length;
+CommonConstant.terminalType.forEach(item => {
+    moduleType[item.name] = item.value + length;
+});
 export default class MapMarkerClass {
     constructor(device) {
         this._device = device;
@@ -18,21 +27,53 @@ export default class MapMarkerClass {
     generateMarker(device, width=35, height=38) {
         let imgUrl;
         switch (device.moduletype) {
-            case 1:
+            case moduleType.light:
                 imgUrl = LightStatus[device.status];
                 if (!imgUrl) imgUrl = LightStatus[1];
                 break;
-            case 2:
+            case moduleType.loop:
                 imgUrl = LoopStatus[device.status];
                 if (!imgUrl) imgUrl = LoopStatus[1];
                 break;
-            case 3:
+            case moduleType.station:
                 imgUrl = StationStatus[device.status];
                 if (!imgUrl) imgUrl = StationStatus[1];
                 break;
-            case 4:
+            case moduleType.well:
                 imgUrl = WellStatus[device.status];
                 if (!imgUrl) imgUrl = WellStatus[0];
+                break;
+            case moduleType.waterLevel:
+                imgUrl = WaterLevelStatus[device.status];
+                if (!imgUrl) imgUrl = WaterLevelStatus[0];
+                break;
+            case moduleType.door:
+                imgUrl = DoorStatus[device.status];
+                if (!imgUrl) imgUrl = DoorStatus[0];
+                break;
+            case moduleType.pose:
+                imgUrl = PoseStatus[device.status];
+                if (!imgUrl) imgUrl = PoseStatus[0];
+                break;
+            case moduleType.shake:
+                imgUrl = ShakeStatus[device.status];
+                if (!imgUrl) imgUrl = ShakeStatus[0];
+                break;
+            case moduleType.voice:
+                imgUrl = VoiceStatus[device.status];
+                if (!imgUrl) imgUrl = VoiceStatus[0];
+                break;
+            case moduleType.weather:
+                imgUrl = WeatherStatus[device.status];
+                if (!imgUrl) imgUrl = WeatherStatus[0];
+                break;
+            case moduleType.inundate:
+                imgUrl = InundateStatus[device.status];
+                if (!imgUrl) imgUrl = InundateStatus[0];
+                break;
+            case moduleType.illuminance:
+                imgUrl = IlluminanceStatus[device.status];
+                if (!imgUrl) imgUrl = IlluminanceStatus[0];
                 break;
             default:
                 imgUrl = LightStatus[1];
@@ -86,4 +127,44 @@ let WellStatus = {
     0: './static/imgs/well-online.png', //在线
     1: './static/imgs/well-offline.png', //离线
     2: './static/imgs/well-err.png', //告警
+};
+let WaterLevelStatus = {
+    0: './static/imgs/water-level-online.png', //在线
+    1: './static/imgs/water-level-offline.png', //离线
+    2: './static/imgs/water-level-err.png', //告警
 }
+let DoorStatus = {
+    0: './static/imgs/door-online.png', //在线
+    1: './static/imgs/door-offline.png', //离线
+    2: './static/imgs/door-err.png', //告警
+};
+let PoseStatus = {
+    0: './static/imgs/pose-online.png', //在线
+    1: './static/imgs/pose-offline.png', //离线
+    2: './static/imgs/pose-err.png', //告警
+};
+let ShakeStatus = {
+    0: './static/imgs/shake-online.png', //在线
+    1: './static/imgs/shake-offline.png', //离线
+    2: './static/imgs/shake-err.png', //告警
+};
+let VoiceStatus = {
+    0: './static/imgs/voice-online.png', //在线
+    1: './static/imgs/voice-offline.png', //离线
+    2: './static/imgs/voice-err.png', //告警
+};
+let WeatherStatus = {
+    0: './static/imgs/weather-online.png', //在线
+    1: './static/imgs/weather-offline.png', //离线
+    2: './static/imgs/weather-err.png', //告警
+};
+let InundateStatus = {
+    0: './static/imgs/inundate-online.png', //在线
+    1: './static/imgs/inundate-offline.png', //离线
+    2: './static/imgs/inundate-err.png', //告警
+};
+let IlluminanceStatus = {
+    0: './static/imgs/illuminance-online.png', //在线
+    1: './static/imgs/illuminance-offline.png', //离线
+    2: './static/imgs/illuminance-err.png', //告警
+};

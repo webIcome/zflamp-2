@@ -16,7 +16,7 @@
 <script>
     import Service from '../../../services/well'
     export default {
-        name: 'deleteTaskComponent',
+        name: 'deleteWellComponent',
         data() {
             return {
                 visible: false

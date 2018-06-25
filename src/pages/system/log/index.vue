@@ -18,8 +18,7 @@
           <label>归属项目</label>
           <tree-select-component v-model="searchParams.companyid" :list="companies"></tree-select-component>
         </div>-->
-        <div @click="search" class="form-group default-btn">查询</div>
-        <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+        <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
       </form>
     </div>
     <el-table
@@ -34,7 +33,7 @@
       <el-table-column prop="username" label="姓名"></el-table-column>
       <!--<el-table-column prop="companyname" label="归属项目"></el-table-column>-->
     </el-table>
-    <el-row type="flex" justify="end"  v-if="searchParams.pages">
+    <el-row type="flex" justify="end"  v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"

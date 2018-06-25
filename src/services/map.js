@@ -3,6 +3,8 @@
  */
 import HttpClient from 'axios'
 import {Message} from 'element-ui'
+import Config from "../config";
+const option = {baseURL: Config.WELL_URL_API};
 export default {
     getDevices(params) {
         return HttpClient.get('map/deviceList', {params: params}).then(res => {
@@ -21,6 +23,11 @@ export default {
     findDevices(value) {
         return HttpClient.get('map/deviceAssociationList', {params: {vague: value}}).then(res => {
             return res.data.data.list;
+        }).catch(err => Promise.reject(err))
+    },
+    findTerminalList(value) {
+        return HttpClient.get('terminalInfo/findTerminalList', Object.assign({params: {keys: value}},option)).then(res => {
+            return res.data.data;
         }).catch(err => Promise.reject(err))
     },
     controlLight(id, body) {

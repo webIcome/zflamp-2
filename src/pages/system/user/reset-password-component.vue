@@ -1,6 +1,6 @@
 <template>
   <div class="oper-component" @click.stop="">
-    <span @click="showModal" class="delete-icon">重置密码</span>
+    <div class="icon-item"><span class="delete-icon" @click="showModal">重置密码</span></div>
     <el-dialog title="重置密码" :visible.sync="visible" center :width="'600px'">
       <div class="text-center">
         <div class="dialog-warning"></div>

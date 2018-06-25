@@ -14,6 +14,18 @@ const CommonConstant = {
         {value: 2, text: '回路控制器', name: 'loop'},
         {value: 3, text: '基站', name: 'station'},
     ],
+    terminalType: [
+        {value: 1, text: '井盖', name: 'well'},
+        {value: 2, text: '水位监测', name: 'waterLevel'},
+        {value: 3, text: '门开关检测', name: 'door'},
+        {value: 4, text: '姿态感应', name: 'pose'},
+        {value: 5, text: '振动检测', name: 'shake'},
+        {value: 6, text: '声音识别', name: 'voice'},
+        {value: 7, text: '视频', name: 'video'},
+        {value: 8, text: '气象监测', name: 'weather'},
+        {value: 9, text: '浸水检测', name: 'inundate'},
+        {value: 10, text: '光照度检测', name: 'illuminance'},
+    ],
     switchState: [
         {value: 1, text: '开'},
         {value: 2, text: '关'},
@@ -110,7 +122,26 @@ const CommonConstant = {
         {value: 1, text: '开'},
         {value: 2, text: '关'},
         {value: 3, text: '故障'},
-    ]
+    ],
+    alarmDuty: [
+        {value: 1, text: '开启'},
+        {value: 0, text: '关闭'},
+    ],
+    doorModel: [
+        {value: 'DMZ1ZT', text: 'DMZ1ZT'}
+    ],
+    illuminanceModel: [
+        {value: 'OPZ1ZT', text: 'OPZ1ZT'}
+    ],
+    inundateModel: [
+        {value: 'WDZ1ZT', text: 'WDZ1ZT'}
+    ],
+    weatherModel: [
+        {value: 'MLZ1ZT', text: 'MLZ1ZT'}
+    ],
+    waterLevel: [
+        {value: 'WLL2ZT', text: 'WLL2ZT'}
+    ],
 };
 
 export default CommonConstant;

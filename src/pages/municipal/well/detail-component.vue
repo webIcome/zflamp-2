@@ -7,24 +7,18 @@
       <div class="col-md-2 form-control-static">{{device.sn}}</div>
       <label class="col-md-2 control-label">归属项目：</label>
       <div class="col-md-2 form-control-static">{{device.compName}}</div>
-    </div>
-    <div class="form-group">
       <label class="col-md-2 control-label">归属基站ID：</label>
       <div class="col-md-2 form-control-static">{{device.belongApId}}</div>
       <label class="col-md-2 control-label">归属灯控器ID：</label>
       <div class="col-md-2 form-control-static">{{device.belongLightId}}</div>
       <label class="col-md-2 control-label">地理位置：</label>
       <div class="col-md-2 form-control-static">{{device.address}}</div>
-    </div>
-    <div class="form-group">
       <label class="col-md-2 control-label">告警阀值：</label>
       <div class="col-md-2 form-control-static">{{device.alarmThreshold}}</div>
       <label class="col-md-2 control-label">当前倾角：</label>
       <div class="col-md-2 form-control-static">{{device.currentObliquity}}</div>
       <label class="col-md-2 control-label">状态：</label>
       <div class="col-md-2 form-control-static">{{device.statusName}}</div>
-    </div>
-    <div class="form-group">
       <label class="col-md-2 control-label">电压：</label>
       <div class="col-md-2 form-control-static">{{device.voltage}} V</div>
       <label class="col-md-2 control-label">上报日期：</label>

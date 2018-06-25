@@ -21,11 +21,12 @@
               <el-option v-for="status in apState" :key="status.value" :value="status.value" :label="status.text"></el-option>
             </el-select>
           </div>
-          <div @click="search" class="form-group default-btn">查询</div>
-          <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
+         <!-- <div @click="search" class="form-group default-btn">查询</div>
+          <div @click="clearSearchParams" class="form-group default-btn">清空</div>-->
         </form>
         <div class="control-add-content">
-          <control-light-component :isArea="true" :ids="selectionIds" @initCurrentPaging="refreshPage"></control-light-component>
+          <control-light-component :isArea="true" :ids="selectionIds" @refreshPage="refreshPage"></control-light-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -42,7 +43,7 @@
       <el-table-column prop="companyname" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
         <template slot-scope="scope">
-          <span :class="{'running-success': scope.row.runningstate == 'online', 'running-fail': scope.row.runningstate == 'offline'}">
+          <span :class="{'running-success': scope.row.runningstate == 'online', 'running-fail': scope.row.runningstate != 'online'}">
             <span class="running-icon"></span>{{scope.row.runningstate  | apStateNameConverter}}
           </span>
         </template>
@@ -62,7 +63,7 @@
         </template>
       </el-table-column>-->
     </el-table>
-    <el-row type="flex" justify="end" v-if="searchParams.pages">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -83,72 +84,24 @@
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlLightComponent from "../light/control-component.vue"
+    import ListSearchBtnsComponent from "../../../components/list-search-btns";
+    import mixin from '../../../mixins/paging-mixin'
     export default {
         components: {
-            operComponent,
+            ListSearchBtnsComponent, operComponent,
             detailComponent,
             deleteComponent,
             controlLightComponent
         },
+        mixins: [mixin],
         name: 'areaPage',
         data() {
             return {
-                searchParams: {},
-                defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE
-                },
-                list: [],
-                selectionList: [],
-                selectionIds: [],
-                companies: [],
-                tableRef: 'my-table',
+                service: Service,
                 apState: CommonConstant.apState
             }
         },
-        created() {
-            this.initList();
-            this.initCompanies();
-        },
         methods: {
-            initList() {
-                this.findList(this.defaultPaging);
-            },
-            initCompanies() {
-                this.$globalCache.companies.then(companies => {
-                    this.companies = companies;
-                })
-            },
-            findList(params) {
-                Service.findList(params).then(data => {
-                    this.searchParams.pageNum = data.pageNum;
-                    this.searchParams.pages = data.pages;
-                    this.searchParams.pageSize = data.pageSize;
-                    this.searchParams.total = data.total;
-                    this.list = data.list;
-                })
-            },
-            refreshPage() {
-                Service.findList(this.searchParams).then(data => {
-                    this.list.forEach(item => {
-                        data.list.forEach(i => {
-                            if (i.sn == item.sn) {
-                                Object.assign(item, i);
-                            }
-                        })
-                    })
-                })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
-            search: function () {
-                this.findList(Object.assign(this.searchParams, this.defaultPaging));
-            },
-            clearSearchParams: function (e) {
-                this.searchParams = {};
-                this.initList();
-            },
             handleSelectionChange(val) {
                 this.selectionList = val;
                 this.selectionIds = val.map(item => {

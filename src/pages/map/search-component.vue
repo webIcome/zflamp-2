@@ -25,16 +25,12 @@
                 id: '',
                 loading: false,
                 list: [],
-                isShowConfirm: false,
-                moduleType: {}
+                detail: {}
             }
         },
         props: {
-            isShow: {
-                default: false
-            },
-            detail: {
-                default: () => {
+            moduleType: {
+                default: function () {
                     return {}
                 }
             }
@@ -44,9 +40,7 @@
         },
         methods: {
             initData(){
-                CommonConstant.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
+
             },
             findList(value) {
                 this.loading = true;
@@ -58,18 +52,12 @@
                 }).catch(err => {
                     this.loading = false
                 });
-                WellServices.getList({keys: value, pageSize: 5, pageNum: 1}).then(wellList => {
+                Services.findTerminalList(value).then(list => {
                     this.loading = false;
-                    this.list = this.list.concat(this.getTransformWellList(wellList))
+                    this.list = this.list.concat(this.getTransformTerminalList(list))
                 }).catch(err => {
                     this.loading = false
                 });
-                /*Promise.all([Services.findDevices(value),WellServices.getList({keys: value, pageSize: 10, pageNum: 1})]).then(([devices,wellList]) => {
-                    this.loading = false;
-                    this.list = this.getTransformList(devices).concat(this.getTransformWellList(wellList));
-                }).catch(err => {
-                    this.loading = false
-                });*/
             },
             getTransformList(list) {
                 return list.map(item => {
@@ -77,9 +65,9 @@
                     return {value: JSON.stringify(item), label: label}
                 });
             },
-            getTransformWellList(list) {
+            getTransformTerminalList(list) {
                 return list.map(item => {
-                    let label = '井盖:' + item.deviceName + "/" + item.sn;
+                    let label = this.$common.getLabel(item.terminalType, CommonConstant.terminalType) + ':' + item.deviceName + "/" + item.sn;
                     return {value: JSON.stringify(item), label: label}
                 });
             },
@@ -89,12 +77,12 @@
                 } else {
                     value = {}
                 }
-                if (value.moduletype) {
-                    this.$emit('search', {deviceid: value.deviceid, moduletype: value.moduletype})
+                console.log(value)
+                if (value.moduletype <= CommonConstant.deviceType.length) {
+                    this.$emit('search', {id: value.deviceid, moduletype: value.moduletype})
                 } else {
-                    this.$emit('searchWell', value.id)
+                    this.$emit('search', {id: value.deviceId, moduletype: value.terminalType + CommonConstant.deviceType.length})
                 }
-
             },
         }
     }

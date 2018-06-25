@@ -162,6 +162,7 @@
           <div class="text-center">
             <div class="dialog-warning"></div>
           </div>
+          <p v-if="operData.controltype == 6" class="title">您确认要取消定时任务吗？</p>
           <p v-if="operData.controltype == 7" class="title">您确认要查询定时任务吗？</p>
           <p v-else-if="operData.controltype == 9" class="title">您确认要故障阈值查询吗？</p>
           <p v-else-if="operData.controltype == 11" class="title">您确认要故障使能查询吗？</p>

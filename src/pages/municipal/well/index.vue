@@ -18,15 +18,14 @@
           <div class="form-group">
             <label>状态</label>
             <el-select v-model="searchParams.status" placeholder="请选择" clearable>
-              <el-option v-for="status in wellStatus" :key="status.value" :value="status.value"
+              <el-option v-for="status in runningState" :key="status.value" :value="status.value"
                          :label="status.text"></el-option>
             </el-select>
           </div>
-          <div @click="search" class="form-group default-btn">查询</div>
-          <div @click="clearSearchParams" class="form-group default-btn">清空</div>
+          <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
         </form>
         <div class="control-add-content">
-          <control-component :deviceIds="selectionDeviceIds" :ids="selectionIds" @initCurrentPaging="refreshPage"></control-component>
+          <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
           <oper-component :companies="companies" @initPaging="initList"></oper-component>
         </div>
       </div>
@@ -67,19 +66,19 @@
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex">
-            <oper-component ref="oper" :id="scope.row.id" :companies="companies" :edit="true"
+            <oper-component ref="oper" :id="scope.row.deviceId" :companies="companies" :edit="true"
                             @initCurrentPaging="pagingEvent"></oper-component>
-            <delete-component :id="scope.row.id" @initCurrentPaging="pagingEvent"></delete-component>
+            <delete-component :id="scope.row.deviceId" @initCurrentPaging="pagingEvent"></delete-component>
           </el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <detail-component :id="scope.row.id"></detail-component>
+          <detail-component :id="scope.row.deviceId"></detail-component>
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end" v-if="searchParams.pages">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
@@ -93,13 +92,13 @@
 
 </template>
 <script>
-    import Config from "../../../config";
     import Service from "../../../services/well";
     import operComponent from './oper-component.vue'
     import detailComponent from './detail-component.vue'
     import deleteComponent from './delete-component.vue'
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control-component.vue"
+    import mixin from '../../../mixins/paging-mixin'
     export default {
         components: {
             operComponent,
@@ -107,78 +106,15 @@
             deleteComponent,
             controlComponent,
         },
+        mixins: [mixin],
         name: 'wellPage',
         data() {
             return {
-                searchParams: {},
-                defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE
-                },
-                list: [],
-                selectionList: [],
-                selectionDeviceIds: [],
-                selectionIds: [],
-                companies: [],
-                tableRef: 'my-table',
-                wellStatus: CommonConstant.wellStatus,
+                service: Service
             }
-        },
-        created() {
-            this.initList();
-            this.initCompanies();
         },
         methods: {
-            initList() {
-                this.findList(this.defaultPaging);
-            },
-            initCompanies() {
-                this.$globalCache.companies.then(companies => {
-                    this.companies = companies;
-                })
-            },
-            findList(params) {
-                Service.findList(params).then(data => {
-                    this.searchParams.pageNum = data.pageNum;
-                    this.searchParams.pages = data.pages;
-                    this.searchParams.pageSize = data.pageSize;
-                    this.searchParams.total = data.total;
-                    this.list = data.list;
-                })
-            },
-            refreshPage() {
-                Service.findList(this.searchParams).then(data => {
-                    this.list.forEach(item => {
-                        data.list.forEach(i => {
-                            if (i.sn == item.sn) {
-                                Object.assign(item, i);
-                            }
-                        })
-                    })
-                })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
-            search: function () {
-                this.findList(Object.assign(this.searchParams, this.defaultPaging));
-            },
-            clearSearchParams: function (e) {
-                this.searchParams = {};
-                this.initList();
-            },
-            handleSelectionChange(val) {
-                this.selectionList = val;
-                this.selectionDeviceIds = [];
-                this.selectionIds = [];
-                val.forEach(item => {
-                    this.selectionDeviceIds.push(item.deviceId);
-                    this.selectionIds.push(item.id)
-                });
-            },
-            isSelectable(row,index) {
-                return row.status != 1
-            }
+
         }
     }
 </script>

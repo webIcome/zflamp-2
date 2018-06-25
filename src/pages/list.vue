@@ -85,6 +85,15 @@
                         modulecode: 'TERMINAL',
                         children: [
                             {modulename: '井盖', modulecode: 'TERMINALCOVER', url: 'well'},
+                            {modulename: '门开关检测', modulecode: 'TERMINALDOOR', url: 'door'},
+                            {modulename: '光照度检测', modulecode: 'TERMINALILLUMIDETE', url: 'illuminance'},
+                            {modulename: '浸水检测', modulecode: 'TERMINALIMMERSION', url: 'inundate'},
+                            {modulename: '姿态感应', modulecode: 'TERMINALGESTURE', url: 'pose'},
+                            {modulename: '振动检测', modulecode: 'TERMINALSHOCK', url: 'shake'},
+                            {modulename: '声音识别', modulecode: 'TERMINALVOICE', url: 'voice'},
+                            {modulename: '水位监测', modulecode: 'TERMINALWATERLEVEL', url: 'water-level'},
+                            {modulename: '气象监测', modulecode: 'TERMINALMETEMONITOR', url: 'weather'},
+                            {modulename: '视频', modulecode: 'TERMINALVIDEO', url: 'video'},
                         ]
                     },
                     {

@@ -30,18 +30,17 @@
         name: 'loopComponent',
         data() {
             return {
-                brightness: 0,
-                isShowConfirm: false,
-                moduleType: {},
                 currentLoopControl: [],
+                detail: {},
             }
         },
         props: {
-            detail: {
-                default: () => {
+            id: '',
+            moduleType: {
+                default: function () {
                     return {}
                 }
-            }
+            },
         },
         computed: {
             loopControl: function () {
@@ -57,10 +56,8 @@
         },
         methods: {
             initData(){
-                CommonConstant.deviceType.forEach(item => {
-                    this.moduleType[item.name] = item.value;
-                })
                 this.currentLoopControl = this.loopControl;
+                this.getDetail()
             },
             hide() {
                 this.$emit('hide');
@@ -72,7 +69,7 @@
             controlStatus() {
                 let data = {controltype: 4}
                 Services.controlLoop(this.detail.deviceid, data).then(res => {
-                    this.updateDetail({deviceid: this.detail.deviceid, moduletype: this.moduleType.loop})
+                    this.getDetail()
                 })
             },
             loopSwitch(loop, switchStatus) {
@@ -93,12 +90,28 @@
                     return item == loop;
                 })
             },
+            getDetail() {
+                Services.getDetail({moduletype: this.moduleType.loop, deviceid: this.id}).then(detail => {
+                    this.detail = detail;
+                    this.updateMarker();
+                });
+            },
+            updateMarker() {
+                this.$emit('updateMarker', this.transformData(this.detail))
+            },
+            transformData(data) {
+                return {
+                    lng: data.longitude,
+                    lat: data.latitude,
+                    id: data.deviceid,
+                    moduletype: data.moduletype,
+                    sn: data.sn,
+                    status: data.status,
+                }
+            },
             hideShowConfirm() {
                 this.isShowConfirm = false;
             },
-            updateDetail(data) {
-                this.$emit('updateDetail', {deviceid: data.deviceid, moduletype: data.moduletype})
-            }
         },
         watch: {
             loopControl: function (val) {
