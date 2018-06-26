@@ -60,56 +60,33 @@
     import deleteComponent from "./delete-component.vue"
     import operComponent from "./oper-component.vue"
     import ResetPasswordComponent from "./reset-password-component";
+    import mixin from '../../../mixins/paging-mixin'
     export default {
         components: {
             ResetPasswordComponent, deleteComponent,
             operComponent
         },
-        name: 'taskPage',
+        name: 'userPage',
+        mixins: [mixin],
         data() {
             return {
-                searchParams: {},
-                defaultPaging: {
-                    pageSize: Config.DEFAULT_PAGE_SIZE
-                },
-                list: [],
-                selectionList: [],
-                companies: [],
-                tableRef: 'my-table',
             }
         },
-        created() {
-            this.initList();
-            this.initCompanies();
-        },
         methods: {
-            initList() {
-                this.findList(this.defaultPaging);
-            },
-            initCompanies() {
-                this.$globalCache.companies.then(companies => {
-                    this.companies = companies;
-                })
-            },
             findList(params) {
                 Service.findUsers(params).then(data => {
+                    this.paginationShow = false;
+                    this.$nextTick(() => {
+                        if (data.pages) {
+                            this.paginationShow = true
+                        }
+                    });
                     this.searchParams.pageNum = data.pageNum;
                     this.searchParams.pages = data.pages;
                     this.searchParams.pageSize = data.pageSize;
                     this.searchParams.total = data.total;
                     this.list = data.list;
                 })
-            },
-            pagingEvent(pageNumber) {
-                if (pageNumber) this.searchParams.pageNum = pageNumber;
-                this.findList(this.searchParams);
-            },
-            search: function () {
-                this.findList(Object.assign(this.searchParams, this.defaultPaging));
-            },
-            clearSearchParams: function (e) {
-                this.searchParams = {};
-                this.initList();
             },
             handleSelectionChange(val) {
                 this.selectionList = val;

@@ -33,7 +33,7 @@
       <el-table-column prop="username" label="姓名"></el-table-column>
       <!--<el-table-column prop="companyname" label="归属项目"></el-table-column>-->
     </el-table>
-    <el-row type="flex" justify="end"  v-if="paginationShow">
+    <el-row type="flex" justify="end">
       <el-pagination
           background
           :current-page="searchParams.pageNum"
