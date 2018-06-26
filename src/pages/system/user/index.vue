@@ -15,8 +15,10 @@
           <el-input type="text" v-model="searchParams.postname" placeholder="输入岗位名称" clearable/>
         </div>
         <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
-        <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </form>
+      <div style="display: inline-block">
+        <oper-component :companies="companies" @initPaging="initList"></oper-component>
+      </div>
     </div>
     <el-table
         :data="list"

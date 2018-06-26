@@ -73,7 +73,7 @@
                 } else if (this.operData.operateType == 3) {
                     rules.operateValue = [
                         {required: true, message: '请输入上报心跳周期'},
-                        {type: 'number', message: '范围0~65536', min: 0, max: 65536},
+                        {type: 'number', message: '范围0~65535', min: 0, max: 65535},
                         {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }

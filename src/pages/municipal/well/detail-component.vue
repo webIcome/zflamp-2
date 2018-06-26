@@ -19,8 +19,8 @@
       <div class="col-md-2 form-control-static">{{device.currentObliquity}}</div>
       <label class="col-md-2 control-label">状态：</label>
       <div class="col-md-2 form-control-static">{{device.statusName}}</div>
-      <label class="col-md-2 control-label">电压：</label>
-      <div class="col-md-2 form-control-static">{{device.voltage}} V</div>
+      <label class="col-md-2 control-label">电压/V：</label>
+      <div class="col-md-2 form-control-static">{{device.voltage}}</div>
       <label class="col-md-2 control-label">上报日期：</label>
       <div class="col-md-2 form-control-static">{{device.uploadTime | formDate}}</div>
     </div>

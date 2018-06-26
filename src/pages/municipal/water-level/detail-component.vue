@@ -24,7 +24,7 @@
       <label class="col-md-2 control-label">上报时间：</label>
       <div class="col-md-2 form-control-static">{{device.uploadTime | formDate}}</div>
       <label class="col-md-2 control-label">地理位置：</label>
-      <div class="col-md-2 form-control-static">{{device.adress}}</div>
+      <div class="col-md-2 form-control-static">{{device.address}}</div>
       <label class="col-md-2 control-label">量程/m：</label>
       <div class="col-md-2 form-control-static">{{device.range}}</div>
       <label class="col-md-2 control-label">校准值/cm：</label>
@@ -34,7 +34,7 @@
       <label class="col-md-2 control-label">告警周期/min：</label>
       <div class="col-md-2 form-control-static">{{device.alarmCycle}}</div>
       <label class="col-md-2 control-label">告警解除阈值/cm：</label>
-      <div class="col-md-2 form-control-static">{{device.adress}}</div>
+      <div class="col-md-2 form-control-static">{{device.relieveAlarmThreshold}}</div>
       <label class="col-md-2 control-label">采集周期/s：</label>
       <div class="col-md-2 form-control-static">{{device.collectCycle}}</div>
       <label class="col-md-2 control-label">告警使能：</label>

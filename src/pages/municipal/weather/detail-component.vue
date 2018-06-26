@@ -40,7 +40,7 @@
       <label class="col-md-2 control-label">归属基站：</label>
       <div class="col-md-2 form-control-static">{{device.belongApId}}</div>
       <label class="col-md-2 control-label">地理位置：</label>
-      <div class="col-md-2 form-control-static">{{device.adress}}</div>
+      <div class="col-md-2 form-control-static">{{device.address}}</div>
       <label class="col-md-2 control-label">上报日期：</label>
       <div class="col-md-2 form-control-static">{{device.uploadTime | formDate}}</div>
     </div>

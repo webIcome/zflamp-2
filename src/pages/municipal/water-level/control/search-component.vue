@@ -16,7 +16,7 @@
       <p v-if="operateType == 10" class="title">您确认要查询心跳包周期吗？</p>
       <p v-else-if="operateType == 11" class="title">您确认要查询告警周期吗？</p>
       <p v-else-if="operateType == 12" class="title">您确认要查询告警阈值吗？</p>
-      <p v-else-if="operateType == 13" class="title">您确认要解除告警阈值吗？</p>
+      <p v-else-if="operateType == 13" class="title">您确认要查询解除告警阈值吗？</p>
       <p v-else-if="operateType == 14" class="title">您确认要查询告警使能吗？</p>
       <p v-else-if="operateType == 15" class="title">您确认要查询采集周期吗？</p>
       <p v-else-if="operateType == 16" class="title">您确认要查询量程吗？</p>

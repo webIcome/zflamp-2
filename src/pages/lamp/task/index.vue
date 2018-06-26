@@ -23,9 +23,10 @@
           <tree-select-component v-model="searchParams.compId" :list="companies"></tree-select-component>
         </div>
         <list-search-btns-component @search="search" @clearSearchParams="clearSearchParams" @refresh="pagingEvent"></list-search-btns-component>
-        <oper-component :companies="companies" @initPaging="initList"></oper-component>
       </form>
-
+      <div style="display: inline-block;">
+        <oper-component :companies="companies" @initPaging="initList"></oper-component>
+      </div>
     </div>
     <el-table
         :data="list"

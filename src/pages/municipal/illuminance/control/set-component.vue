@@ -22,11 +22,15 @@
           </el-form-item>
         </template>
         <template v-else-if="operData.operateType ==5">
-          <el-form-item label="告警阈值上限/0.1lux：" prop="operateValueMin">
-            <el-input type="text" v-model.trim.number="operData.operateValueMin" clearable></el-input>
+          <el-form-item label="告警阈值下限/0.1lux：" prop="operateValueMin">
+            <el-radio v-model="operData.min" :label='1'>设置值</el-radio>
+            <el-radio v-model="operData.min" :label='0'>无</el-radio>
+            <el-input v-if="operData.min == 1" type="text" v-model.trim.number="operData.operateValueMin" clearable></el-input>
           </el-form-item>
           <el-form-item label="告警阈值上限/0.1lux：" prop="operateValueMax">
-            <el-input type="text" v-model.trim.number="operData.operateValueMax" clearable></el-input>
+            <el-radio v-model="operData.max" :label='1'>设置值</el-radio>
+            <el-radio v-model="operData.max" :label='0'>无</el-radio>
+            <el-input v-if="operData.max == 1" type="text" v-model.trim.number="operData.operateValueMax" clearable></el-input>
           </el-form-item>
         </template>
         <template v-else-if="operData.operateType == 6">
@@ -86,16 +90,27 @@
                         {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 } else if (this.operData.operateType == 5) {
-                    rules.operateValueMin = [
-                        {required: true, message: '请输入告警阈值下限'},
-                        {type: 'number', message: '范围0~告警阈值上限', min: 0, max: this.operData.operateValueMax},
-                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
-                    ]
+                    /*rules.operateValueMin = [
+                        {required: true, message: '请选择告警阈值下限选项'},
+                    ];
                     rules.operateValueMax = [
-                        {required: true, message: '请输入告警阈值上限'},
-                        {type: 'number', message: '范围 告警阈值下限~16777215', min: this.operData.operateValueMin, max: 16777215},
-                        {pattern: /^[0-9]+$/, message: '必须为正整数'}
-                    ]
+                        {required: true, message: '请选择告警阈值上限选项'},
+                    ];*/
+                    if (this.operData.min == 1) {
+                        rules.operateValueMin = [
+                            {required: true, message: '请输入告警阈值下限'},
+                            {type: 'number', message: '范围0~告警阈值上限', min: 0, max: this.operData.operateValueMax},
+                            {pattern: /^[0-9]+$/, message: '必须为正整数'}
+                        ]
+                    }
+                    if (this.operData.max == 0) {
+                        rules.operateValueMax = [
+                            {required: true, message: '请输入告警阈值上限'},
+                            {type: 'number', message: '范围 告警阈值下限~16777215', min: this.operData.operateValueMin, max: 16777215},
+                            {pattern: /^[0-9]+$/, message: '必须为正整数'}
+                        ]
+                    }
+
                 } else if (this.operData.operateType == 6) {
                     rules.operateValue = [
                         {required: true, message: '请输入解除告警阈值'},
@@ -109,7 +124,7 @@
                 } else if (this.operData.operateType == 8) {
                     rules.operateValue = [
                         {required: true, message: '请输入采集周期'},
-                        {type: 'number', message: '范围0~65536', min: 0, max: 65536},
+                        {type: 'number', message: '范围0~65535', min: 0, max: 65535},
                         {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }
@@ -166,5 +181,27 @@
                 return fn
             },
         },
+        watch: {
+            ['operData.min'](newVal, oldVal) {
+                if (newVal) {
+                    this.operData.operateValueMin = ''
+                } else {
+                    this.operData.operateValueMin = 16777215
+                }
+            },
+            ['operData.max'](newVal, oldVal) {
+                if (newVal) {
+                    this.operData.operateValueMax = ''
+                } else {
+                    this.operData.operateValueMax = 16777215
+                }
+            },
+            ['operData.operateType'](newVal) {
+                if (newVal == 5){
+                    this.$set(this.operData, 'min', 1)
+                    this.$set(this.operData, 'max', 1)
+                }
+            }
+        }
     }
 </script>
