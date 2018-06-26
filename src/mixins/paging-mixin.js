@@ -39,7 +39,9 @@ export default {
             this.service.findList(params).then(data => {
                 this.paginationShow = false;
                 this.$nextTick(() => {
-                    this.paginationShow = true
+                    if (data.pages) {
+                        this.paginationShow = true
+                    }
                 });
                 this.searchParams.pageNum = data.pageNum;
                 this.searchParams.pages = data.pages;

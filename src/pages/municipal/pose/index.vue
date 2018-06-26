@@ -74,7 +74,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end">
+    <el-row type="flex" justify="end" v-if="paginationShow">
       <el-pagination
           background
           :current-page="searchParams.pageNum"

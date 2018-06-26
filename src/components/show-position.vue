@@ -5,7 +5,7 @@
       <div class="lat">纬度：{{device.latitude}}</div>
       ；
       <div class="lng">经度：{{device.longitude}}</div>；
-      <div class="lng">位置：{{device.position}}</div>
+      <div class="lng">位置：{{device.position || device.address}}</div>
       <div style=" width: 100%; height: 500px;" :ref="mapId"></div>
     </el-dialog>
   </div>
