@@ -225,7 +225,7 @@
         },
         watch: {
             group: function () {
-//                this.getSelectedList()
+                this.getSelectedList()
             }
         }
     }
