@@ -6,16 +6,18 @@ export default {
     data() {
         return {
             REFRESH_TIMES: Config.REFRESH_TIMES,
+            TIMER: ''
         }
     },
     methods: {
         initPaging() {
             this.REFRESH_TIMES = Config.REFRESH_TIMES;
+            clearTimeout(this.TIMER);
             this.refreshPage();
         },
         refreshPage() {
             this.$emit('refreshPage');
-            setTimeout(() => {
+            this.TIMER = setTimeout(() => {
                 if (this.REFRESH_TIMES) {
                     this.REFRESH_TIMES --;
                     this.refreshPage();

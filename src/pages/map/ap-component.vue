@@ -37,13 +37,16 @@
     import Services from "../../services/map";
     import ApServices from "../../services/area"
     import CommonConstant from "../../constants/common";
+    import Config from "../../config";
     export default{
         name: 'apComponent',
         data() {
             return {
                 brightness: 0,
                 isShowConfirm: false,
-                detail: {}
+                detail: {},
+                REFRESH_TIMES: Config.REFRESH_TIMES,
+                TIMER: ''
             }
         },
         props: {
@@ -118,6 +121,20 @@
                     sn: data.sn,
                     status: status,
                 }
+            },
+            resetTimes() {
+                this.REFRESH_TIMES = Config.REFRESH_TIMES;
+                clearTimeout(this.TIMER);
+                this.refreshDetail();
+            },
+            refreshDetail() {
+                setTimeout(() => {
+                    if (this.REFRESH_TIMES) {
+                        this.REFRESH_TIMES --;
+                        this.getDetail()
+                        this.refreshDetail();
+                    }
+                }, Config.REFRESH_INTERVAL)
             },
         },
         watch: {

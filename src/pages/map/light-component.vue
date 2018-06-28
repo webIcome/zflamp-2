@@ -52,13 +52,16 @@
 <script>
     import Services from "../../services/map";
     import CommonConstant from "../../constants/common";
+    import Config from "../../config";
     export default{
         name: 'lightComponent',
         data() {
             return {
                 brightness: 0,
                 isShowConfirm: false,
-                detail: {}
+                detail: {},
+                REFRESH_TIMES: Config.REFRESH_TIMES,
+                TIMER: ''
             }
         },
         props: {
@@ -92,6 +95,7 @@
                 }
                 Services.controlLight(this.detail.deviceid, data).then(res => {
                     this.hideShowConfirm();
+//                    this.resetTimes();
                 })
             },
             controlLightStatus() {
@@ -130,6 +134,20 @@
             },
             hideShowConfirm() {
                 this.isShowConfirm = false;
+            },
+            resetTimes() {
+                this.REFRESH_TIMES = Config.REFRESH_TIMES;
+                clearTimeout(this.TIMER);
+                this.refreshDetail();
+            },
+            refreshDetail() {
+                setTimeout(() => {
+                    if (this.REFRESH_TIMES) {
+                        this.REFRESH_TIMES --;
+                        this.getDetail()
+                        this.refreshDetail();
+                    }
+                }, Config.REFRESH_INTERVAL)
             },
         },
         watch: {
