@@ -82,7 +82,7 @@ export default class MapMarkerClass {
         this._createMarker(device, imgUrl, width, height)
     }
     redraw(status) {
-        this._device.status = status;
+        if (status) this._device.status = status;
         this.generateMarker(this._device);
     }
     listen(type, fn) {
