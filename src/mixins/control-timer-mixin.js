@@ -14,9 +14,9 @@ export default {
             this.refreshPage();
         },
         refreshPage() {
+            this.$emit('refreshPage');
             setTimeout(() => {
                 if (this.REFRESH_TIMES) {
-                    this.$emit('refreshPage');
                     this.REFRESH_TIMES --;
                     this.refreshPage();
                 }

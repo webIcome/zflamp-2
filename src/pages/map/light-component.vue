@@ -8,7 +8,7 @@
         </div>
         <div class="panel-control-slider">
 
-          <el-slider class="my-slider" v-model="brightness" vertical height="140px" @change="showConfirm"></el-slider>
+          <el-slider class="my-slider" v-model="brightness" vertical height="140px" @change="showConfirm" :step="5"></el-slider>
           <div class="slider-label">
             <div class="slider-label-text top"><span>开灯</span></div>
             <div class="slider-label-number">75</div>
@@ -123,7 +123,7 @@
                     lng: data.longitude,
                     lat: data.latitude,
                     id: data.deviceid,
-                    moduletype: data.moduletype,
+                    moduletype: this.moduleType.light,
                     sn: data.sn,
                     status: status,
                 }

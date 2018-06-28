@@ -56,7 +56,7 @@ export default {
         })
     },
     pigeonhole(ids) {
-        return HttpClient.post('gestureInductor/batchToNormalByDeviceIds', '', Object.assign({params: params},option)).then(res => {
+        return HttpClient.post('gestureInductor/batchToNormalByDeviceIds', '', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);
             return res;
         })

@@ -154,9 +154,9 @@
     max-width: 298px;
     /*min-width: 250px;*/
     .limits {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      /*display: flex;*/
+      /*flex-direction: column;*/
+      /*align-items: flex-start;*/
       .limits-parent {
         color: #8FABD2;
         display: flex;

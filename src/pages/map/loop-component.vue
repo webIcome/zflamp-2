@@ -19,7 +19,7 @@
     <div class="panel-bottom">
       <div class="control-panel-time">更新时间：{{detail.uptime | formDate}}</div>
       <div class="control-panel-status">{{detail.status | loopStatusNameConverter}}</div>
-      <div @click="controlStatus" class="control-panel-status">获取状态</div>
+      <div @click="controlStatus" class="control-panel-control">获取状态</div>
     </div>
   </div>
 </template>
@@ -104,7 +104,7 @@
                     lng: data.longitude,
                     lat: data.latitude,
                     id: data.deviceid,
-                    moduletype: data.moduletype,
+                    moduletype: this.moduleType.loop,
                     sn: data.sn,
                     status: data.status,
                 }

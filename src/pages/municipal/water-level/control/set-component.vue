@@ -109,7 +109,7 @@
                             {pattern: /^[0-9]+$/, message: '必须为正整数'}
                         ]
                     }
-                    if (this.operData.max == 0) {
+                    if (this.operData.max == 1) {
                         rules.operateValueMax = [
                             {required: true, message: '请输入告警阈值上限'},
                             {type: 'number', message: '范围 告警阈值下限~65535', min: this.operData.operateValueMin, max: 65535},
@@ -201,19 +201,27 @@
                 }
                 return fn
             },
-        }, watch: {
+            validateField(prop) {
+                this.$refs[this.ref].validateField(prop, (errorMessage) => {
+
+                })
+            }
+        },
+        watch: {
             ['operData.min'](newVal, oldVal) {
                 if (newVal) {
                     this.operData.operateValueMin = ''
                 } else {
-                    this.operData.operateValueMin = 65535
+                    this.operData.operateValueMin = 65535;
+                    this.validateField('operateValueMin')
                 }
             },
             ['operData.max'](newVal, oldVal) {
                 if (newVal) {
                     this.operData.operateValueMax = ''
                 } else {
-                    this.operData.operateValueMax = 65535
+                    this.operData.operateValueMax = 65535;
+                    this.validateField('operateValueMax')
                 }
             },
             ['operData.operateType'](newVal) {

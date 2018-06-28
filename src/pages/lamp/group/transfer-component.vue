@@ -172,7 +172,7 @@
         },
         watch: {
             selected: function (newVal, oldVal) {
-//                this.$emit('input', this.transformSendData(newVal))
+                this.$emit('input', this.transformSendData(newVal))
             }
         }
     }

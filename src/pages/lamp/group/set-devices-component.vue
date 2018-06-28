@@ -37,12 +37,14 @@
                 props: {key:'deviceid'},
                 selectedList: [],
                 selectDataList: [],
+                firstSelectDataList: [],
                 moveItems: {},
                 defaultPaging: {
                     pageSize: Config.DEFAULT_PAGE_SIZE,
                     pageNum: 1
                 },
                 total: 0,
+                showText: ''
             }
         },
         props: {
@@ -61,13 +63,13 @@
             }
         },
         computed: {
-            showText: function () {
+            /*showText: function () {
                 if (this.selectDataList.length) {
                     return this.selectDataList.length + '个设备';
                 } else {
                     return '0个设备';
                 }
-            },
+            },*/
         },
         created: function () {
             this.initData();
@@ -96,6 +98,7 @@
             },
             pagingEvent: function (pageNumber) {
                 this.searchParams.pageNum = pageNumber;
+                this.getSelectDataList();
                 this.findList(this.searchParams);
             },
             findList: function (params) {
@@ -103,9 +106,21 @@
                     this.searchParams.pageNum = data.pageNum;
                     this.searchParams.pages = data.pages;
                     this.searchParams.pageSize = data.pageSize;
-                    this.list = this.selectDataList.concat(this.transformDataToUse(data.list));
+                    this.list = this.concatList(data.list);
                     this.total = data.total;
                 });
+            },
+            concatList: function (list) {
+                list = list.filter(item => {
+                    let filter = true;
+                    this.selectDataList.forEach(selectItem => {
+                        if (selectItem[this.props.key] == item[this.props.key]) {
+                            filter = false
+                        }
+                    });
+                    return filter;
+                });
+                return this.selectDataList.concat(this.transformDataToUse(list));
             },
             transformDataToUse(list) {
                 return list.map(item => {
@@ -119,8 +134,8 @@
             },
             getSelectedList: function () {
                 this.getModuleTypeFn()({groupid: this.group.objectid, apuid: this.group.apuid}).then(data => {
-                    this.selectDataList = this.transformDataToUse(data.list);
-                    this.initSelectDataList();
+                    this.firstSelectDataList = this.transformDataToUse(data.list);
+                    this.initFirstSelectDataList();
                 })
             },
             getModuleTypeFn() {
@@ -137,11 +152,35 @@
                 }
                 return fn;
             },
-            initSelectDataList: function () {
+            initFirstSelectDataList() {
                 this.selectedList = [];
-                this.selectDataList.forEach(item => {
+                this.firstSelectDataList.forEach(item => {
                     this.selectedList.push(item.deviceid);
                 });
+                if (this.firstSelectDataList.length) {
+                    this.showText = this.firstSelectDataList.length + '个设备';
+                } else {
+                    this.showText =  '0个设备';
+                }
+                this.selectDataList = this.firstSelectDataList;
+            },
+            initSelectDataList: function () {
+                this.selectedList = [];
+                this.selectDataList = this.firstSelectDataList;
+                this.selectDataList.forEach(item => {
+                    this.selectedList.push(item[this.props.key]);
+                });
+            },
+            getSelectDataList() {
+                this.selectDataList = this.list.filter(item => {
+                    let filter = false;
+                    this.selectedList.forEach(selectItem => {
+                        if (selectItem == item[this.props.key]) {
+                            filter = true
+                        }
+                    });
+                    return filter;
+                })
             },
             getMoveItems(val) {
                 this.moveItems = val;
@@ -186,7 +225,7 @@
         },
         watch: {
             group: function () {
-                this.getSelectedList()
+//                this.getSelectedList()
             }
         }
     }

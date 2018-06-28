@@ -17,9 +17,9 @@
       </span>
     </el-dialog>
     <el-dialog title="控制" :visible.sync="setVisible" center width="500px">
-      <el-form label-width="140px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default"
+      <el-form label-width="170px" :model="operData" ref="well-form" :rules="Rules" class="el-form-default"
                :validate-on-rule-change="false">
-        <el-form-item label="设置心跳周期：" prop="operateValue">
+        <el-form-item label="设置心跳周期/分钟：" prop="operateValue">
           <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
         </el-form-item>
       </el-form>
@@ -47,7 +47,7 @@
                 Rules: {
                     operateValue: [
                         {required: true, message: '请输入心跳包周期'},
-                        {type: 'number', message: '范围1~24', min: 1, max: 24},
+                        {type: 'number', message: '范围0~255', min: 0, max: 255},
                         {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
                 }
