@@ -119,9 +119,10 @@ const CommonConstant = {
         {value: 1, text: '冻结'},
     ],
     lightStatus: [
-        {value: 1, text: '开'},
-        {value: 2, text: '关'},
-        {value: 3, text: '故障'},
+        {value: 1, text: '正常'},
+        {value: 2, text: '故障'},
+        {value: 3, text: '离线'},
+        {value: 4, text: '未知'},
     ],
     alarmDuty: [
         {value: 1, text: '开启'},

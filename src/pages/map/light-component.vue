@@ -115,21 +115,13 @@
                 this.$emit('updateMarker', this.transformData(this.detail))
             },
             transformData(data) {
-                let status = ''
-                if (data.runningstate != '正常') {
-                    status = 3;
-                } else if (data.switchstate == 2) {
-                    status = 2
-                } else {
-                    status = 1;
-                }
                 return {
                     lng: data.longitude,
                     lat: data.latitude,
                     id: data.deviceid,
                     moduletype: this.moduleType.light,
                     sn: data.sn,
-                    status: status,
+                    status: data.lightstatus,
                 }
             },
             hideShowConfirm() {
