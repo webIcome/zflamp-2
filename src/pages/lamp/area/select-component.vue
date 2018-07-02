@@ -16,7 +16,7 @@
           <el-table-column label="设备ID" prop="sn" align="center"></el-table-column>
           <el-table-column label="归属项目" prop="companyname" align="center"></el-table-column>
         </el-table>
-        <el-row type="flex" justify="end" v-if="paginationShow">
+        <el-row type="flex" justify="end">
           <el-pagination
               background
               :current-page="searchParams.pageNum"

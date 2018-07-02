@@ -19,19 +19,22 @@
     <div class="panel-bottom">
       <div class="control-panel-time">更新时间：{{detail.uptime | formDate}}</div>
       <div class="control-panel-status">{{detail.status | loopStatusNameConverter}}</div>
-      <div @click="controlStatus" class="control-panel-status">获取状态</div>
+      <div @click="controlStatus" class="control-panel-control">获取状态</div>
     </div>
   </div>
 </template>
 <script>
     import Services from "../../services/map";
     import CommonConstant from "../../constants/common";
+    import Config from "../../config";
     export default{
         name: 'loopComponent',
         data() {
             return {
                 currentLoopControl: [],
                 detail: {},
+                REFRESH_TIMES: Config.REFRESH_TIMES,
+                TIMER: ''
             }
         },
         props: {
@@ -69,6 +72,7 @@
             controlStatus() {
                 let data = {controltype: 4}
                 Services.controlLoop(this.detail.deviceid, data).then(res => {
+//                    this.resetTimes();
                     this.getDetail()
                 })
             },
@@ -104,13 +108,27 @@
                     lng: data.longitude,
                     lat: data.latitude,
                     id: data.deviceid,
-                    moduletype: data.moduletype,
+                    moduletype: this.moduleType.loop,
                     sn: data.sn,
                     status: data.status,
                 }
             },
             hideShowConfirm() {
                 this.isShowConfirm = false;
+            },
+            resetTimes() {
+                this.REFRESH_TIMES = Config.REFRESH_TIMES;
+                clearTimeout(this.TIMER);
+                this.refreshDetail();
+            },
+             refreshDetail() {
+                this.TIMER = setTimeout(() => {
+                    if (this.REFRESH_TIMES) {
+                        this.REFRESH_TIMES --;
+                        this.getDetail();
+                        this.refreshDetail();
+                    }
+                }, Config.REFRESH_INTERVAL)
             },
         },
         watch: {

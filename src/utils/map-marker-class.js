@@ -82,7 +82,7 @@ export default class MapMarkerClass {
         this._createMarker(device, imgUrl, width, height)
     }
     redraw(status) {
-        this._device.status = status;
+        if (status) this._device.status = status;
         this.generateMarker(this._device);
     }
     listen(type, fn) {
@@ -109,8 +109,9 @@ export default class MapMarkerClass {
 
 let LightStatus = {
     1: './static/imgs/light-on.png',//开
-    2: './static/imgs/light-offline.png',//关
-    3: './static/imgs/light-err.png'//故障
+    2: './static/imgs/light-err.png',//故障
+    3: './static/imgs/light-offline.png',//离线
+    4: './static/imgs/light-err.png',//未知
 };
 let LoopStatus = {
     1: './static/imgs/loop-online.png',//正常

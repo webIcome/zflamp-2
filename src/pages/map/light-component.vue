@@ -8,7 +8,7 @@
         </div>
         <div class="panel-control-slider">
 
-          <el-slider class="my-slider" v-model="brightness" vertical height="140px" @change="showConfirm"></el-slider>
+          <el-slider class="my-slider" v-model="brightness" vertical height="140px" @change="showConfirm" :step="5"></el-slider>
           <div class="slider-label">
             <div class="slider-label-text top"><span>开灯</span></div>
             <div class="slider-label-number">75</div>
@@ -52,13 +52,16 @@
 <script>
     import Services from "../../services/map";
     import CommonConstant from "../../constants/common";
+    import Config from "../../config";
     export default{
         name: 'lightComponent',
         data() {
             return {
                 brightness: 0,
                 isShowConfirm: false,
-                detail: {}
+                detail: {},
+                REFRESH_TIMES: Config.REFRESH_TIMES,
+                TIMER: ''
             }
         },
         props: {
@@ -92,6 +95,7 @@
                 }
                 Services.controlLight(this.detail.deviceid, data).then(res => {
                     this.hideShowConfirm();
+//                    this.resetTimes();
                 })
             },
             controlLightStatus() {
@@ -111,25 +115,31 @@
                 this.$emit('updateMarker', this.transformData(this.detail))
             },
             transformData(data) {
-                let status = ''
-                if (data.runningstate != '正常') {
-                    status = 3;
-                } else if (data.switchstate == 2) {
-                    status = 2
-                } else {
-                    status = 1;
-                }
                 return {
                     lng: data.longitude,
                     lat: data.latitude,
                     id: data.deviceid,
-                    moduletype: data.moduletype,
+                    moduletype: this.moduleType.light,
                     sn: data.sn,
-                    status: status,
+                    status: data.lightstatus,
                 }
             },
             hideShowConfirm() {
                 this.isShowConfirm = false;
+            },
+            resetTimes() {
+                this.REFRESH_TIMES = Config.REFRESH_TIMES;
+                clearTimeout(this.TIMER);
+                this.refreshDetail();
+            },
+            refreshDetail() {
+                setTimeout(() => {
+                    if (this.REFRESH_TIMES) {
+                        this.REFRESH_TIMES --;
+                        this.getDetail()
+                        this.refreshDetail();
+                    }
+                }, Config.REFRESH_INTERVAL)
             },
         },
         watch: {

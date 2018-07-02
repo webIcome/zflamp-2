@@ -362,3 +362,4 @@
     }
   }
 </style>
+<style src="./style.less" lang="less" scoped></style>

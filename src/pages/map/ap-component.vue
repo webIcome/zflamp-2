@@ -9,7 +9,7 @@
         <div class="panel-control-slider">
           <div class="slider-title">控制基站下所有灯</div>
           <div class="slider-body">
-            <el-slider class="my-slider" v-model="brightness" vertical height="140px" @change="showConfirm"></el-slider>
+            <el-slider class="my-slider" v-model="brightness" vertical height="140px" @change="showConfirm" :step="5"></el-slider>
             <div class="slider-label">
               <div class="slider-label-text top"><span>开灯</span></div>
               <div class="slider-label-number">75</div>
@@ -37,13 +37,16 @@
     import Services from "../../services/map";
     import ApServices from "../../services/area"
     import CommonConstant from "../../constants/common";
+    import Config from "../../config";
     export default{
         name: 'apComponent',
         data() {
             return {
                 brightness: 0,
                 isShowConfirm: false,
-                detail: {}
+                detail: {},
+                REFRESH_TIMES: Config.REFRESH_TIMES,
+                TIMER: ''
             }
         },
         props: {
@@ -114,10 +117,24 @@
                     lng: data.longitude,
                     lat: data.latitude,
                     id: data.deviceid,
-                    moduletype: data.moduletype,
+                    moduletype: this.moduleType.station,
                     sn: data.sn,
                     status: status,
                 }
+            },
+            resetTimes() {
+                this.REFRESH_TIMES = Config.REFRESH_TIMES;
+                clearTimeout(this.TIMER);
+                this.refreshDetail();
+            },
+            refreshDetail() {
+                setTimeout(() => {
+                    if (this.REFRESH_TIMES) {
+                        this.REFRESH_TIMES --;
+                        this.getDetail()
+                        this.refreshDetail();
+                    }
+                }, Config.REFRESH_INTERVAL)
             },
         },
         watch: {

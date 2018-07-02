@@ -33,6 +33,7 @@
                 moduleType: {},
                 mapZoom: 5,
                 marker: '',
+                searchMarker: '',
                 currentModuleType: '',
                 isSearchDevice: false,
                 id: ''
@@ -130,7 +131,7 @@
                     this.showPanel(params.moduletype);
                 }
                 this.isSearchDevice = true;
-                this.removeMarker(this.marker.marker);
+                this.removeMarker(this.searchMarker.marker);
             },
             refreshDetail(moduletype) {
                 this.hidePanel();
@@ -141,11 +142,13 @@
             addSearchMarker(detail) {
                 if (detail && detail.id) {
 //                    this.showPanel(detail.moduletype);
-                    let markerClass = new MapMarkerClass(detail);
-                    markerClass.listen('click',this.markerClickEventFn);
-                    this.addMarker(markerClass);
-                    this.moveMap({center: (new BMap.Point(detail.lng, detail.lat)), zoom:  16});
-                    this.marker = markerClass;
+                    if (!(this.searchMarker && (this.searchMarker.device.status == detail.status))) {
+                        let markerClass = new MapMarkerClass(detail);
+                        markerClass.listen('click',this.markerClickEventFn);
+                        this.addMarker(markerClass);
+                        this.moveMap({center: (new BMap.Point(detail.lng, detail.lat)), zoom:  16});
+                        this.searchMarker = markerClass;
+                    }
                 }
             },
             updateMarker(device) {

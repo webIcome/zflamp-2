@@ -83,6 +83,11 @@
       }
       .control-panel-status {
         display: inline-block;
+        font-size: 12px;
+        color: #4689d7;
+      }
+      .control-panel-control {
+        display: inline-block;
         cursor: pointer;
         font-size: 12px;
         color: #4689d7;
@@ -96,3 +101,4 @@
     }
   }
 </style>
+<style src="./style.less" lang="less" scoped></style>

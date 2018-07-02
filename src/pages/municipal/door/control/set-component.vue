@@ -61,7 +61,8 @@
                 let fn = '';
                 switch (operateType) {
                     case 1:
-                        Service.controlSetAlarmValue;
+                        fn = Service.controlSetAlarmValue;
+                        break;
                 }
                 return fn
             },

@@ -10,9 +10,9 @@
       <label class="col-md-2 control-label">运行状态：</label>
       <div class="col-md-2 form-control-static">{{device.statusName}}</div>
       <label class="col-md-2 control-label">当前照度/lux：</label>
-      <div class="col-md-2 form-control-static">{{device.voltage}}</div>
-      <label class="col-md-2 control-label">告警阈值：</label>
       <div class="col-md-2 form-control-static">{{device.currentBrightness}}</div>
+      <label class="col-md-2 control-label">告警阈值：</label>
+      <div class="col-md-2 form-control-static">{{device.alarmThreshold}}</div>
       <label class="col-md-2 control-label">电压/V：</label>
       <div class="col-md-2 form-control-static">{{device.voltage}}</div>
       <label class="col-md-2 control-label">归属项目：</label>
@@ -29,7 +29,7 @@
       <div class="col-md-2 form-control-static">{{device.heartbeatCycle}}</div>
       <label class="col-md-2 control-label">告警周期/min：</label>
       <div class="col-md-2 form-control-static">{{device.alarmCycle}}</div>
-      <label class="col-md-2 control-label">告警解除阈值/cm：</label>
+      <label class="col-md-2 control-label">告警解除阈值/lux：</label>
       <div class="col-md-2 form-control-static">{{device.relieveAlarmThreshold}}</div>
       <label class="col-md-2 control-label">采集周期/s：</label>
       <div class="col-md-2 form-control-static">{{device.collectCycle}}</div>

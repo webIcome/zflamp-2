@@ -1,10 +1,13 @@
 /**
  * Created by spring on 2018/6/7.
  */
+import Config from "../../../config";
 export default {
     data() {
         return {
-            detail: {}
+            detail: {},
+            REFRESH_TIMES: Config.REFRESH_TIMES,
+            TIMER: ''
         }
     },
     props: {
@@ -43,8 +46,23 @@ export default {
         hide() {
             this.$emit('hide');
         },
+        resetTimes() {
+            this.REFRESH_TIMES = Config.REFRESH_TIMES;
+            clearTimeout(this.TIMER);
+            this.refreshDetail();
+        },
+        refreshDetail() {
+            setTimeout(() => {
+                if (this.REFRESH_TIMES) {
+                    this.REFRESH_TIMES --;
+                    this.getDetail()
+                    this.refreshDetail();
+                }
+            }, Config.REFRESH_INTERVAL)
+        },
         controlStatus() {
             this.service.controlSearchStatus(this.detail.deviceId).then(res => {
+                this.resetTimes();
             })
         },
     },
