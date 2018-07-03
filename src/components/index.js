@@ -10,6 +10,7 @@ import showPosition from './show-position.vue'
 import lineEchart from "./line-echart.vue"
 import pieEchart from "./pie-echart.vue"
 import listSearchBtns from "./list-search-btns.vue"
+import batchCreateData from './batch-create-data.vue'
 export default {
     'header-component': headerComponent,
     'paging-component': pagingComponent,
@@ -18,5 +19,6 @@ export default {
     'show-position': showPosition,
     'line-echart-component': lineEchart,
     'pie-echart-component': pieEchart,
-    'list-search-btns-component': listSearchBtns
+    'list-search-btns-component': listSearchBtns,
+    'batch-create-data': batchCreateData,
 }

@@ -25,7 +25,10 @@
         </form>
         <div class="control-add-content">
           <control-component :isSingle="true" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <div style="display: flex;">
+            <oper-component :companies="companies" @initPaging="initList"></oper-component>
+            <batch-create-data :url="url" :fileName="fileName" ></batch-create-data>
+          </div>
         </div>
       </div>
     </div>
@@ -113,6 +116,8 @@
                 switchState:  CommonConstant.switchState,
                 lightControllerType: CommonConstant.lightControllerType,
                 sensorType: CommonConstant.sensorType,
+                url: Config.LAMP_URL_API,
+                fileName: '灯控器模板'
             }
         },
         methods: {
