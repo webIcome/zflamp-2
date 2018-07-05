@@ -51,12 +51,13 @@ axios.interceptors.response.use(function (res) {
     showMessage(res);
     return res
 }, function (error) {
+    pending = [];
     console.log(error)
     // loading.close();
     if (!(error instanceof axios.Cancel || error.message == '重复的请求')) {
         waringMessage('服务器网络问题，请联系管理员')
     } else {
-        throw new Error(error)
+        return Promise.reject(error)
     }
 });
 export default {
@@ -108,5 +109,5 @@ function waringMessage(msg, time) {
         type: 'warning',
         duration: time
     })
-    throw new Error()
+    throw new Error(msg)
 }

@@ -3,11 +3,13 @@
  */
 import HttpClient from 'axios'
 export default {
-    getExcel(url, name){
+    getExcel(baseUrl, url, name){
         if (!name) {
             name = Date.parse(new Date());
         }
-        return HttpClient.get(url, {responseType: 'blob'}).then(res => {
+        let config = {responseType: 'blob'};
+        if (baseUrl) config.baseURL = baseUrl;
+        return HttpClient.get(url, config).then(res => {
             return new Blob([res.data],{type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
         }).then(blob => {
             let urlObject = window.URL || window.webkitURL || window;
@@ -17,6 +19,34 @@ export default {
             _fakeClick(save_link);
         })
     },
+    uploadExcel(baseUrl, url, data, config={}) {
+        if (baseUrl) {
+            config = Object.assign({
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                baseURL: baseUrl
+            }, config);
+        }else {
+            config = Object.assign({
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }, config);
+        }
+        let formData = new FormData();
+        let params = {};
+        Object.keys(data).forEach(key => {
+            formData.append(key, data[key]);
+            if (key != 'file') {
+                params[key] = data[key]
+            }
+        });
+        config.params = params;
+        return HttpClient.post(url, formData, config).then(res => {
+            return res;
+        })
+    }
 }
 
 function _fakeClick(obj) {

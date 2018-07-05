@@ -19,7 +19,10 @@
         </form>
         <div class="control-add-content">
           <control-component :isSingle="true" :ids="selectionIds" @refreshPage="refreshPage"></control-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <div style="display: flex;">
+            <oper-component :companies="companies" @initPaging="initList"></oper-component>
+            <batch-create-data :url="url" :fileName="fileName" ></batch-create-data>
+          </div>
         </div>
       </div>
     </div>
@@ -88,6 +91,8 @@
         data() {
             return {
                 service: Service,
+                url: 'loopController/',
+                fileName: '回路控制器模板'
             }
         },
         methods: {

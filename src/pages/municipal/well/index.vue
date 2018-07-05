@@ -26,7 +26,10 @@
         </form>
         <div class="control-add-content">
           <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <div style="display: flex;">
+            <oper-component :companies="companies" @initPaging="initList"></oper-component>
+            <batch-create-data :url="url" :fileName="fileName" :baseUrl="baseUrl" ></batch-create-data>
+          </div>
         </div>
       </div>
     </div>
@@ -52,7 +55,7 @@
       <el-table-column prop="currentObliquity" label="井盖倾角"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="belongLightId" label="归属路灯"></el-table-column>
-      <el-table-column prop="belongApId" label="归属基站ID"></el-table-column>
+      <el-table-column min-width="90" prop="belongApId" label="归属基站ID"></el-table-column>
       <el-table-column label="地理位置">
         <template slot-scope="scope">
           <show-position :device='scope.row'></show-position>
@@ -99,6 +102,7 @@
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control-component.vue"
     import mixin from '../../../mixins/paging-mixin'
+    import Config from "../../../config";
     export default {
         components: {
             operComponent,
@@ -110,7 +114,10 @@
         name: 'wellPage',
         data() {
             return {
-                service: Service
+                service: Service,
+                url: 'wellLid/',
+                baseUrl: Config.WELL_URL_API,
+                fileName: '井盖模板'
             }
         },
         methods: {

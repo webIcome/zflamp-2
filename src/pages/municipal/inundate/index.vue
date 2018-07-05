@@ -26,7 +26,10 @@
         </form>
         <div class="control-add-content">
           <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <div style="display: flex;">
+            <oper-component :companies="companies" @initPaging="initList"></oper-component>
+            <batch-create-data :url="url" :fileName="fileName" :baseUrl="baseUrl" ></batch-create-data>
+          </div>
         </div>
       </div>
     </div>
@@ -38,7 +41,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55" :selectable="isSelectable"></el-table-column>
-      <el-table-column min-width="100" prop="deviceName" label="设备名称"></el-table-column>
+      <el-table-column prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="deviceName" label="设备型号"></el-table-column>
       <el-table-column prop="compName" label="归属项目"></el-table-column>
@@ -99,6 +102,7 @@
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control/index.vue"
     import mixin from '../../../mixins/paging-mixin'
+    import Config from "../../../config";
     export default {
         components: {
             operComponent,
@@ -111,6 +115,9 @@
         data() {
             return {
                 service: Service,
+                url: 'inundateCheck/',
+                baseUrl: Config.WELL_URL_API,
+                fileName: '浸水检测模板'
             }
         },
         methods: {

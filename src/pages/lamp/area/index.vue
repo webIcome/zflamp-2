@@ -27,7 +27,10 @@
         </form>
         <div class="control-add-content">
           <control-light-component :isArea="true" :ids="selectionIds" @refreshPage="refreshPage"></control-light-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <div style="display: flex;">
+            <oper-component :companies="companies" @initPaging="initList"></oper-component>
+            <batch-create-data :url="url" :fileName="fileName" ></batch-create-data>
+          </div>
         </div>
       </div>
     </div>
@@ -98,7 +101,9 @@
         data() {
             return {
                 service: Service,
-                apState: CommonConstant.apState
+                apState: CommonConstant.apState,
+                url: 'ap/',
+                fileName: '基站模板'
             }
         },
         methods: {

@@ -1,6 +1,6 @@
 <template>
   <div class="batch-component">
-    <el-dropdown @command="handleCommand">
+    <el-dropdown @command="handleCommand" trigger="click">
          <el-button type="warning">
            批量导入<i class="el-icon-arrow-down el-icon--right"></i>
          </el-button>
@@ -11,6 +11,7 @@
     </el-dropdown>
     <el-dialog title="批量导入" :visible.sync="visible" center :width="'600px'">
       <el-upload
+          v-if="uploadVisible"
           class="upload-demo"
           ref="upload"
           drag
@@ -18,12 +19,15 @@
           :auto-upload="false"
           :data="{type: type}"
           :headers="headers"
-          @on-success="success"
-          @on-error="fault"
-          :action="url">
+          :limit="1"
+          :file-list="fileList"
+          :http-request="upload"
+          :on-success="success"
+          :on-error="fault"
+          :action="uploadUrl">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip">只能上传xlsx文件</div>
+        <div class="el-upload__tip">只能上传xlsx文件，且只能上传一个文件</div>
       </el-upload>
       <div style="display: flex; align-items: center; margin-top: 10px;">
         <div style="margin-bottom: 5px; margin-right: 10px">重复数据：</div>
@@ -37,6 +41,9 @@
         <el-button type="primary" @click="uploadExcel">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="格式提醒" :visible.sync="faultVisible" center :width="'600px'">
+      <p class="text-center">{{faultData}}</p>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -44,18 +51,31 @@
     import CommonConstant from "../constants/common";
     import Storage from '../store/user';
     export default {
-        name: 'operDoorComponent',
+        name: 'batchCreateDataComponent',
         data() {
             return {
                 visible: false,
                 ref: 'file-form',
                 type: 1,
-                headers: {}
+                headers: {},
+                fileList: [],
+                uploadVisible: true,
+                faultVisible: false,
+                faultData: ''
             }
         },
         props: {
             fileName: '',
-            url: ''
+            url: '',
+            baseUrl: ''
+        },
+        computed: {
+            uploadUrl: function () {
+                return this.url + 'upload'
+            },
+            downloadUrl: function () {
+                return this.url + 'download/template'
+            }
         },
         methods: {
             handleCommand(command) {
@@ -71,14 +91,29 @@
                 fn();
             },
             getExcel() {
-                ExcelFileClass.getExcel(this.url, this.fileName)
+                ExcelFileClass.getExcel(this.baseUrl, this.downloadUrl, this.fileName)
             },
             uploadExcel() {
                 this.$refs.upload.submit();
             },
+            upload(content) {
+                this.fileList[0] = {};
+                this.fileList[0].name = content.file.name;
+                this.fileList[0].url = content.file.url;
+                ExcelFileClass.uploadExcel(this.baseUrl, this.uploadUrl, {file: content.file, opType: this.type}).then(res => {
+                    content.onSuccess(res)
+                }).catch(err => {
+                    content.onError(err)
+                })
+            },
             showModal() {
                 this.visible = true;
-                this.setHeaders(Storage.state);
+//                this.setHeaders(Storage.state);
+            },
+            showFaultModal() {
+                if (this.type == 1) {
+                    this.faultVisible = true;
+                }
             },
             setHeaders(storage) {
                 let headers = {};
@@ -91,11 +126,19 @@
                 this.headers = headers
             },
             success(response, file, fileList) {
-
+                if (response.code == 200) {
+                    this.uploadVisible = false;
+                    this.$nextTick(() => {
+                        this.uploadVisible = true
+                    });
+                }
             },
+
             fault(err, file, fileList) {
                 console.log(err)
-                console.log(fileList)
+                console.log(file)
+                this.faultData = err.message
+                this.showFaultModal()
             }
         }
     }

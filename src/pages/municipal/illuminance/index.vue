@@ -26,7 +26,10 @@
         </form>
         <div class="control-add-content">
           <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <div style="display: flex;">
+            <oper-component :companies="companies" @initPaging="initList"></oper-component>
+            <batch-create-data :url="url" :fileName="fileName" :baseUrl="baseUrl" ></batch-create-data>
+          </div>
         </div>
       </div>
     </div>
@@ -50,7 +53,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="currentBrightness" label="当前照度/lux"></el-table-column>
+      <el-table-column min-width="105" prop="currentBrightness" label="当前照度/lux"></el-table-column>
       <el-table-column prop="alarmThreshold" label="告警阈值"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="belongLightId" label="归属灯"></el-table-column>
@@ -101,6 +104,7 @@
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control/index.vue"
     import mixin from '../../../mixins/paging-mixin'
+    import Config from "../../../config";
     export default {
         components: {
             operComponent,
@@ -113,6 +117,9 @@
         data() {
             return {
                 service: Service,
+                url: 'illuminanceCheck/',
+                baseUrl: Config.WELL_URL_API,
+                fileName: '光照度检测模板'
             }
         },
         methods: {

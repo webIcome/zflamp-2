@@ -58,7 +58,7 @@
       <el-table-column label="亮度"><template slot-scope="scope">{{scope.row.brightness == 255 ? '控制异常' : scope.row.brightness + '%'}}</template></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="current" label="电流A"></el-table-column>
-      <el-table-column prop="sumpower" label="用电量KW·h"></el-table-column>
+      <el-table-column min-width="100" prop="sumpower" label="用电量KW·h"></el-table-column>
       <el-table-column label="地理位置"><template slot-scope="scope"><show-position :device='scope.row'></show-position></template></el-table-column>
       <el-table-column label="上报时间">
         <template slot-scope="scope">
@@ -116,7 +116,7 @@
                 switchState:  CommonConstant.switchState,
                 lightControllerType: CommonConstant.lightControllerType,
                 sensorType: CommonConstant.sensorType,
-                url: Config.LAMP_URL_API,
+                url: 'lightController/',
                 fileName: '灯控器模板'
             }
         },

@@ -26,7 +26,10 @@
         </form>
         <div class="control-add-content">
           <control-component :deviceIds="selectionDeviceIds" @refreshPage="refreshPage"></control-component>
-          <oper-component :companies="companies" @initPaging="initList"></oper-component>
+          <div style="display: flex;">
+            <oper-component :companies="companies" @initPaging="initList"></oper-component>
+            <batch-create-data :url="url" :fileName="fileName" :baseUrl="baseUrl" ></batch-create-data>
+          </div>
         </div>
       </div>
     </div>
@@ -38,7 +41,7 @@
         class="my-table"
         :ref="tableRef">
       <el-table-column type="selection" width="55" :selectable="isSelectable"></el-table-column>
-      <el-table-column min-width="100" prop="deviceName" label="设备名称"></el-table-column>
+      <el-table-column prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
       <el-table-column prop="compName" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
@@ -52,7 +55,7 @@
       <el-table-column prop="voiceType" label="识别声音"></el-table-column>
       <el-table-column prop="voltage" label="电压V"></el-table-column>
       <el-table-column prop="belongLightId" label="归属灯ID"></el-table-column>
-      <el-table-column prop="belongApId" label="归属基站ID"></el-table-column>
+      <el-table-column min-width="90" prop="belongApId" label="归属基站ID"></el-table-column>
       <el-table-column label="地理位置">
         <template slot-scope="scope">
           <show-position :device='scope.row'></show-position>
@@ -93,6 +96,7 @@
     import CommonConstant from "../../../constants/common";
     import controlComponent from "./control-component.vue"
     import mixin from '../../../mixins/paging-mixin'
+    import Config from "../../../config";
     export default {
         components: {
             operComponent,
@@ -104,6 +108,9 @@
         data() {
             return {
                 service: Service,
+                url: 'voiceRecognition/',
+                baseUrl: Config.WELL_URL_API,
+                fileName: '声音识别模板'
             }
         },
         methods: {
