@@ -29,7 +29,7 @@
           <control-light-component :isArea="true" :ids="selectionIds" @refreshPage="refreshPage"></control-light-component>
           <div style="display: flex;">
             <oper-component :companies="companies" @initPaging="initList"></oper-component>
-            <batch-create-data :url="url" :fileName="fileName" ></batch-create-data>
+            <batch-create-data :url="url" :fileName="fileName" @initPaging="initList"></batch-create-data>
           </div>
         </div>
       </div>

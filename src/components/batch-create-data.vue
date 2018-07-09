@@ -11,7 +11,6 @@
     </el-dropdown>
     <el-dialog title="批量导入" :visible.sync="visible" center :width="'600px'">
       <el-upload
-          v-if="uploadVisible"
           class="upload-demo"
           ref="upload"
           drag
@@ -42,7 +41,7 @@
       </span>
     </el-dialog>
     <el-dialog title="格式提醒" :visible.sync="faultVisible" center :width="'600px'">
-      <p class="text-center">{{faultData}}</p>
+      <p class="text-center" v-for="data in faultData">{{data}}</p>
     </el-dialog>
   </div>
 </template>
@@ -61,7 +60,7 @@
                 fileList: [],
                 uploadVisible: true,
                 faultVisible: false,
-                faultData: ''
+                faultData: []
             }
         },
         props: {
@@ -97,25 +96,26 @@
                 this.$refs.upload.submit();
             },
             upload(content) {
-                this.fileList[0] = {};
-                this.fileList[0].name = content.file.name;
-                this.fileList[0].url = content.file.url;
                 ExcelFileClass.uploadExcel(this.baseUrl, this.uploadUrl, {file: content.file, opType: this.type}).then(res => {
-                    content.onSuccess(res)
+                    if (res.data.success) {
+                        content.onSuccess(res)
+                    } else {
+                        content.onError(res)
+                    }
                 }).catch(err => {
-                    content.onError(err)
+                    console.log(err)
                 })
             },
             showModal() {
                 this.visible = true;
-//                this.setHeaders(Storage.state);
+            },
+            hideModal() {
+                this.visible = false;
             },
             showFaultModal() {
-                if (this.type == 1) {
-                    this.faultVisible = true;
-                }
+                this.faultVisible = true;
             },
-            setHeaders(storage) {
+          /*  setHeaders(storage) {
                 let headers = {};
                 if (storage.user.objectid) {
                     headers['access_token'] = storage.token;
@@ -124,27 +124,25 @@
                     headers['company_id'] = storage.user.companyid.toString();
                 }
                 this.headers = headers
-            },
+            },*/
             success(response, file, fileList) {
-                if (response.code == 200) {
-                    this.uploadVisible = false;
-                    this.$nextTick(() => {
-                        this.uploadVisible = true
-                    });
-                }
+                this.$refs.upload.clearFiles();
+                this.hideModal();
+                this.emitEvent();
             },
-
-            fault(err, file, fileList) {
-                console.log(err)
-                console.log(file)
-                this.faultData = err.message
+            fault(res, file, fileList) {
+                this.faultData = res.data.msg.split(';');
                 this.showFaultModal()
-            }
+            },
+            emitEvent() {
+                this.$emit('initPaging')
+            },
         }
     }
 </script>
 <style lang="less">
   .batch-component {
+    margin-right: 25px;
     .el-button--warning {
       color: #fff;
       background-color: #FF854A;

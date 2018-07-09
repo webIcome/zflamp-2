@@ -78,6 +78,7 @@ function getHeaders(storage) {
 }
 
 function showMessage(res) {
+    if (!res.data.code && res.data.code != 0) return;
     switch (res.data.code) {
         case 3:
         case 401:

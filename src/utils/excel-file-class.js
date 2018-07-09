@@ -15,7 +15,7 @@ export default {
             let urlObject = window.URL || window.webkitURL || window;
             let save_link = document.createElement("a");
             save_link.href = urlObject.createObjectURL(blob);
-            save_link.download = name + '.xls';
+            save_link.download = name + '.xlsx';
             _fakeClick(save_link);
         })
     },

@@ -28,7 +28,7 @@
           <control-component :deviceIds="selectionDeviceIds"  @refreshPage="refreshPage"></control-component>
           <div style="display: flex;">
             <oper-component :companies="companies" @initPaging="initList"></oper-component>
-            <batch-create-data :url="url" :fileName="fileName" :baseUrl="baseUrl" ></batch-create-data>
+             <batch-create-data :url="url" :fileName="fileName" :baseUrl="baseUrl" @initPaging="initList"></batch-create-data>
           </div>
         </div>
       </div>
