@@ -43,7 +43,6 @@
       <el-table-column type="selection" width="55" :selectable="isSelectable"></el-table-column>
       <el-table-column prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="sn" label="设备ID"></el-table-column>
-      <el-table-column prop="sn" label="设备型号"></el-table-column>
       <el-table-column prop="compName" label="归属项目"></el-table-column>
       <el-table-column label="运行状态">
         <template slot-scope="scope">
