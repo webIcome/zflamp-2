@@ -192,6 +192,14 @@
 
                         });
                         return item;
+                    }).filter(item => {
+                        let filter = false;
+                        this.localNavs.forEach(nav => {
+                            if (nav.modulecode == item.modulecode) {
+                                filter = true;
+                            }
+                        });
+                        return filter;
                     });
 //                    this.navs = this.localNavs;
                     this.isActiveHide();
