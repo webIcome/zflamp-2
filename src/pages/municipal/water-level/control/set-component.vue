@@ -54,6 +54,11 @@
             <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
           </el-form-item>
         </template>
+        <template v-if="operData.operateType == 10">
+          <el-form-item label="设置初始化标准：" prop="operateValue">
+            <el-input type="text" v-model.trim.number="operData.operateValue"></el-input>
+          </el-form-item>
+        </template>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlSetDevice()">确 定</el-button>
@@ -77,6 +82,7 @@
                     {value: 7, text: '告警使能'},
                     {value: 8, text: '采集周期'},
                     {value: 9, text: '量程'},
+                    {value: 10, text: '初始化标准'},
                 ],
             }
         },
@@ -139,6 +145,12 @@
                         {type: 'number', message: '范围0~255', min: 0, max: 255},
                         {pattern: /^[0-9]+$/, message: '必须为正整数'}
                     ]
+                } else if (this.operData.operateType == 10) {
+                    rules.operateValue = [
+                        {required: true, message: '请输入初始化标准'},
+                        {type: 'number', message: '范围-127~127', min: -127, max: 127},
+                        {pattern: /^[-+]?[0-9]+$/, message: '必须为整数'}
+                    ]
                 }
                 return rules;
             }
@@ -175,28 +187,7 @@
                         fn = Service.controlSetRange;
                         break;
                     case 10:
-                        fn = Service.controlSearchHeartPeriod;
-                        break;
-                    case 11:
-                        fn = Service.controlSearchAlarmPeriod;
-                        break;
-                    case 12:
-                        fn = Service.controlSearchAlarmValue;
-                        break;
-                    case 13:
-                        fn = Service.controlSearchRelieveAlarmValue;
-                        break;
-                    case 14:
-                        fn = Service.controlSearchAlarmEnabled;
-                        break;
-                    case 15:
-                        fn = Service.controlSearchGatherPeriod;
-                        break;
-                    case 16:
-                        fn = Service.controlSearchRange;
-                        break;
-                    case 17:
-                        fn = Service.controlSearchResetData;
+                        fn = Service.controlSetResetData;
                         break;
                 }
                 return fn

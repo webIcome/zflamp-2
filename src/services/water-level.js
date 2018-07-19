@@ -135,6 +135,12 @@ export default {
             return res;
         })
     },
+    controlSetResetData(body) {
+        return HttpClient.post('waterLevel/batchSetInitStandardByDeviceIds','', Object.assign({params: body},option)).then(res => {
+            showSuccess(res);
+            return res;
+        })
+    },
     pigeonhole(ids) {
         return HttpClient.post('waterLevel/batchToNormalByDeviceIds','', Object.assign({params: {deviceIds: ids}},option)).then(res => {
             showSuccess(res);

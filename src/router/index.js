@@ -24,6 +24,7 @@ const shakePage = () => import(/* webpackChunkName: "terminal" */'../pages/munic
 const voicePage = () => import(/* webpackChunkName: "terminal" */'../pages/municipal/voice/index.vue');
 const waterLevelPage = () => import(/* webpackChunkName: "terminal" */'../pages/municipal/water-level/index.vue');
 const weatherPage = () => import(/* webpackChunkName: "terminal" */'../pages/municipal/weather/index.vue');
+const cameraPage = () => import(/* webpackChunkName: "terminal" */'../pages/municipal/camera/index.vue');
 Vue.use(Router);
 import StoreUser from "../store/user"
 
@@ -50,6 +51,7 @@ let router = new Router({
             {path: 'voice', name: 'voice', component: voicePage},
             {path: 'water-level', name: 'water-level', component: waterLevelPage},
             {path: 'weather', name: 'weather', component: weatherPage},
+            {path: 'camera', name: 'camera', component: cameraPage},
         ]},
     ]
 })

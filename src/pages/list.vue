@@ -93,7 +93,7 @@
                             {modulename: '声音识别', modulecode: 'TERMINALVOICE', url: 'voice'},
                             {modulename: '水位监测', modulecode: 'TERMINALWATERLEVEL', url: 'water-level'},
                             {modulename: '气象监测', modulecode: 'TERMINALMETEMONITOR', url: 'weather'},
-                            {modulename: '视频', modulecode: 'TERMINALVIDEO', url: 'video'},
+                            {modulename: '摄像头', modulecode: 'CAMERA', url: 'camera'},
                         ]
                     },
                     {
