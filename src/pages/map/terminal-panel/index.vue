@@ -8,6 +8,7 @@
     <voice-panel-component v-else-if="currentModuleType == moduleType.voice" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></voice-panel-component>
     <water-level-panel-component v-else-if="currentModuleType == moduleType.waterLevel" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></water-level-panel-component>
     <weather-panel-component v-else-if="currentModuleType == moduleType.weather" @updateMarker="updateMarker" @hide="hide" :moduleType="moduleType" :id="id"></weather-panel-component>
+    <camera-panel-component v-else-if="currentModuleType == moduleType.camera" :id="id"></camera-panel-component>
 </template>
 <script>
   import WellComponent from "./well-component.vue"
@@ -19,9 +20,11 @@
   import VoicePanelComponent from "./voice-component";
   import WaterLevelPanelComponent from "./water-level-component";
   import WeatherPanelComponent from "./weather-component";
+  import CameraPanelComponent from "./camera-component";
   export default {
       name: 'terminalPanelComponent',
       components: {
+          CameraPanelComponent,
           WeatherPanelComponent, WaterLevelPanelComponent, VoicePanelComponent, ShakePanelComponent,
           PosePanelComponent, InundatePanelComponent, IlluminancePanelComponent, DoorPanelComponent, WellComponent,
       },

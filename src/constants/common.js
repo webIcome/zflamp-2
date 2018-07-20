@@ -25,6 +25,7 @@ const CommonConstant = {
         {value: 8, text: '气象监测', name: 'weather'},
         {value: 9, text: '浸水检测', name: 'inundate'},
         {value: 10, text: '光照度检测', name: 'illuminance'},
+        {value: 11, text: '摄像头', name: 'camera'},
     ],
     switchState: [
         {value: 1, text: '开'},

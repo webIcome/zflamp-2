@@ -75,6 +75,9 @@ export default class MapMarkerClass {
                 imgUrl = IlluminanceStatus[device.status];
                 if (!imgUrl) imgUrl = IlluminanceStatus[0];
                 break;
+            case moduleType.camera:
+                imgUrl = Camera;
+                break;
             default:
                 imgUrl = LightStatus[1];
                 break;
@@ -169,3 +172,4 @@ let IlluminanceStatus = {
     1: './static/imgs/illuminance-offline.png', //离线
     2: './static/imgs/illuminance-err.png', //告警
 };
+let Camera = './static/imgs/camera.png';

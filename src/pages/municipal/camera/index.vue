@@ -37,7 +37,7 @@
         @selection-change="handleSelectionChange"
         class="my-table"
         :ref="tableRef">
-      <el-table-column type="selection" width="55" :selectable="isSelectable"></el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="deviceName" label="设备名称"></el-table-column>
       <el-table-column prop="serviceIp" label="服务器IP"></el-table-column>
       <el-table-column prop="servicePort" label="服务器端口"></el-table-column>

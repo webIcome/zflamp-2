@@ -11,6 +11,7 @@
       <weather-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWeatherList" @show="showList" @hidden="hiddenList" @active="generateActive"></weather-component>
       <water-level-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWaterLevelList" @show="showList" @hidden="hiddenList" @active="generateActive"></water-level-component>
       <well-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWellList" @show="showList" @hidden="hiddenList" @active="generateActive"></well-component>
+      <camera-list-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" @updateList="getCameraList" @show="showList" @hidden="hiddenList" @active="generateActive"></camera-list-component>
       <device-alarm-list-component v-if="isListShow" :currentList="currentList" :list="currentList" @hide="hiddenList"></device-alarm-list-component>
     </div>
   </div>
@@ -26,9 +27,10 @@
     import WaterLevelComponent from "./water-level-component";
     import WellComponent from "./well-component";
     import DeviceAlarmListComponent from "../device-alarm-list-component";
+    import CameraListComponent from "./camera-component";
     export default {
         components: {
-            DeviceAlarmListComponent, WellComponent, WaterLevelComponent,
+            CameraListComponent, DeviceAlarmListComponent, WellComponent, WaterLevelComponent,
             WeatherComponent, VoiceComponent,
             ShakeComponent, PoseComponent,
             InundateComponent, IlluminanceComponent,
@@ -46,6 +48,7 @@
                 weatherList: [],
                 wellList: [],
                 currentList: [],
+                cameraList: [],
                 isChildShow: false,
                 isListShow: false,
                 doorActive: false,
@@ -57,6 +60,7 @@
                 waterLevelActive: false,
                 weatherActive: false,
                 wellActive: false,
+                cameraActive: false,
             }
         },
         props: {
@@ -69,7 +73,7 @@
         },
         computed: {
             active: function () {
-                return this.doorActive || this.illuminanceActive || this.inundateActive || this.poseActive || this.shakeActive || this.voiceActive || this.waterLevelActive || this.weatherActive || this.wellActive
+                return this.cameraActive || this.doorActive || this.illuminanceActive || this.inundateActive || this.poseActive || this.shakeActive || this.voiceActive || this.waterLevelActive || this.weatherActive || this.wellActive
             },
         },
         created() {
@@ -116,11 +120,15 @@
                 this.wellList = list
                 this.updateList()
             },
+            getCameraList(list) {
+                this.cameraList = list
+                this.updateList()
+            },
             updateList() {
                 this.$emit('updateList', this.getAllList())
             },
             getAllList() {
-                return this.doorList.concat(this.illuminanceList, this.inundateList, this.poseList, this.shakeList, this.voiceList, this.waterLevelList, this.weatherList, this.wellList)
+                return this.doorList.concat(this.illuminanceList, this.inundateList, this.poseList, this.shakeList, this.voiceList, this.waterLevelList, this.weatherList, this.wellList, this.cameraList)
             },
             showList(list) {
                 this.currentList = list;
@@ -157,6 +165,9 @@
                         break;
                     case this.moduleType.well:
                         this.wellActive = obj.active;
+                        break;
+                    case this.moduleType.camera:
+                        this.cameraActive = obj.active;
                         break;
                 }
             }
