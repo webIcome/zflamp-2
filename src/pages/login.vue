@@ -117,10 +117,12 @@
         setCookie(name, value, day) {
             let date = new Date();
             date.setDate(date.getDate() + day);
-            document.cookie = name + '=' + value + ';expires='+ date;
+            document.cookie = name + '=' + value + ';expires='+ date.toUTCString();
         },
         delCookie(name) {
-          this.setCookie(name, null,-1);
+            let date=new Date();
+            date.setTime(date.getTime()-10000);
+          this.setCookie(name, '', date);
         }
 
     }

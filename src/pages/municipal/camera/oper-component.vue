@@ -25,9 +25,6 @@
         <el-form-item label="预览通道：" prop="previewChannel">
           <el-input v-model.trim="data.previewChannel" placeholder="请输入预览通道"></el-input>
         </el-form-item>
-        <el-form-item label="画面分割数：" prop="previewChannel">
-          <el-input v-model.trim.number="data.splitNumber" placeholder="请输入画面分割数"></el-input>
-        </el-form-item>
         <el-form-item label="地理位置：" prop="address">
           <select-position v-model="data.address"></select-position>
         </el-form-item>
@@ -74,9 +71,6 @@
                         {required: true, message: '请输入设备密码'}
                     ],
                     previewChannel: [
-                        {required: true, message: '请输入预览通道'}
-                    ],
-                    splitNumber: [
                         {required: true, message: '请输入预览通道'}
                     ],
                 };

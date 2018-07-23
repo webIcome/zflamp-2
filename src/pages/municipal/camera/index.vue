@@ -43,7 +43,6 @@
       <el-table-column prop="servicePort" label="服务器端口"></el-table-column>
       <el-table-column prop="deviceUser" label="设备用户名"></el-table-column>
       <el-table-column prop="devicePassword" label="设备密码"></el-table-column>
-      <el-table-column prop="splitNumber" label="画面分割数"></el-table-column>
       <el-table-column prop="previewChannel" label="预览通道"></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">

@@ -35,7 +35,7 @@
             urls: function () {
                 let url = [];
                 this.devices.forEach(item => {
-                    url.push(this.getUrl(item.serviceIp, item.servicePort, item.deviceUser, item.devicePassword, item.splitNumber, item.previewChannel))
+                    url.push(this.getUrl(item.serviceIp, item.servicePort, item.deviceUser, item.devicePassword, 1, item.previewChannel))
                 });
                 return url;
             }
