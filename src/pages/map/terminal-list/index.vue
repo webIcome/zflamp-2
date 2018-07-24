@@ -2,16 +2,16 @@
   <div class="terminal-class">
     <div class="device-parent" :class="{active: active}" @click="showChild"><span class="icon"></span>终端</div>
     <div class="device-child" v-show="isChildShow">
-      <door-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getDoorList" @show="showList" @hidden="hiddenList" @active="generateActive"></door-component>
-      <illuminance-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getIlluminanceList" @show="showList" @hidden="hiddenList" @active="generateActive"></illuminance-component>
-      <inundate-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getInundateList" @show="showList" @hidden="hiddenList" @active="generateActive"></inundate-component>
-      <pose-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getPoseList" @show="showList" @hidden="hiddenList" @active="generateActive"></pose-component>
-      <shake-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getShakeList" @show="showList" @hidden="hiddenList" @active="generateActive"></shake-component>
-      <voice-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getVoiceList" @show="showList" @hidden="hiddenList" @active="generateActive"></voice-component>
-      <weather-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWeatherList" @show="showList" @hidden="hiddenList" @active="generateActive"></weather-component>
-      <water-level-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWaterLevelList" @show="showList" @hidden="hiddenList" @active="generateActive"></water-level-component>
-      <well-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWellList" @show="showList" @hidden="hiddenList" @active="generateActive"></well-component>
-      <camera-list-component :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" @updateList="getCameraList" @show="showList" @hidden="hiddenList" @active="generateActive"></camera-list-component>
+      <door-component v-if="showLimits('TERMINALDOOR')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getDoorList" @show="showList" @hidden="hiddenList" @active="generateActive"></door-component>
+      <illuminance-component v-if="showLimits('TERMINALILLUMIDETE')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getIlluminanceList" @show="showList" @hidden="hiddenList" @active="generateActive"></illuminance-component>
+      <inundate-component v-if="showLimits('TERMINALIMMERSION')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getInundateList" @show="showList" @hidden="hiddenList" @active="generateActive"></inundate-component>
+      <pose-component v-if="showLimits('TERMINALGESTURE')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getPoseList" @show="showList" @hidden="hiddenList" @active="generateActive"></pose-component>
+      <shake-component v-if="showLimits('TERMINALSHOCK')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getShakeList" @show="showList" @hidden="hiddenList" @active="generateActive"></shake-component>
+      <voice-component v-if="showLimits('TERMINALVOICE')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getVoiceList" @show="showList" @hidden="hiddenList" @active="generateActive"></voice-component>
+      <weather-component v-if="showLimits('TERMINALMETEMONITOR')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWeatherList" @show="showList" @hidden="hiddenList" @active="generateActive"></weather-component>
+      <water-level-component v-if="showLimits('TERMINALWATERLEVEL')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWaterLevelList" @show="showList" @hidden="hiddenList" @active="generateActive"></water-level-component>
+      <well-component v-if="showLimits('TERMINALCOVER')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" :companyid="companyid" @updateList="getWellList" @show="showList" @hidden="hiddenList" @active="generateActive"></well-component>
+      <camera-list-component v-if="showLimits('CAMERA')" :currentList="currentList" :isListShow="isListShow" :moduleType="moduleType" @updateList="getCameraList" @show="showList" @hidden="hiddenList" @active="generateActive"></camera-list-component>
       <device-alarm-list-component v-if="isListShow" :currentList="currentList" :list="currentList" @hide="hiddenList"></device-alarm-list-component>
     </div>
   </div>
@@ -70,6 +70,11 @@
                 }
             },
             companyid: '',
+            limits: {
+                default: function () {
+                    return []
+                }
+            }
         },
         computed: {
             active: function () {
@@ -170,7 +175,16 @@
                         this.cameraActive = obj.active;
                         break;
                 }
-            }
+            },
+            showLimits(type) {
+                return this.limits.some(item => {
+                    if (item.modulecode == 'TERMINAL') {
+                        return item.children.some(device => {
+                            return device.modulecode == type;
+                        })
+                    }
+                })
+            },
         },
     }
 </script>

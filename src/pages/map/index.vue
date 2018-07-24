@@ -1,7 +1,7 @@
 <template>
   <div class="map">
     <div class="my-map" :ref="ref"></div>
-    <left-component @updateList="updateList" :moduleType="moduleType"></left-component>
+    <left-component @updateList="updateList" :moduleType="moduleType" :limits="limits"></left-component>
     <right-component @hide="hidePanel"
                      @updateMarker="updateMarker"
                      @search="searchDevice"
@@ -18,6 +18,7 @@
     import MapMarkerClass from "../../utils/map-marker-class";
     import RightComponent from "./right-component";
     import WellServices from '../../services/well'
+    import HomeService from "../../services/list"
     export default {
         components: {
             RightComponent,
@@ -36,7 +37,8 @@
                 searchMarker: '',
                 currentModuleType: '',
                 isSearchDevice: false,
-                id: ''
+                id: '',
+                limits: []
             }
         },
         computed: {
@@ -50,6 +52,9 @@
             CommonConstant.terminalType.forEach(item => {
                 this.moduleType[item.name] = item.value + length;
             });
+            HomeService.getMenus().then(data => {
+                this.limits = data;
+            })
         },
         mounted() {
             this.initData()

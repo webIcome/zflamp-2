@@ -3,19 +3,19 @@
     <div class="left-position-container">
       <div class="go-home" @click="goToHome">进入列表管理</div>
       <div class="device-items">
-        <el-badge class="device-item" :hidden="true">
+        <el-badge v-if="showLimits('LAMPLIGHTCONTROL')" class="device-item" :hidden="true">
           <div class="device-ap" :class="{active: apActive}" @click="selectCheck(moduleType.station)"><span class="icon"></span>AP</div>
           <sup @click="showList(apList)" v-if="apList.length" class="el-badge__content is-fixed">{{apList.length}}</sup>
         </el-badge>
-        <el-badge class="device-item" :hidden="true">
+        <el-badge v-if="showLimits('LAMPLIGHTCONTROL')" class="device-item" :hidden="true">
           <div class="device-lamp" :class="{active: lightActive}" @click="selectCheck(moduleType.light)"><span class="icon"></span>灯控器</div>
           <sup @click="showList(lightList)" v-if="lightList.length" class="el-badge__content is-fixed">{{lightList.length}}</sup>
         </el-badge>
-        <el-badge class="device-item" :hidden="true">
+        <el-badge v-if="showLimits('LAMPLOOPCONTROL')" class="device-item" :hidden="true">
           <div class="device-loop" :class="{active: loopActive}" @click="selectCheck(moduleType.loop)"><span class="icon"></span>回路控制器</div>
           <sup @click="showList(loopList)" v-if="loopList.length" class="el-badge__content is-fixed">{{loopList.length}}</sup>
         </el-badge>
-        <terminal-component @updateList="getTerminalList" :companyid="companyid" @hide="hidden" :moduleType="moduleType"></terminal-component>
+        <terminal-component :limits="limits" @updateList="getTerminalList" :companyid="companyid" @hide="hidden" :moduleType="moduleType"></terminal-component>
       </div>
       <div class="select-items">
         <tree-select-component class="home" v-model="companyid" :list="companies"></tree-select-component>
@@ -51,6 +51,11 @@
             moduleType: {
                 default: function () {
                     return {}
+                }
+            },
+            limits: {
+                default: function () {
+                    return []
                 }
             }
         },
@@ -187,6 +192,15 @@
                             break;
                         default:
                             break;
+                    }
+                })
+            },
+            showLimits(type) {
+                return this.limits.some(item => {
+                    if (item.modulecode == 'LAMP') {
+                        return item.children.some(device => {
+                            return device.modulecode == type;
+                        })
                     }
                 })
             },
