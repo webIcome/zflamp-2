@@ -52,17 +52,17 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="currentSpeed" label="风向 °"></el-table-column>
-      <el-table-column prop="currentSpeed" label="风速 m/s"></el-table-column>
-      <el-table-column prop="currentSpeed" label="温度/℃"></el-table-column>
-      <el-table-column min-width="85" prop="currentSpeed" label="湿度/%RH"></el-table-column>
-      <el-table-column prop="currentSpeed" label="气压/hPa"></el-table-column>
-      <el-table-column prop="currentSpeed" label="雨量/mm"></el-table-column>
-      <el-table-column min-width="100" prop="currentSpeed" label="总辐射 W/㎡"></el-table-column>
-      <el-table-column prop="currentSpeed" label="紫外强度"></el-table-column>
-      <el-table-column prop="currentSpeed" label="噪声/dB"></el-table-column>
-      <el-table-column min-width="110" prop="currentSpeed" label="PM2.5 ug/m³"></el-table-column>
-      <el-table-column min-width="110" prop="currentSpeed" label="PM10 ug/m³"></el-table-column>
+      <el-table-column prop="direction" label="风向 °"></el-table-column>
+      <el-table-column prop="velocity" label="风速 m/s"></el-table-column>
+      <el-table-column prop="temperature" label="温度/℃"></el-table-column>
+      <el-table-column min-width="85" prop="humidity" label="湿度/%RH"></el-table-column>
+      <el-table-column prop="pressure" label="气压/hPa"></el-table-column>
+      <el-table-column prop="rainfall" label="雨量/mm"></el-table-column>
+      <el-table-column min-width="100" prop="totalRadiation" label="总辐射 W/㎡"></el-table-column>
+      <el-table-column prop="ultravioletIntensity" label="紫外强度"></el-table-column>
+      <el-table-column prop="noise" label="噪声/dB"></el-table-column>
+      <el-table-column min-width="110" prop="pm25" label="PM2.5 ug/m³"></el-table-column>
+      <el-table-column min-width="110" prop="pm10" label="PM10 ug/m³"></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-row type="flex">

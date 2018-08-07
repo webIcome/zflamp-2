@@ -44,7 +44,7 @@
         },
         methods: {
             getLimits(id) {
-                Service.getLimits(id).then(data => {
+                Service.getLimits(id, 34).then(data => {
                     this.list = this.getTransformChecked(data);
                 })
             },

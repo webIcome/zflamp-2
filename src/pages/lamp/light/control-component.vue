@@ -13,6 +13,9 @@
     <div class="control control-status">
       <el-button :disabled="!ids.length" @click="generate(4)" class="control-btn">获取状态<span class="control-icon"></span></el-button>
     </div>
+    <div v-if="isArea || isGroup" class="control control-status">
+      <el-button :disabled="!ids.length" @click="generate(5)" class="control-btn">查询电参数</el-button>
+    </div>
     <template v-if="isSingle">
       <div class="control control-set">
         <span class="control-text">设置</span>
@@ -32,6 +35,7 @@
       <p v-else-if="operData.controltype == 2" class="title">您确认要关灯吗？</p>
       <p v-else-if="operData.controltype == 3" class="title">您确认要将亮度调到{{brightness}}%亮度吗？</p>
       <p v-else-if="operData.controltype == 4" class="title">您确认要获取状态吗？</p>
+      <p v-else-if="operData.controltype == 5" class="title">您确认要查询电参数吗？</p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="controlDevice">确 定</el-button>
       </span>
@@ -149,11 +153,6 @@
                 }
             },
             transformData: function (data) {
-                if (data.controltype == 16) {
-                    if (this.noinducedbrightness == 0) {
-                        data.noinducedbrightness = 255
-                    }
-                }
                 return data
             },
             showModal() {

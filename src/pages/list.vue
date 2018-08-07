@@ -170,7 +170,7 @@
             },
             getMenus(){
                 let currentHash = window.location.hash.substring(window.location.hash.indexOf('/'));
-                HomeService.getMenus().then(list => {
+                HomeService.getMenus(34).then(list => {
                     this.navs = list.map(item => {
                         this.localNavs.forEach((nav, index) => {
                             if (item.modulecode == nav.modulecode) {

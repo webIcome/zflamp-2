@@ -38,8 +38,8 @@ export default {
             }
         });
     },
-    getLimits(id) {
-        return HttpClient.post('permission/getModuleListByPostid', {postid: id}, option).then(res => {
+    getLimits(id, appid) {
+        return HttpClient.post('permission/getModuleListByPostid', {postid: id, appid: appid}, option).then(res => {
             if (!res.data.data) {
                 return [];
             } else {
